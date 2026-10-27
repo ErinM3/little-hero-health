@@ -193,7 +193,7 @@ td.n{font-variant-numeric:tabular-nums;text-align:right}
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <script>
-const API=(new URLSearchParams(location.search).get("api")||"%EVENTS_API%").replace(/\/$/,"");
+const API=(new URLSearchParams(location.search).get("api")||"https://lively-bread-7c0blhh-events.hbrandall11.workers.dev").replace(/\/$/,"");
 const READY=/^https?:\/\//.test(API);
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
