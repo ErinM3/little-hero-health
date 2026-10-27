@@ -1,0 +1,151 @@
+<title>Little Hero Discord Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: sticky brand bar with progress, step rail on the left, numbered setup steps with copy-ready Discord posts on the right. Blue (default) and White looks via the Blue/White switch. */
+:root{color-scheme:dark;
+ --bg:#0B2C70;--panel:#0F3C99;--panel2:#0A2A6B;--well:#061637;--ink:#FFFFFF;--muted:#BCD3F5;--line:#2F5DB8;--sun:#FFD21F;--sun-ink:#0A2A6B;--blue:#5AAEFF;--code:#E9F1FF;
+ --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;--body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+:root[data-bg="white"]{color-scheme:light;--bg:#F3F7FD;--panel:#FFFFFF;--panel2:#E6F0FA;--well:#F6F9FE;--ink:#0A2A6B;--muted:#3D5A80;--line:#C6D7EE;--sun:#FFD21F;--sun-ink:#0A2A6B;--blue:#1F5FAD;--code:#0A2A6B}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel2)}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--blue)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--panel2);border-bottom:3px solid var(--sun)}
+.bar .in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{width:44px;height:44px;flex:none}
+.brand b{display:block;font:800 1.3rem var(--display);color:var(--sun);line-height:1}
+.brand small{display:block;font:700 .72rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.prog{flex:1;min-width:180px;display:grid;gap:4px}
+.prog span{font:700 .82rem var(--body);color:var(--muted)}
+.track{height:10px;border-radius:99px;background:var(--well);border:1px solid var(--line);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--sun);transition:width .3s}
+.bgt{display:flex;gap:2px;background:var(--well);border:2px solid var(--sun);border-radius:999px;padding:3px}
+.bgt button{border:0;background:none;color:var(--ink);font:700 .85rem var(--display);padding:4px 12px;border-radius:999px;cursor:pointer}
+.bgt button[aria-pressed="true"]{background:var(--sun);color:var(--sun-ink)}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;padding-block:24px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.rail{position:sticky;top:96px;align-self:start;display:grid;gap:2px}
+.rail a{display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--muted);font:700 .95rem var(--display);padding:6px 10px;border-radius:10px}
+.rail a:hover{background:var(--panel)}
+.rail a .n{width:24px;height:24px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.75rem;flex:none}
+.rail a.ok .n{background:var(--sun);border-color:var(--sun);color:var(--sun-ink)}
+.rail a.ok{color:var(--ink)}
+main{display:grid;gap:22px;min-width:0}
+@media (max-width:860px){.wrap{grid-template-columns:1fr}.rail{display:none}}
+.intro{display:grid;gap:10px;max-width:68ch}
+.intro h1{font-size:clamp(2rem,5vw,3rem);color:var(--sun)}
+.intro p{color:var(--muted);font-size:1.05rem}
+.note{background:var(--well);border:2px dashed var(--line);border-radius:14px;padding:10px 14px;color:var(--muted);font-size:.92rem}
+.step{background:var(--panel);border:2px solid var(--line);border-radius:20px;overflow:hidden;scroll-margin-top:100px}
+.step.ok{border-color:var(--sun)}
+.sh{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:2px solid var(--line);background:var(--panel2)}
+.sh .num{width:40px;height:40px;border-radius:50%;background:var(--well);border:2px solid var(--sun);display:grid;place-items:center;font:800 1.15rem var(--display);color:var(--sun);flex:none}
+.step.ok .sh .num{background:var(--sun);color:var(--sun-ink)}
+.sh div{flex:1;min-width:0}
+.sh h2{font-size:1.4rem}
+.sh p{color:var(--muted);font-size:.95rem}
+.done{border:2px solid var(--sun);background:none;color:var(--ink);font:700 .9rem var(--display);border-radius:999px;padding:6px 14px;cursor:pointer;white-space:nowrap}
+.step.ok .done{background:var(--sun);color:var(--sun-ink)}
+.sb{padding:16px 18px;display:grid;gap:14px;min-width:0}
+ol.how,ul.how{margin:0;padding-left:22px;display:grid;gap:6px}
+.cat{border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.cat h3{font-size:1.05rem;padding:8px 12px;background:var(--well);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.cat h3 small{font:400 .82rem var(--body);color:var(--muted)}
+.chrow{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr) auto;gap:4px 12px;align-items:start;padding:9px 12px;border-top:1px solid var(--line)}
+@media (max-width:640px){.chrow{grid-template-columns:minmax(0,1fr) auto}.chrow .tp{grid-column:1/-1;grid-row:2}}
+.chn{font:700 .95rem var(--mono);color:var(--ink);overflow-wrap:anywhere}
+.chn i{font-style:normal;font:700 .7rem var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--sun);display:block}
+.tp{font-size:.92rem;min-width:0}
+.tp small{display:block;color:var(--muted);font-size:.82rem;margin-top:2px}
+.copy{border:2px solid var(--blue);background:none;color:var(--ink);font:700 .82rem var(--display);border-radius:999px;padding:3px 12px;cursor:pointer;white-space:nowrap}
+.copy:hover{background:var(--blue);color:#fff}
+.copy.did{background:var(--sun);border-color:var(--sun);color:var(--sun-ink)}
+.post{border:2px solid var(--line);border-radius:14px;overflow:hidden;min-width:0}
+.post .ph{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:var(--well)}
+.post .ph b{font:700 .95rem var(--mono)}
+.post pre{margin:0;padding:12px 14px;font:400 .86rem/1.5 var(--mono);color:var(--code);white-space:pre-wrap;overflow-wrap:anywhere;max-height:340px;overflow:auto}
+.tbl{overflow-x:auto;border:2px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:700 .72rem var(--body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);background:var(--well)}
+tr:last-child td{border-bottom:0}
+.sw{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:-3px;margin-right:6px;border:2px solid var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:2px solid var(--line);border-radius:999px;padding:3px 12px;font-size:.88rem;background:var(--well)}
+.qa{display:grid;gap:8px;border:2px solid var(--line);border-radius:14px;padding:12px}
+.qa b{font-family:var(--display);font-size:1.05rem}
+.kv{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:8px 16px}
+@media (max-width:560px){.kv{grid-template-columns:1fr;gap:2px}.kv dd{margin-bottom:8px}}
+.kv dt{font:700 .95rem var(--display);color:var(--sun)}
+.kv dd{margin:0;font-size:.95rem}
+.sr{display:grid;gap:6px}
+.sr div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;border:2px solid var(--line);border-radius:12px;padding:8px 12px}
+.sr div span{font-size:.92rem}.sr div b{font-family:var(--display)}
+button:focus-visible,a:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translateX(-50%);background:var(--sun);color:var(--sun-ink);font:700 .95rem var(--display);padding:8px 18px;border-radius:999px;z-index:30;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="bar"><div class="in">
+ <div class="brand"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+ <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
+ <path d="M60 18 L88 27.5 V54 C88 75 76 89 60 98" fill="none" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+ <path d="M51 34 H69 V49 H84 V67 H69 V82 H51 V67 H36 V49 H51 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="4.5" stroke-linejoin="round"/>
+ <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
+ <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>
+<div><b>Little Hero</b><small>Discord setup kit</small></div></div>
+ <div class="prog"><span id="pt">0 of 10 steps done</span><div class="track"><i id="pb"></i></div></div>
+ <div class="bgt" role="group" aria-label="Background"><button id="bg-blue" data-bg="blue" aria-pressed="true">Blue</button><button id="bg-white" data-bg="white" aria-pressed="false">White</button></div>
+</div></header>
+<div class="wrap">
+ <nav class="rail" id="rail" aria-label="Steps"></nav>
+ <main id="main">
+  <div class="intro">
+   <h1>Set up the Little Hero Discord</h1>
+   <p>Everything for your server in one place: roles, channels, rules and welcome posts. Work down the steps, tap <b>Copy</b>, paste into Discord, and tick each step when it's done.</p>
+   <p class="note" style="border-color:var(--sun);color:var(--ink)"><b style="color:var(--sun)">⚡ Fast way:</b> the Little Hero setup bot does steps 1 to 4, 7 and 8 for you in about a minute. Run <b>little-hero-discord-setup.mjs</b> with a grown-up (the how-to file explains it), then come back here for steps 5, 6, 9 and 10.</p>
+   <p class="note">Do this with your Grown-up Admin. Discord menu names can change a little when the app updates. If you can't find something, search for it in Server Settings.</p>
+  </div>
+ </main>
+</div>
+<script>
+const D={"WELCOME": "# 🦸 Welcome to Little Hero Health!\nHi hero! This is the official Discord for **Little Hero Health**, the real-life hospital game you play with your friends.\n\n**Start here**\n1️⃣ Read the Hero Code in #rules\n2️⃣ Pick your hospital job in #pick-your-job\n3️⃣ Say hi in #introduce-yourself (hero name only!)\n\n🎮 Play the game: https://be-the-doc.netlify.app\n🏥 Plan Maple Hospital shifts in #maple-shifts\n🙋 Need help? Ask in #hero-help or ping a @Moderator\n\nHave fun, and be a hero to everyone here. 💛", "RULES": "# 📜 The Hero Code\nEvery hero on this server follows these rules.\n\n**1. Be kind.** Every hero is welcome. No bullying, hate, mean jokes or drama.\n**2. Stay safe.** Never share your real name, birthday, school, address, phone number, passwords or photos of your face.\n**3. Hero names only.** Use your hero name as your nickname here.\n**4. No stranger DMs.** Don't accept friend requests or DMs from people you don't know. If anyone makes you uncomfortable, tell a @Moderator right away.\n**5. Keep it clean.** No swearing, scary, violent or grown-up content. This is a family-friendly server.\n**6. No spam or selling.** No ads, invites to other servers, giveaways or trading.\n**7. Right channel, right topic.** Keep chats where they belong.\n**8. Server codes stay private.** Never post Roblox private server links or codes. The team sends invites directly.\n**9. Follow Discord's rules.** You must be 13 or older and follow Discord's Terms of Service and Community Guidelines.\n**10. Listen to moderators.** Break a rule and you get a warning, then a timeout, then you're removed.\n\n🚑 This is a game. In a real emergency, tell a grown-up or call your local emergency number.", "SCREEN": [["Be kind", "No bullying, hate, mean jokes or drama. Every hero is welcome."], ["Stay safe", "Never share your real name, birthday, school, address, phone number, passwords or face photos."], ["No stranger DMs", "Don't accept friend requests or DMs from people you don't know. Tell a moderator if anyone makes you uncomfortable."], ["Keep it clean", "No swearing, scary, violent or grown-up content."], ["No spam, selling or server codes", "No ads, other server invites, giveaways or trading. Never post Roblox private server links."], ["13+ and Discord's rules", "You must be 13 or older and follow Discord's Terms of Service and Community Guidelines."]], "ANN": "# 🎉 Little Hero Health is open!\nWelcome to our brand new server, heroes!\n\n🩹 **Play the game:** https://be-the-doc.netlify.app\n🎬 **New to Little Hero?** Watch the 2-minute how-to video on the home page.\n🏥 **My Hospital:** build your own hospital in the Workstation and share keys in #my-hospital-keys\n🎮 **Maple Hospital:** group shifts are planned in #maple-shifts\n\nTurn on notifications for this channel so you never miss a new action, camp or shift! 🔔\n— Harry, CEO of Little Hero Health", "INTRO": "👋 **Introduce yourself! Copy this and fill it in:**\n\n🦸 Hero name:\n🩺 Favorite hospital job:\n⭐ Favorite Little Hero action:\n🎮 Do you play in real life, on Roblox, or both?\n🎨 One fun fact about your hero:\n\n⚠️ No real names, ages, schools or photos of your face!", "KEYS": "🔑 **How to share a hospital key**\n1. Open the Workstation → 🏥 My Hospital\n2. Make a key for a job (pick 1 day or 7 days so it can't be used forever)\n3. Copy the invite link and post it here with your hospital's name and the job\n\n✅ Hospital keys are fine to share here\n⛔ NEVER share your 🛡️ Owner backup code. Anyone with it can make keys for your hospital!", "SHIFT": "🏥 **Planning a Maple Hospital shift**\nPost your shift like this:\n\n📅 Day and time (with your time zone):\n🩺 Jobs needed (doctor, nurse, paramedic...):\n👥 How many heroes:\n\nA team member will DM the private server invite to the heroes who join. Never post server links or codes in public channels.", "CH": [["📌 START HERE", "Read-only for everyone except the team", [["welcome", "text", "Welcome to Little Hero Health! Start here. 🦸", "Read-only. Paste the Welcome post."], ["rules", "text", "The Hero Code. Read it before you chat.", "Read-only. Paste the Rules post. Set it as your Rules channel in Server Settings → Safety Setup or Onboarding."], ["announcements", "announcement", "News, new actions, camp dates and shifts. 🔔", "Read-only. Make it an Announcement channel so people can follow it."], ["pick-your-job", "text", "Pick your hospital job role here.", "Read-only. Use Onboarding's Channels & Roles, or a reaction-roles bot if you add one later."]]], ["💬 HERO LOUNGE", "", [["general", "text", "Chat about anything kind. Hero names only!", "Slowmode 5 seconds."], ["introduce-yourself", "text", "Say hi! Hero name and favorite job only. No real names, ages or schools.", "Slowmode 1 minute. Pin the Introduce-yourself template."], ["fun-and-games", "text", "Riddles, polls and hospital challenges. 🎲", ""], ["hero-art", "text", "Draw your hero, your hospital or your patient. No photos of faces.", "Turn on media-only if you like."]]], ["🏥 MAPLE HOSPITAL", "", [["maple-shifts", "text", "Plan group shifts on our Little Hero server. Invites are sent by DM, never posted.", "Pin the Shift template."], ["looking-for-a-squad", "text", "Find heroes to play with. Say your job and time zone.", ""], ["shift-screenshots", "text", "Show your best Maple Hospital moments! Hide usernames of other players.", ""]]], ["🎒 LITTLE HERO GAME", "", [["show-your-kit", "text", "Show your Hero Box and at-home gear. No faces, no real names.", ""], ["my-hospital-keys", "text", "Share My Hospital keys here. Make 1 or 7 day keys. Never share your Owner backup code!", "Pin the Hospital keys post."], ["game-ideas", "forum", "Ideas for new actions, jobs and badges. One idea per post.", "A Forum channel works great here (tags: Action, Job, Badge, Website)."], ["bug-reports", "forum", "Something broken? Tell us what you did and what happened.", "Forum channel with tags: Game, Workstation, Camp HQ, Website."]]], ["🎓 CAREERS & HELP", "", [["ask-a-real-hero", "text", "Questions about real hospital jobs. Answers come from grown-up helpers, not medical advice.", ""], ["hero-help", "text", "Help with the game, the website and Discord.", ""]]], ["🔊 VOICE ROOMS", "Locked until a moderator opens them", [["Shift Room 1", "voice", "", "Connect ❌ for @everyone. A moderator turns it on for a session."], ["Shift Room 2", "voice", "", ""], ["Quiet Study", "voice", "", "Camera off. Video ❌ for @everyone."]]], ["🛡️ STAFF ONLY", "Private: only Owner, Grown-up Admin and Moderator roles", [["mod-chat", "text", "Team chat for moderators.", ""], ["mod-log", "text", "AutoMod alerts and moderation notes.", "Send AutoMod alerts here."]]]], "ROLES": [["👑 Owner", "#FFD21F", "You, Harry. Every permission.", ""], ["🧑‍💼 Grown-up Admin", "#FFD21F", "A parent or guardian. Administrator permission.", ""], ["🛡️ Moderator", "#1F5FAD", "Trusted helpers: Manage Messages, Timeout Members, Kick Members. Not Ban or Administrator.", ""], ["🦸 Hero Team", "#5AAEFF", "Little Hero helpers who post updates in #announcements.", ""], ["🩺 Doctor · 💉 Nurse · 😷 Surgeon · 🚑 Paramedic · 💊 Pharmacist · 🧪 Lab Tech · 🩻 Radiographer · 🛎️ Receptionist · 🤝 Volunteer", "#8FB4E0", "Job roles members pick for themselves. No extra permissions.", ""], ["🔔 Shift Squad", "#CFE2FF", "Members who want pings for Maple Hospital shifts.", ""], ["📣 News Pings", "#CFE2FF", "Members who want pings for announcements.", ""]], "ONB": [["What's your hospital job?", "Pick one. It shows next to your hero name.", ["🩺 Doctor", "💉 Nurse", "😷 Surgeon", "🚑 Paramedic", "💊 Pharmacist", "🧪 Lab Tech", "🩻 Radiographer", "🛎️ Receptionist", "🤝 Volunteer"]], ["What do you want pings for?", "Pick as many as you like.", ["🔔 Maple Hospital shifts → Shift Squad role", "📣 Little Hero news → News Pings role"]]], "AUTOMOD": [["Block mention spam", "On. Limit 5 mentions per message. Block the message and time out for 10 minutes."], ["Block suspected spam content", "On. Block the message."], ["Commonly flagged words", "On. Turn on all three lists (profanity, insults and slurs, sexual content). Block the message."], ["Custom keywords: personal info", "Block the message and send an alert to #mod-log. Paste the keyword list below."], ["Custom keywords: phone numbers and invites", "Block the message. Paste the pattern list below into Regex patterns."]], "KW": "*my address*, *where i live*, *my phone number*, *my number is*, *what school*, *which school*, *my school is*, *how old are you*, *send pic*, *send a pic*, *send me a pic*, *add me on*, *snapchat*, *snap me*, *instagram*, *my insta*, *tiktok me*, *whatsapp*, *telegram*, *home alone*, *dont tell your parents*, *don't tell your parents*, *our secret*, *free robux*, *robux generator*", "RX": "\\b\\d{3}[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b\n(discord\\.gg|discord\\.com/invite)/\\S+\nroblox\\.com/share\\S*\nprivateServerLinkCode=\\S+", "SAFETY": [["Verification level", "High: members need a verified email and must be on the server for 10 minutes before chatting."], ["Sensitive content filter", "Filter for all members."], ["DM and spam filter", "Turn on the DM spam filter and the raid protection alerts."], ["Default notifications", "Only @mentions, so members aren't flooded."], ["2FA for moderation", "Turn on 'Require 2FA for moderator actions' (Owner and Moderators set up 2FA first)."], ["@everyone permissions", "Turn OFF: Mention @everyone, Create Invite (team makes invites), Use External Apps, Create Public Threads in Start here."], ["Members tab", "Check Server Settings → Members once a week. Remove accounts that look like adults pretending to be kids or spam bots."]], "MODS": [["Warn first", "Reply kindly in the channel or DM: \"Hey hero, that breaks rule 5. Please keep it clean!\""], ["Then a timeout", "Second time: right-click the user → Timeout → 1 hour. Note it in #mod-log."], ["Then remove", "Third time, or anything serious: Kick. For dangerous behavior: Ban, and tell the Grown-up Admin."], ["Always tell a grown-up", "If anyone asks a member for photos, personal info, to meet up, or to keep a secret: screenshot it, ban the account, tell the Grown-up Admin, and report it to Discord (right-click the message → Report)."], ["Never argue in public", "Move problems to #mod-chat. Be calm and fair."], ["Delete personal info fast", "If someone posts their real name, address or phone number, delete it right away and remind them of rule 2."]], "TEMPLATE": ["Finish setting everything up first.", "Server Settings → Server Template → name it \"Little Hero Health\" and add a description → Generate Template.", "Copy the template link. Anyone with the link can make a copy of your channels, roles and permissions (no messages or members are copied).", "Keep the link in your Admin page. If your layout changes, use Sync Template to update it."], "STEPS": [["create", "Create the server", "Make the server with a grown-up and upload the logo.", []], ["roles", "Make the roles", "Server Settings → Roles → Create Role. Put Owner at the top, then Grown-up Admin, Moderator, Hero Team, then the rest.", []], ["channels", "Make the categories and channels", "Right-click the channel list → Create Category. Then click + next to each category to add its channels. Paste each channel topic from the list.", []], ["posts", "Paste the posts", "Post each one in its channel, then pin it.", []], ["screening", "Turn on rules screening", "Members must agree to the rules before they can chat.", []], ["onboarding", "Set up Onboarding", "New members pick their job role and pings.", []], ["automod", "Turn on AutoMod", "Blocks bad words, spam, personal info and phone numbers automatically.", []], ["safety", "Safety settings", "The server-wide safety switches.", []], ["mods", "Train your moderators", "Share this with every moderator.", []], ["template", "Save it as a template", "So you or your admins can copy the whole server in one click.", []]]};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const CP=[];const cp=(t,label="Copy")=>{CP.push(t);return `<button class="copy" data-cp="${CP.length-1}">${label}</button>`;};
+const post=(ch,t)=>`<div class="post"><div class="ph"><b>${esc(ch)}</b>${cp(t,"Copy post")}</div><pre>${esc(t)}</pre></div>`;
+const TYPE={text:"#",announcement:"📣 ",forum:"💬 ",voice:"🔊 "};
+const body={
+ create:()=>`<ol class="how"><li>Already made the server? Skip to the logo.</li><li>New server: in Discord tap <b>+</b> → <b>Create My Own</b> → <b>For a club or community</b>, and name it <b>Little Hero Health</b>.</li><li>Upload the logo: <b>Server Settings → Server Profile → Icon</b>, and pick <b>discord-icon-512.png</b>. If your server can have a banner, use <b>discord-banner-960x540.png</b>.</li><li>Invite a parent or guardian and give them the <b>Grown-up Admin</b> role (next step).</li><li>Your invite link: <b>Invite People → Edit invite link → Expire After: Never</b>. The one on the website is discord.gg/XT3TG6echM.</li></ol>`,
+ roles:()=>`<div class="tbl"><table><thead><tr><th>Role</th><th>What it's for</th></tr></thead><tbody>${D.ROLES.map(([n,c,w])=>`<tr><td><span class="sw" style="background:${c}"></span><b>${esc(n)}</b></td><td>${esc(w)}</td></tr>`).join("")}</tbody></table></div><p class="note">Only the Owner and Grown-up Admin get the Administrator permission. Turn on <b>Display role members separately</b> for Owner, Grown-up Admin and Moderator, so everyone can see who to ask for help.</p>`,
+ channels:()=>D.CH.map(([cat,note,chs])=>`<div class="cat"><h3>${esc(cat)}${note?`<small>${esc(note)}</small>`:""}</h3>${chs.map(([n,t,topic,set])=>`<div class="chrow"><span class="chn">${TYPE[t]==="#"?"#":TYPE[t]}${esc(n)}<i>${t} channel</i></span><span class="tp">${topic?esc(topic):"<span style='opacity:.7'>No topic needed</span>"}${set?`<small>⚙️ ${esc(set)}</small>`:""}</span>${topic?cp(topic,"Copy topic"):"<span></span>"}</div>`).join("")}</div>`).join("")+`<ol class="how"><li>Make <b>#welcome</b>, <b>#rules</b>, <b>#announcements</b> and <b>#pick-your-job</b> read-only: category ⚙️ → <b>Permissions</b> → <b>@everyone</b> → <b>Send Messages ❌</b>. Give <b>Hero Team</b> and <b>Moderator</b> Send Messages ✅.</li><li>Make <b>STAFF ONLY</b> private: category ⚙️ → turn on <b>Private Category</b> → add Owner, Grown-up Admin and Moderator.</li><li>Lock the voice rooms: category ⚙️ → Permissions → @everyone → <b>Connect ❌</b>. A moderator flips it on for a session.</li></ol>`,
+ posts:()=>post("#welcome",D.WELCOME)+post("#rules",D.RULES)+post("#announcements",D.ANN)+post("#introduce-yourself  (pin it)",D.INTRO)+post("#my-hospital-keys  (pin it)",D.KEYS)+post("#maple-shifts  (pin it)",D.SHIFT),
+ screening:()=>`<ol class="how"><li>First turn on <b>Community</b>: Server Settings → <b>Enable Community</b>. It asks for a rules channel (pick <b>#rules</b>) and an updates channel (pick <b>#mod-log</b>).</li><li>Then open <b>Server Settings → Safety Setup</b> (or <b>Onboarding</b>) → <b>Rules Screening</b>, and add these six short rules.</li></ol><div class="sr">${D.SCREEN.map(([h,t])=>`<div><span><b>${esc(h)}.</b> ${esc(t)}</span>${cp(h+". "+t)}</div>`).join("")}</div>`,
+ onboarding:()=>`<p>Server Settings → <b>Onboarding</b>. Set <b>#welcome</b>, <b>#general</b> and <b>#hero-help</b> as default channels, then add these questions. Link each answer to its role.</p>`+D.ONB.map(([q,h,opts])=>`<div class="qa"><div style="display:flex;justify-content:space-between;gap:10px;align-items:start"><div><b>${esc(q)}</b><p style="color:var(--muted);font-size:.9rem">${esc(h)}</p></div>${cp(q)}</div><div class="chips">${opts.map(o=>`<span class="chip">${esc(o)}</span>`).join("")}</div></div>`).join("")+`<p class="note">Add a <b>Welcome Sign</b> in Onboarding too: "Welcome, hero! Read the Hero Code and pick your job to start chatting."</p>`,
+ automod:()=>`<p>Server Settings → <b>AutoMod</b>. Send every alert to <b>#mod-log</b>.</p><dl class="kv">${D.AUTOMOD.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`+post("Keyword list: personal info and grooming warning signs",D.KW)+post("Regex patterns: phone numbers, invites, server links",D.RX)+`<p class="note">Also add a short custom message for blocked posts: "Hero tip: keep personal info and server links private! 🦸"</p>`,
+ safety:()=>`<dl class="kv">${D.SAFETY.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`,
+ mods:()=>`<dl class="kv">${D.MODS.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`+post("#mod-chat  (pin it)","🛡️ **Moderator steps**\n"+D.MODS.map(([k,v],i)=>`${i+1}. **${k}.** ${v}`).join("\n")),
+ template:()=>`<ol class="how">${D.TEMPLATE.map(t=>`<li>${esc(t)}</li>`).join("")}</ol>`};
+let done={};try{done=JSON.parse(localStorage.getItem("lhh-dkit")||"{}")||{}}catch(e){}
+const save=()=>{try{localStorage.setItem("lhh-dkit",JSON.stringify(done))}catch(e){}};
+const main=$("main");
+main.insertAdjacentHTML("beforeend",D.STEPS.map(([k,t,s],i)=>`<section class="step" id="${k}"><div class="sh"><span class="num">${i+1}</span><div><h2>${esc(t)}</h2><p>${esc(s)}</p></div><button class="done" data-done="${k}"></button></div><div class="sb">${body[k]()}</div></section>`).join(""));
+$("rail").innerHTML=D.STEPS.map(([k,t],i)=>`<a href="#${k}" data-r="${k}"><span class="n">${i+1}</span>${esc(t)}</a>`).join("");
+function paint(){let n=0;D.STEPS.forEach(([k])=>{const ok=!!done[k];if(ok)n++;$(k).classList.toggle("ok",ok);const b=document.querySelector(`[data-done="${k}"]`);b.textContent=ok?"✓ Done":"Mark done";b.setAttribute("aria-pressed",ok);document.querySelector(`[data-r="${k}"]`).classList.toggle("ok",ok);});
+ $("pt").textContent=n===D.STEPS.length?"All done! Your server is ready 🎉":`${n} of ${D.STEPS.length} steps done`;$("pb").style.width=(n/D.STEPS.length*100)+"%";}
+function toast(t){const e=document.createElement("div");e.className="toast";e.setAttribute("role","status");e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),1800);}
+async function copyText(t,btn){let ok=false;try{await navigator.clipboard.writeText(t);ok=true}catch(e){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{ok=document.execCommand("copy")}catch(_){}a.remove();}
+ if(ok){const o=btn.textContent;btn.textContent="Copied!";btn.classList.add("did");setTimeout(()=>{btn.textContent=o;btn.classList.remove("did")},1400);}else{const pre=btn.closest(".post")?.querySelector("pre");if(pre){const r=document.createRange();r.selectNodeContents(pre);const s=getSelection();s.removeAllRanges();s.addRange(r);}toast("Copy is blocked here. The text is selected, so press Ctrl+C or Cmd+C.");}}
+document.addEventListener("click",e=>{const c=e.target.closest("[data-cp]");if(c){copyText(CP[+c.dataset.cp],c);return;}const d=e.target.closest("[data-done]");if(d){const k=d.dataset.done;done[k]=!done[k];save();paint();if(done[k])toast("Nice work, hero! ⭐");return;}
+ const b=e.target.closest(".bgt button");if(b)setBg(b.dataset.bg);});
+function setBg(v){document.documentElement.setAttribute("data-bg",v);document.querySelectorAll(".bgt button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.bg===v));try{localStorage.setItem("lhh-bg",v)}catch(e){}}
+let bg="blue";try{bg=localStorage.getItem("lhh-bg")||"blue"}catch(e){}setBg(bg==="white"?"white":"blue");paint();
+</script>

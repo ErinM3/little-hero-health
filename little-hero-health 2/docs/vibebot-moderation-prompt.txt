@@ -1,0 +1,37 @@
+Add a moderation system to my bot "Little Hero Bot" for the Little Hero Health Discord server. It is a family-friendly server for teens (13+). All messages must be short, kind and simple. Embed colors: blue #1F5FAD and yellow #FFD21F only.
+
+WHO CAN USE IT
+- Moderation commands only work for members with the Moderate Members permission (roles "🛡️ Moderator", "⭐ Admin", "🧑‍💼 Grown-up Admin", "👑 Owner"). Everyone else must not even see them.
+- Nobody can use moderation commands on themselves, on bots, or on someone with a higher role than theirs.
+- All command replies are private (only the moderator sees them).
+
+COMMANDS
+1. /warn user reason: save the warning, DM the user "Hi hero! A moderator sent you a reminder: [reason]. Please read the Hero Code in #rules." and log it.
+2. /warnings user: show that user's saved warnings (date, reason, moderator) privately.
+3. /clearwarnings user: delete a user's saved warnings (Administrator only).
+4. /timeout user length reason: length choices 10 minutes, 1 hour, 1 day, 1 week. DM the user and log it.
+5. /untimeout user: end a timeout early and log it.
+6. /kick user reason: Kick Members permission only. DM the user first, then kick, then log it.
+7. /ban user reason: Ban Members permission only. Delete their last 24 hours of messages and log it. Add a reminder in the log: "If this was about safety, tell the Grown-up Admin and report the account to Discord."
+8. /unban userID reason: Ban Members only. Log it.
+9. /clear count: delete 1 to 50 recent messages in the channel. Manage Messages only. Log it.
+10. /slowmode seconds: set slowmode in the channel (0, 5, 10, 30, 60 or 300 seconds). Log it.
+11. /lock and /unlock: stop or allow @everyone sending messages in the current channel, with a short public notice "This channel is paused by a moderator." Log it.
+
+AUTOMATIC WARNING STEPS
+- After a user's 3rd warning, automatically time them out for 1 hour and tell the moderators in #mod-log.
+- After a user's 5th warning, post an alert in #mod-log: "5 warnings: an Admin should review this hero." Do not ban automatically.
+
+REPORT BUTTON (everyone can use it)
+- Message context menu command "Report to moderators". Post the message text, its author, the reporter and a jump link in #mod-log, and ping the "🛡️ Moderator" role there. Privately tell the reporter: "Thanks for telling us, hero. A moderator will check it soon. If you ever feel unsafe, tell a grown-up too."
+
+LOGGING
+- Every action posts an embed in #mod-log with: the action, the member, the moderator, the reason, the time, and the member's total warnings.
+- If #mod-log does not exist, tell the moderator privately to create it.
+
+SAFETY RULES (very important)
+- Do NOT add AI chat, AI auto-replies, AI personas or roleplay.
+- Do NOT add leveling, XP, economy, gambling, giveaways or music.
+- Do NOT send DMs except the warn, timeout and kick messages above.
+- Only store warnings (user ID, reason, moderator, date). Nothing else.
+- Only ask for these permissions: View Channels, Send Messages, Embed Links, Read Message History, Manage Messages, Manage Channels, Kick Members, Ban Members, Moderate Members.

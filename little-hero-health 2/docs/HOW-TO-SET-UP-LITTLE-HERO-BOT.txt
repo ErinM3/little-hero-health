@@ -1,0 +1,53 @@
+Little Hero Bot · how to set it up (about 20 minutes, with a grown-up)
+=====================================================================
+Little Hero Bot is YOUR bot, with your name and logo. It does:
+  /warn  /timeout  /untimeout  /kick  /ban  /clear   (moderators only)
+  /apply  Admin or Moderator applications with Accept / Deny buttons
+  Report to moderators  (right-click any message → Apps)
+  /rules  /play
+It runs for free on Cloudflare, so it stays on all the time.
+Don't kick the "Little Hero Setup" bot: it becomes Little Hero Bot.
+
+STEP 1 · Get 3 things from Discord (discord.com/developers/applications)
+  Open your app. On "General Information", copy:
+    - Application ID
+    - Public Key
+  Then click "Bot" → "Reset Token" → Copy. That is your bot token.
+  Keep the token secret. Never put it in a screenshot or a chat.
+
+STEP 2 · Put the bot online with Cloudflare (a grown-up makes the account)
+  a. Go to dash.cloudflare.com and sign up (the free plan is enough).
+  b. Click "Workers & Pages" (it may be under "Compute") → Create → Create Worker
+     (or "Start with Hello World"). Name it  little-hero-bot  → Deploy.
+  c. Click "Edit code". Delete everything in the editor.
+     Open little-hero-bot-worker.js with TextEdit, press Cmd+A then Cmd+C,
+     paste it into the editor, then click Deploy.
+  d. Go to the worker's Settings → Variables and Secrets → Add, three times:
+       DISCORD_APPLICATION_ID   Type: Text     Value: your Application ID
+       DISCORD_PUBLIC_KEY       Type: Text     Value: your Public Key
+       DISCORD_TOKEN            Type: Secret   Value: your bot token
+     Click Deploy (or Save).
+  e. Copy your worker's address. It looks like
+       https://little-hero-bot.YOURNAME.workers.dev
+     Open it in a browser. It should say "Little Hero Bot is running."
+
+STEP 3 · Run the setup (gives it your name, logo and commands)
+  Put little-hero-bot-setup.mjs on your Desktop. In Terminal type:
+     node ~/Desktop/little-hero-bot-setup.mjs 1560483599063711837
+  Paste your bot token when it asks. Then paste your worker address.
+  It should say "Connected! Discord checked your worker and it answered."
+
+STEP 4 · Finish in Discord
+  - Server Settings → Roles → drag "Little Hero Bot" ABOVE ⭐ Admin and 🛡️ Moderator.
+  - Type /rules in #general to test it.
+  - Post in #announcements: "Want to help run the server? Type /apply to be an Admin or Moderator!"
+  - Applications show up in #staff-applications (STAFF ONLY). Only the Owner and
+    Grown-up Admins can press Accept or Deny. Everything moderators do is logged in #mod-log.
+
+Good to know
+  - The bot shows as "offline" in the member list. That's normal for this kind of bot:
+    its commands still work.
+  - If the slash commands don't show up, open the invite link that the setup prints at
+    the end, add the bot again, then run the setup again.
+  - If Step 3 says Discord couldn't reach your worker, check the three settings in
+    Step 2d are saved and deployed, then run the setup again.

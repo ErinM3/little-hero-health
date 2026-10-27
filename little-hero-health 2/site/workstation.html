@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Hero Workstation</title>
+<meta name="description" content="Little Hero Health: the in-real-life hospital role-play game.">
+<link rel="icon" type="image/png" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
+<meta property="og:image" content="brand/discord-banner-960x540.png">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+#lhbar{position:sticky;top:0;z-index:80;background:#0A2A6B;border-bottom:3px solid #FFD21F;font-family:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif;color:#fff}
+#lhbar *{box-sizing:border-box}
+#lhbar .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px 14px;min-height:56px}
+#lhbar .home{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;margin-right:auto;border-radius:10px;padding:2px 6px 2px 0}
+#lhbar .home svg{width:38px;height:38px;flex:none}
+#lhbar .home b{font-weight:800;font-size:1.25rem;line-height:1;color:#FFD21F;white-space:nowrap}
+#lhbar .home small{display:block;font:700 .58rem "Atkinson Hyperlegible",system-ui;letter-spacing:.3em;color:#fff;margin-top:2px}
+#lhbar .grp{position:relative}
+#lhbar .gb{display:flex;align-items:center;gap:6px;background:none;border:2px solid transparent;color:#fff;font:700 1rem "Baloo 2",system-ui;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+#lhbar .gb:hover{background:#1756C2}
+#lhbar .gb[aria-expanded="true"],#lhbar .grp.cur>.gb{border-color:#FFD21F}
+#lhbar .gb[aria-expanded="true"]{background:#FFD21F;color:#0A2A6B}
+#lhbar .gb .car{font-size:.7em;opacity:.8}
+#lhbar .pn{position:absolute;right:0;top:calc(100% + 8px);background:#fff;color:#0A2A6B;border:3px solid #FFD21F;border-radius:18px;padding:8px;min-width:280px;box-shadow:0 18px 40px rgba(0,0,0,.35);display:grid;gap:2px}
+#lhbar .pn[hidden]{display:none}
+#lhbar .pn a{display:grid;grid-template-columns:34px 1fr;gap:0 10px;align-items:center;text-decoration:none;color:#0A2A6B;padding:8px 10px;border-radius:12px}
+#lhbar .pn a:hover,#lhbar .pn a:focus-visible{background:#E6F0FA;outline:none}
+#lhbar .pn a[aria-current="page"]{background:#FFF7D1}
+#lhbar .pn a .i{grid-row:span 2;font-size:1.5rem;text-align:center}
+#lhbar .pn a b{font:700 1rem "Baloo 2",system-ui;line-height:1.1}
+#lhbar .pn a span{font:400 .82rem "Atkinson Hyperlegible",system-ui;color:#3D5A80}
+#lhbar .lock{color:#CFE2FF;text-decoration:none;font-size:1.05rem;padding:6px 8px;border-radius:999px}
+#lhbar .lock:hover{background:#1756C2;color:#fff}
+#lhbar .menu{display:none}
+#lhbar a:focus-visible,#lhbar button:focus-visible{outline:3px solid #FFD21F;outline-offset:2px}
+@media (max-width:760px){
+ #lhbar .grp{display:none}
+ #lhbar .menu{display:flex}
+ #lhbar.open .grp{display:block;position:static;width:100%}
+ #lhbar.open .in{flex-wrap:wrap}
+ #lhbar.open .grp>.gb{display:none}
+ #lhbar .home{order:0}#lhbar .lock{order:1}#lhbar .menu{order:2}#lhbar .grp{order:3}
+ #lhbar.open .pn{position:static;display:grid!important;box-shadow:none;margin:4px 0;min-width:0}
+ #lhbar.open .pn::before{content:attr(data-t);font:800 .8rem "Baloo 2",system-ui;letter-spacing:.08em;text-transform:uppercase;color:#1F5FAD;padding:2px 10px}
+ #lhbar .home b{font-size:1.1rem}
+}
+</style>
+<header id="lhbar" aria-label="Little Hero menu"><div class="in">
+ <a class="home" href="index.html" aria-label="Little Hero Health home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+ <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
+ <path d="M60 18 L88 27.5 V54 C88 75 76 89 60 98" fill="none" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+ <path d="M51 34 H69 V49 H84 V67 H69 V82 H51 V67 H36 V49 H51 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="4.5" stroke-linejoin="round"/>
+ <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
+ <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>
+<span><b>Little Hero</b><small>HEALTH</small></span></a>
+ <div class="grp" data-g="play"><button class="gb" aria-expanded="false" aria-controls="lhp-play">🎮 Play <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-play" data-t="Play" hidden>
+   <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
+   <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
+   <a href="workstation.html" data-p="workstation"><span class="i">🖥️</span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
+   <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
+  </div></div>
+ <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
+   <a href="events.html" data-p="events"><span class="i">🎟️</span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
+   <a href="index.html#shop" data-p="shop"><span class="i">🎒</span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
+   <a href="camp.html" data-p="camp"><span class="i">⛺</span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
+   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Little Hero</b><span>Ages, jobs, levels and safety rules</span></a>
+  </div></div>
+ <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-comm" data-t="Community" hidden>
+   <a href="community.html" data-p="community"><span class="i">💬</span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
+   <a href="roblox.html" data-p="roblox"><span class="i">🎮</span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
+  </div></div>
+ <a class="lock" href="admin.html" title="Admin sign-in" aria-label="Admin sign-in">🔒</a>
+ <button class="gb menu" aria-expanded="false" aria-controls="lhbar">☰ Menu</button>
+</div></header>
+<script>
+(()=>{const bar=document.getElementById("lhbar");if(!bar)return;const page=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";
+bar.querySelectorAll(".pn a").forEach(a=>{if(a.dataset.p===page){a.setAttribute("aria-current","page");a.closest(".grp").classList.add("cur");}});
+const closeAll=ex=>bar.querySelectorAll(".grp").forEach(g=>{if(g===ex)return;g.querySelector(".gb").setAttribute("aria-expanded","false");g.querySelector(".pn").hidden=true;});
+bar.querySelectorAll(".grp>.gb").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const g=b.parentElement,p=g.querySelector(".pn"),open=p.hidden;closeAll(g);p.hidden=!open;b.setAttribute("aria-expanded",open);if(open)p.querySelector("a").focus({preventScroll:true});}));
+const m=bar.querySelector(".menu");m.addEventListener("click",e=>{e.stopPropagation();const o=!bar.classList.contains("open");bar.classList.toggle("open",o);m.setAttribute("aria-expanded",o);m.textContent=o?"✕ Close":"☰ Menu";});
+bar.querySelectorAll(".pn a").forEach(a=>a.addEventListener("click",()=>{closeAll();bar.classList.remove("open");m.setAttribute("aria-expanded","false");m.textContent="☰ Menu";}));
+document.addEventListener("click",e=>{if(!bar.contains(e.target))closeAll();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){const o=bar.querySelector('.gb[aria-expanded="true"]');closeAll();if(o)o.focus();}});})();
+</script>
+<style>nav.toplinks,div.top>nav[aria-label="Pages"],header.top>a[href$=".html"]{display:none!important}.bgtoggle{top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap">
+<style>
+/* Layout: clinical workstation — navy app bar, activity tabs, patient list rail, white panels on a cool gray workspace. White-only by design. */
+:root{color-scheme:light;
+ --bg:#EEF1F5;--panel:#FFFFFF;--panel2:#F6F8FB;--line:#CCD5E0;--line2:#E1E7EE;--ink:#1B2A3A;--muted:#5A6B7E;
+ --bar:#17324F;--bar2:#21456B;--blue:#1F5FAD;--blue-d:#174C8C;--blue-l:#E6F0FA;--sun:#FFD21F;--sun-l:#FFF7D1;--sun-d:#8A6A00;
+ --font:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,Consolas,Menlo,monospace}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.45}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{margin:0;font-weight:600;text-wrap:balance}
+h2{font-size:1.15rem}h3{font-size:.95rem}
+p{margin:0}
+.app{min-height:100%;display:grid;grid-template-rows:auto auto 1fr auto}
+.top{background:var(--bar);color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding:8px 16px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1rem;letter-spacing:.01em}
+.brand .lg{width:26px;height:26px;border-radius:5px;background:var(--sun);color:var(--bar);display:grid;place-items:center;font-weight:800}
+.top .sp{flex:1}
+.top label{display:flex;align-items:center;gap:6px;font-size:.82rem;color:#C9D6E6}
+.top select{background:var(--bar2);color:#fff;border:1px solid #3A5F87;border-radius:4px;padding:4px 8px}
+.top .clk{font-family:var(--mono);font-size:.85rem;color:#C9D6E6}
+.top a{color:#fff;font-size:.82rem;text-decoration:none;border:1px solid #3A5F87;border-radius:4px;padding:4px 10px}
+.top a:hover{background:var(--bar2)}
+.acts{background:#fff;border-bottom:1px solid var(--line);display:flex;overflow-x:auto;padding:0 8px}
+.acts button{border:0;background:none;padding:10px 14px;cursor:pointer;color:var(--muted);font-weight:600;border-bottom:3px solid transparent;white-space:nowrap}
+.acts button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue)}
+.acts button:hover{color:var(--ink);background:var(--panel2)}
+.main{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:0}
+@media (max-width:820px){.main{grid-template-columns:1fr}.rail{max-height:260px}}
+.rail{background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;overflow:auto}
+.rail-h{padding:10px 12px;border-bottom:1px solid var(--line2);display:grid;gap:8px;position:sticky;top:0;background:#fff;z-index:1}
+.rail-h b{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.pt{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:9px 12px;border:0;border-bottom:1px solid var(--line2);background:none;text-align:left;cursor:pointer;width:100%}
+.pt:hover{background:var(--panel2)}
+.pt[aria-current="true"]{background:var(--blue-l);box-shadow:inset 3px 0 0 var(--blue)}
+.pt b{font-weight:600}
+.pt small{color:var(--muted);grid-column:1/-1;font-size:.78rem}
+.view{padding:14px 16px 24px;display:grid;gap:14px;align-content:start;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:4px;min-width:0}
+.ph{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--line2);background:var(--panel2)}
+.ph h2,.ph h3{font-size:.92rem}
+.pb{padding:12px;display:grid;gap:10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.btn{border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:3px;padding:6px 12px;cursor:pointer;font-weight:600;font-size:.85rem}
+.btn:hover{background:var(--blue-d)}
+.btn.sec{background:#fff;color:var(--blue)}
+.btn.sec:hover{background:var(--blue-l)}
+.btn.warn{background:var(--sun);border-color:#E0B800;color:var(--ink)}
+.btn.sm{padding:3px 8px;font-size:.78rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,.acts button:focus-visible,.pt:focus-visible,.bed:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+input,select,textarea{border:1px solid var(--line);border-radius:3px;padding:6px 8px;background:#fff;min-width:0;width:100%}
+textarea{min-height:120px;resize:vertical;font-family:var(--font)}
+.f{display:grid;gap:3px;font-size:.78rem;color:var(--muted);font-weight:600;min-width:0}
+.fr{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--panel2);font-weight:700}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono)}
+.tw{overflow-x:auto}
+.pill{display:inline-block;border-radius:3px;padding:1px 7px;font-size:.72rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border:1px solid var(--line);background:#fff;color:var(--muted);white-space:nowrap}
+.s-occ{background:var(--blue);color:#fff;border-color:var(--blue)}
+.s-tri{background:var(--sun);color:var(--ink);border-color:#E0B800}
+.s-dis{background:var(--blue-l);color:var(--blue);border-color:var(--blue)}
+.s-cln{background:#fff;color:var(--muted);border-style:dashed}
+.s-emp{background:#fff;color:#8796A8}
+.flag{color:var(--sun-d);font-weight:700}
+.flag::before{content:"▲ ";font-size:.7rem}
+.alert{background:var(--sun-l);border:1px solid #E0B800;border-left:5px solid var(--sun);border-radius:3px;padding:10px 12px;display:grid;gap:6px}
+.alert b{color:var(--ink)}
+.ok{background:var(--blue-l);border:1px solid var(--blue);border-left:5px solid var(--blue);border-radius:3px;padding:10px 12px}
+.banner{background:#fff;border:1px solid var(--line);border-left:6px solid var(--bar);border-radius:3px;display:flex;flex-wrap:wrap;gap:8px 26px;align-items:center;padding:8px 14px}
+.banner .nm{font-size:1.05rem;font-weight:700}
+.banner small{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.banner .al{background:var(--sun);padding:3px 8px;border-radius:3px}
+.banner .al small{color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:4px;padding:10px 12px;display:grid;gap:2px}
+.kpi b{font-size:1.5rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi span{font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.kpi.y{border-top:3px solid var(--sun)}.kpi.b{border-top:3px solid var(--blue)}
+.beds{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.bed{border:1px solid var(--line);border-radius:4px;background:#fff;padding:8px 10px;display:grid;gap:4px;text-align:left;cursor:pointer;min-height:86px;align-content:start}
+.bed:hover{border-color:var(--blue)}
+.bed .bid{font-family:var(--mono);font-weight:700;font-size:.8rem}
+.bed .who{font-weight:600;font-size:.85rem}
+.bed small{color:var(--muted);font-size:.75rem}
+.bed.occ{border-left:4px solid var(--blue)}.bed.tri{border-left:4px solid var(--sun)}.bed.dis{border-left:4px dashed var(--blue)}.bed.cln{background:repeating-linear-gradient(-45deg,#fff 0 8px,#F4F6F9 8px 16px)}
+.sub{display:flex;gap:2px;border-bottom:1px solid var(--line2);padding:0 8px;background:#fff;overflow-x:auto}
+.sub button{border:0;background:none;padding:8px 12px;cursor:pointer;color:var(--muted);font-weight:600;border-bottom:2px solid transparent;font-size:.85rem;white-space:nowrap}
+.sub button[aria-selected="true"]{color:var(--blue);border-bottom-color:var(--blue)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:3px;padding:3px 8px;background:#fff;font-size:.82rem}
+.chip.al{background:var(--sun-l);border-color:#E0B800}
+.chip button{border:0;background:none;cursor:pointer;color:var(--muted);padding:0 2px}
+.cat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cat .grp{border:1px solid var(--line2);border-radius:4px;padding:8px 10px;display:grid;gap:4px;align-content:start}
+.cat .grp b{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.cat label{display:flex;gap:6px;align-items:center;font-size:.85rem;cursor:pointer}
+.cat input{width:auto}
+.scan{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.step{border:1px solid var(--line);border-radius:4px;padding:10px;display:grid;gap:8px;background:#fff}
+.step.done{border-color:var(--blue);background:var(--blue-l)}
+.rights{display:grid;gap:4px}
+.rights div{display:flex;gap:8px;align-items:center;font-size:.88rem}
+.rights i{font-style:normal;width:20px;height:20px;border-radius:3px;display:grid;place-items:center;font-size:.75rem;border:1px solid var(--line);flex:none}
+.rights .y i{background:var(--blue);color:#fff;border-color:var(--blue)}
+.rights .n i{background:var(--sun);border-color:#E0B800}
+.band{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:20px;padding:6px 16px;background:#fff;width:fit-content;max-width:100%;overflow:hidden}
+.band .bt{font-size:.78rem;line-height:1.3}
+.band svg{flex:none}
+.labels{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.label{border:1px dashed var(--line);border-radius:3px;padding:6px 8px;font-size:.75rem;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center}
+.label svg{grid-row:span 2}
+.orgrid{display:grid;grid-template-columns:70px repeat(10,minmax(48px,1fr));min-width:640px;font-size:.75rem}
+.orgrid .hd{color:var(--muted);font-weight:700;padding:4px;border-bottom:1px solid var(--line2);text-align:center}
+.orgrid .rn{font-weight:700;padding:8px 4px;border-bottom:1px solid var(--line2);font-family:var(--mono)}
+.orgrid .ln{grid-column:2/-1;position:relative;border-bottom:1px solid var(--line2);height:44px;background:repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),var(--line2) calc(10% - 1px) 10%)}
+.case{position:absolute;top:5px;bottom:5px;background:var(--blue);color:#fff;border-radius:3px;padding:2px 6px;font-size:.72rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;cursor:pointer;border:0;text-align:left}
+.case.sel{background:var(--sun);color:var(--ink);outline:2px solid var(--bar)}
+.cal{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:8px;min-width:680px}
+.day{border:1px solid var(--line);border-radius:4px;background:#fff;min-height:200px}
+.day h3{font-size:.8rem;padding:6px 8px;border-bottom:1px solid var(--line2);background:var(--panel2)}
+.appt{margin:6px;border-left:4px solid var(--blue);background:var(--blue-l);padding:4px 6px;border-radius:2px;font-size:.76rem;display:grid}
+.appt.rec{border-left-style:dashed}
+.appt.sp1{border-left-color:#1F5FAD}.appt.sp2{border-left-color:#5AAEFF}.appt.sp3{border-left-color:#17324F}.appt.sp4{border-left-color:#E0B800;background:var(--sun-l)}.appt.sp5{border-left-color:#8FB4E0}
+.phone{width:min(380px,100%);border:10px solid #1B2A3A;border-radius:34px;background:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18);justify-self:center}
+.phone.tab{width:min(640px,100%);border-radius:22px}
+.phone .ptop{background:var(--bar);color:#fff;padding:10px 14px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.phone .pbody{padding:12px;display:grid;gap:10px;max-height:560px;overflow:auto}
+.mcard{border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:4px;background:#fff;text-align:left;width:100%;cursor:pointer}
+.thumbs{display:flex;flex-wrap:wrap;gap:6px}
+.thumbs img{width:72px;height:72px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.modal{position:fixed;inset:0;background:rgba(23,50,79,.45);display:grid;place-items:center;padding:16px;z-index:50}
+.modal>div{background:#fff;border:1px solid var(--line);border-top:5px solid var(--blue);border-radius:4px;width:min(520px,100%);max-height:90vh;overflow:auto}
+.foot{background:#fff;border-top:1px solid var(--line);padding:8px 16px;font-size:.78rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+.muted{color:var(--muted)}
+.spark{width:100%;height:150px}
+.toastw{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--bar);color:#fff;padding:10px 14px;border-radius:4px;border-left:5px solid var(--sun);box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:calc(100% - 32px)}
+
+.modesw{display:flex;gap:2px;background:var(--bar2);border-radius:999px;padding:3px}
+.modesw button{border:0;background:none;color:#C9D6E6;font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:999px;cursor:pointer}
+.modesw button[aria-pressed="true"]{background:#fff;color:var(--bar)}
+.modesw button:focus-visible{outline:2px solid var(--sun);outline-offset:1px}
+.tip{display:flex;gap:12px;align-items:flex-start;background:var(--sun-l);border:1px solid #E0B800;border-radius:4px;padding:10px 14px}
+.tip .ti{font-size:1.7rem;line-height:1}
+.tip b{display:block;font-size:1rem}
+.missions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.mis{border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:#fff;font-weight:600;font-size:.85rem}
+.mis.done{background:var(--sun);border-color:#E0B800}
+/* Kids mode (blue) */
+:root[data-mode="kid"]{--bg:#0F3C99;--bar:#0A2A6B;--bar2:#1756C2;--line:#B9D3F5;--line2:#DCE9FB;--panel2:#EEF5FF}
+:root[data-mode="kid"] body{background:radial-gradient(circle at 15% 0%,#1A63DB 0,transparent 45%),#0F3C99;background-color:#0F3C99;font-size:15px}
+:root[data-mode="kid"] .brand{font-family:"Baloo 2",var(--font);font-size:1.3rem}
+:root[data-mode="kid"] h2,:root[data-mode="kid"] h3,:root[data-mode="kid"] .tip b{font-family:"Baloo 2",var(--font);font-weight:700}
+:root[data-mode="kid"] h2{font-size:1.25rem}
+:root[data-mode="kid"] .acts{background:#0A2A6B;border-bottom:0;gap:4px;padding:6px 8px}
+:root[data-mode="kid"] .acts button{color:#BCD6FF;border-radius:999px;border-bottom:0;padding:8px 16px;font-size:.98rem}
+:root[data-mode="kid"] .acts button[aria-selected="true"]{background:var(--sun);color:#0A2A6B}
+:root[data-mode="kid"] .acts button:hover{background:#1756C2;color:#fff}
+:root[data-mode="kid"] .modesw button[aria-pressed="true"]{background:var(--sun);color:#0A2A6B}
+:root[data-mode="kid"] .rail{margin:12px 0 12px 12px;border-radius:14px;border:0}
+:root[data-mode="kid"] .panel,:root[data-mode="kid"] .kpi,:root[data-mode="kid"] .bed,:root[data-mode="kid"] .banner,:root[data-mode="kid"] .tip,:root[data-mode="kid"] .step{border-radius:14px}
+:root[data-mode="kid"] .ph{border-radius:14px 14px 0 0}
+:root[data-mode="kid"] .btn{border-radius:999px;padding:8px 16px;font-size:.92rem}
+:root[data-mode="kid"] .btn.sm{padding:5px 12px}
+:root[data-mode="kid"] .bed{min-height:100px}
+:root[data-mode="kid"] .banner{border-left-color:var(--sun)}
+:root[data-mode="kid"] .kpi b{font-family:"Baloo 2",var(--font);color:#1F5FAD;font-size:1.7rem}
+:root[data-mode="kid"] .foot{background:#0A2A6B;color:#BCD6FF;border-top:0}
+:root[data-mode="kid"] .missions-panel{background:#fff;border-radius:14px;padding:10px 14px;display:grid;gap:8px}
+.main.wide{grid-template-columns:1fr}.main.wide .rail{display:none}
+.acct{background:var(--sun);color:#0A2A6B;border:0;border-radius:999px;padding:4px 12px;font-weight:700;cursor:pointer;font-size:.82rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.sp{flex:1}.hh{font-size:1.02rem}
+.acctbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.av{font-size:2.1rem;line-height:1}
+.acctbar>div{display:grid;gap:3px;min-width:170px}
+.xpbar{height:8px;background:var(--line2);border-radius:99px;overflow:hidden;width:200px;max-width:100%}.xpbar i{display:block;height:100%;background:var(--sun);border-right:2px solid #E0B800}
+.acctbar .hbs{display:flex;flex-wrap:wrap;gap:4px;min-width:0}.hb{font-size:1.25rem;filter:grayscale(1);opacity:.3}.hb.on{filter:none;opacity:1}
+.avs{display:flex;flex-wrap:wrap;gap:6px}.avs label,.wards label,.rolegrid label{cursor:pointer;position:relative}
+.avs input,.rolegrid input,.wards input{position:absolute;opacity:0;width:1px;height:1px}
+.avs span{display:grid;place-items:center;width:44px;height:44px;border:2px solid var(--line);border-radius:10px;font-size:1.5rem;background:#fff}
+.avs input:checked+span{border-color:var(--blue);box-shadow:0 0 0 3px var(--sun)}
+.avs input:focus-visible+span,.rolegrid input:focus-visible+span,.wards input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
+.wards{display:flex;flex-wrap:wrap;gap:6px}.wards span{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:#fff;font-weight:600;font-size:.85rem;color:var(--ink)}.wards input:checked+span{background:var(--blue);color:#fff;border-color:var(--blue)}
+.rolegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.rolegrid span{display:grid;gap:2px;border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:#fff;height:100%;color:var(--ink)}.rolegrid small{color:var(--muted);font-size:.72rem;font-weight:400}
+.rolegrid input:checked+span{border-color:var(--blue);background:var(--blue-l);box-shadow:inset 0 0 0 1px var(--blue)}
+.hsign{display:flex;align-items:center;gap:14px;border-radius:8px;padding:14px 18px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.15)}
+.hsign .hl{font-size:2.3rem;line-height:1;background:rgba(255,255,255,.92);border-radius:12px;width:56px;height:56px;display:grid;place-items:center;flex:none}
+.hsign b{display:block;font-size:1.25rem}.hsign span{display:block}.hsign small{display:block;opacity:.85;font-size:.75rem;margin-top:2px}
+.keycard{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}@media(max-width:560px){.keycard{grid-template-columns:1fr}}
+.kq{background:#fff;padding:6px;border:1px solid var(--line);border-radius:6px;justify-self:center;line-height:0}
+.kcode{font-family:var(--mono);font-size:.72rem;min-height:0;word-break:break-all}
+.badge{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}.badge .hsign{border-radius:0}
+.heroes{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.hero{display:grid;justify-items:center;gap:4px;border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;cursor:pointer}.hero span{font-size:2.2rem}.hero[aria-current="true"]{border-color:var(--blue);box-shadow:0 0 0 3px var(--sun)}
+.hero:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.hl2{margin:0;padding-left:4px;list-style:none;display:grid;gap:4px}
+@media print{body *{visibility:hidden!important}#printarea,#printarea *{visibility:visible!important}#printarea{position:absolute;left:0;top:0;width:100%}.label{break-inside:avoid}}
+</style>
+
+<div class="app">
+ <header class="top">
+  <div class="brand"><span class="lg">+</span>Little Hero Workstation</div>
+  <div class="modesw" role="group" aria-label="Mode"><button data-a="mode" data-m="kid">🔵 Kids</button><button data-a="mode" data-m="pro">⚪ Advanced</button></div>
+  <label>Role <select id="role"><option>Nurse</option><option>Doctor</option><option>Surgeon</option><option>Administrator</option></select></label>
+  <span class="sp"></span>
+  <button class="acct" id="acctBtn" data-h="acctbtn">👤 Sign in</button>
+  <span class="clk" id="clk"></span>
+  <a href="index.html">Play the game</a><a href="pitch.html">Pitch</a><a href="camp.html">Camp HQ</a><a href="roblox.html">Roblox</a><a href="community.html">Community</a><a href="admin.html">🔒 Admin</a>
+ </header>
+ <nav class="acts" id="acts" role="tablist" aria-label="Activities"></nav>
+ <div class="main">
+  <aside class="rail" aria-label="Patient list">
+   <div class="rail-h"><b>My patients</b><input id="q" placeholder="Search name or MRN"><button class="btn" data-a="checkin">+ Check in patient</button></div>
+   <div id="plist"></div>
+  </aside>
+  <main class="view" id="view"></main>
+ </div>
+ <footer class="foot"><span>Training simulation with fictional patients. Not for real patient care.</span><span>Data stays on this device · Little Hero Health</span></footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const hm=d=>pad(d.getHours())+":"+pad(d.getMinutes());
+const ago=(m)=>{const d=new Date();d.setMinutes(d.getMinutes()-m);return d.toISOString();};
+const tOf=iso=>hm(new Date(iso));
+const mins=iso=>Math.max(0,Math.round((Date.now()-new Date(iso))/60000));
+const KIDACTS={board:"🛏️ Beds",chart:"📋 Chart",orders:"🧪 Orders",mar:"💊 Medicine",surgery:"🩺 Surgery",schedule:"📅 Clinic",mobile:"📱 Phone",hospital:"🏥 My Hospital",join:"🔑 Join"};
+const URG=["","Right now!","Very urgent","Urgent","Can wait a bit","Can wait"];
+const K=()=>ST.mode==="kid";const L=(pro,kid)=>K()?kid:pro;const URGL=e=>K()?URG[e]:"ESI "+e;
+const TIPS={board:["🛏️","Run the hospital beds","Patients in yellow are waiting. Tap “Give a bed”, then tap a bed to see the patient or send them home."],
+ chart:["📋","Read the patient's chart","Pick a patient on the left. Use the tabs to check vital signs, write a note, or add an allergy."],
+ orders:["🧪","Order tests and medicine","Tick what the patient needs, then tap “Send orders”. If a yellow warning pops up, stop and read it!"],
+ mar:["💊","Give medicine safely","Step 1: scan the wristband. Step 2: scan the medicine. Only give it when all five checks are blue."],
+ surgery:["🩺","Run an operation","Tap a case on the timeline. Count the tools before and after surgery. The numbers must match!"],
+ schedule:["📅","Run the clinic","Check in visitors as they arrive, then book new visits on the calendar."],
+ mobile:["📱","Doctors on the go","Tap a patient to see their info on a phone or tablet, then save a quick note."],
+ hospital:["🏥","Build your own hospital","Name it, pick a logo and wards, then make keys so friends can join as doctors, nurses and more."],
+ join:["🔑","Join a hospital","Paste a key from a hospital owner. You get a staff badge, and you can clock in for shifts to earn XP."]};
+const MISS=[["checkin","Check in a new patient"],["bed","Give someone a bed"],["vitals","Take vital signs"],["order","Send an order"],["med","Give a medicine safely"],["home","Send a patient home"]];
+function mission(k){if(ST.done.has(k))return;ST.done.add(k);const m=MISS.find(x=>x[0]===k);setTimeout(()=>toast(ST.done.size===MISS.length?"🏆 All missions done! You ran the hospital!":"⭐ Mission done: "+m[1]),300);}
+function missionsHTML(){return `<div class="missions-panel"><b>⭐ Your missions · ${ST.done.size} of ${MISS.length}</b><div class="missions">${MISS.map(([k,l])=>`<span class="mis ${ST.done.has(k)?"done":""}">${ST.done.has(k)?"⭐":"☆"} ${l}</span>`).join("")}</div></div>`;}
+function setMode(m){ST.mode=m;document.documentElement.setAttribute("data-mode",m);document.querySelectorAll(".modesw button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===m));try{localStorage.setItem("lhh-ws-mode",m)}catch(e){}}
+const ACTS=[["board","Status Board"],["chart","Chart"],["orders","Orders"],["mar","Med Admin"],["surgery","Surgery"],["schedule","Schedule"],["mobile","Mobile"],["hospital","Hospital Admin"],["join","Join Hospital"]];
+const ROLEHOME={Nurse:"board",Doctor:"chart",Surgeon:"surgery",Administrator:"schedule"};
+const MEDS={
+ acet:{name:"Acetaminophen",dose:"15 mg/kg",route:"PO",cls:"analgesic"},
+ ibu:{name:"Ibuprofen",dose:"10 mg/kg",route:"PO",cls:"nsaid"},
+ amox:{name:"Amoxicillin",dose:"25 mg/kg",route:"PO",cls:"penicillin"},
+ ceph:{name:"Cefazolin",dose:"30 mg/kg",route:"IV",cls:"cephalosporin"},
+ ond:{name:"Ondansetron",dose:"0.15 mg/kg",route:"IV",cls:"antiemetic"},
+ alb:{name:"Albuterol",dose:"2.5 mg",route:"Neb",cls:"bronchodilator"},
+ warf:{name:"Warfarin",dose:"2 mg",route:"PO",cls:"anticoagulant"},
+ asa:{name:"Aspirin",dose:"81 mg",route:"PO",cls:"nsaid-asa"},
+ epi:{name:"Epinephrine",dose:"0.01 mg/kg",route:"IM",cls:"epinephrine"},
+ ins:{name:"Insulin (regular)",dose:"per scale",route:"SubQ",cls:"insulin"}};
+const RULES=[
+ [["warf"],["ibu","asa"],"Bleeding risk: anticoagulant with an NSAID or aspirin."],
+ [["ibu"],["asa"],"Two NSAIDs together: stomach bleeding risk, and ibuprofen can block aspirin's effect."],
+ [["asa"],["__child"],"Aspirin is generally avoided in children and teens (Reye's syndrome risk)."]];
+const ALLERGYCLS={Penicillin:["penicillin"],Cephalosporins:["cephalosporin"],NSAIDs:["nsaid","nsaid-asa"],Aspirin:["nsaid-asa"]};
+const CATALOG={Labs:["CBC","Basic metabolic panel","Blood culture","Rapid strep test","Urinalysis","Blood glucose"],Imaging:["X-ray chest","X-ray arm","X-ray ankle","CT head","MRI brain","Ultrasound abdomen"],Therapy:["Physical therapy evaluation","Occupational therapy evaluation","Respiratory therapy"],Blood:["Type and screen","Transfuse 1 unit red blood cells"]};
+const SPECS=[["Pediatrics","sp1"],["Cardiology","sp3"],["Orthopedics","sp2"],["Physical Therapy","sp5"],["Dental","sp4"]];
+let uid=100;
+function mkPt(o){const id="p"+(uid++);return Object.assign({id,mrn:"LHH-"+(4200+uid),allergies:[],problems:[],vitals:[],notes:[],orders:[],mar:[],exam:{},photos:[],state:"waiting",bed:null,arrived:ago(10)},o,{id});}
+const ST={mode:"kid",done:new Set(),act:"board",sub:"summary",sel:null,role:"Nurse",q:"",
+ beds:[...["ER 1","ER 2","ER 3","ER 4","ER 5","ER 6"].map(id=>({id,unit:"Emergency"})),...["2W-201","2W-202","2W-203","2W-204","2W-205","2W-206","2W-207","2W-208"].map(id=>({id,unit:"2 West (Pediatrics)"}))].map(b=>Object.assign(b,{pt:null,st:"emp"})),
+ pts:[],cases:[],appts:[],selCase:null,mob:"phone",mobPt:null,scan:{band:null,med:null},msg:""};
+function seed(){
+ const P=[
+  ["Avery Hart","2017-03-14","Broken arm after bike fall",3,["Penicillin"],["Closed fracture, left forearm"],"ER 1","occ"],
+  ["Jordan Lee","2012-07-02","Wheezing, asthma flare",2,[],["Asthma, moderate persistent"],"ER 2","occ"],
+  ["Maya Chen","2019-11-20","Fever and sore throat",4,["NSAIDs"],["Pharyngitis"],"ER 4","dis"],
+  ["Noah Patel","2009-05-09","Pain right lower abdomen",2,[],["Suspected appendicitis"],"2W-201","occ"],
+  ["Lily Brooks","2015-01-30","Peanut reaction, rash",2,["Peanuts"],["Food allergy"],"2W-203","occ"],
+  ["Eli Carter","2011-09-12","Concussion check after football",3,[],["Head injury, minor"],"2W-205","occ"],
+  ["Sam Rivera","2016-06-06","Ear pain",5,[],[],null,"waiting"],
+  ["Zoe Kim","2010-02-17","Twisted ankle at soccer",4,["Cephalosporins"],[],null,"waiting"],
+  ["Theo Grant","1958-08-22","Chest discomfort",2,["Aspirin"],["Atrial fibrillation"],null,"waiting"]];
+ P.forEach(([name,dob,reason,esi,al,pr,bed,st],i)=>{const p=mkPt({name,dob,reason,esi,allergies:al,problems:pr,arrived:ago(15+i*12)});
+  if(bed){const b=ST.beds.find(x=>x.id===bed);b.pt=p.id;b.st=st;p.bed=bed;p.state=st==="dis"?"discharging":"admitted";
+   p.vitals.push({t:ago(60),bp:"112/70",hr:92+i*3,temp:98.9+i*.3,rr:18+i,spo2:98-i%3,by:"RN Training"});
+   p.notes.push({t:ago(50),by:"Dr. Training",text:"Patient seen and examined. Plan discussed with family."});}
+  ST.pts.push(p);});
+ const n=ST.pts.find(p=>p.name==="Noah Patel");n.orders.push({id:1,t:ago(40),kind:"Lab",item:"CBC",st:"Resulted"},{id:2,t:ago(35),kind:"Imaging",item:"Ultrasound abdomen",st:"In progress"});
+ const a=ST.pts.find(p=>p.name==="Avery Hart");addMed(a,"acet",ago(20));
+ const j=ST.pts.find(p=>p.name==="Jordan Lee");addMed(j,"alb",ago(5));
+ ST.beds.find(b=>b.id==="ER 5").st="cln";
+ ST.cases=[{id:1,or:"OR 1",start:8,dur:1.5,pt:n.id,proc:"Laparoscopic appendectomy",surgeon:"Dr. Training",st:"Scheduled",inst:defInst(),anes:[],postop:""},
+  {id:2,or:"OR 2",start:9.5,dur:2,pt:a.id,proc:"Forearm fracture reduction",surgeon:"Dr. Ortho",st:"Scheduled",inst:defInst(),anes:[],postop:""},
+  {id:3,or:"OR 3",start:13,dur:1,pt:null,proc:"Tonsillectomy (block)",surgeon:"Dr. ENT",st:"Scheduled",inst:defInst(),anes:[],postop:""}];
+ ST.selCase=1;
+ const names=["Avery Hart","Mia Torres","Kai Nguyen","Ruby Allen","Owen Price","Ivy Scott","Leo Diaz"];
+ [[0,"08:30",0,"Mia Torres",1],[0,"10:00",2,"Avery Hart",0],[1,"09:00",3,"Kai Nguyen",1],[1,"14:00",1,"Theo Grant",0],[2,"11:30",4,"Ruby Allen",0],[3,"08:00",0,"Owen Price",0],[3,"15:30",3,"Ivy Scott",1],[4,"13:00",2,"Leo Diaz",0]]
+ .forEach(([day,time,sp,who,rec],i)=>ST.appts.push({id:i+1,day,time,sp,who,rec:!!rec,st:"Scheduled"}));
+ ST.sel=a.id;}
+function defInst(){return ["Scalpel handle","Forceps","Retractors","Clamps","Scissors","Needle holder","Sponges (4x4)","Suction tip"].map(n=>({n,pre:"",post:""}));}
+function addMed(p,key,due){const m=MEDS[key];const id=Date.now()+Math.random();p.orders.push({id,t:new Date().toISOString(),kind:"Medication",item:m.name+" "+m.dose+" "+m.route,st:"Active",med:key});p.mar.push({oid:id,key,due:due||new Date().toISOString(),given:null});}
+const pt=id=>ST.pts.find(p=>p.id===id);
+const cur=()=>pt(ST.sel);
+const age=dob=>{const d=new Date(dob),n=new Date();let a=n.getFullYear()-d.getFullYear();if(n<new Date(n.getFullYear(),d.getMonth(),d.getDate()))a--;return a;};
+function toast(t){const e=document.createElement("div");e.className="toastw";e.setAttribute("role","status");e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2600);}
+function banner(p){if(!p)return `<div class="panel pb muted">Select a patient from the list.</div>`;const al=p.allergies.length;return `<div class="banner" aria-label="Patient banner"><div><span class="nm">${esc(p.name)}</span><small>${age(p.dob)} y · DOB ${esc(p.dob)}</small></div><div><small>${L("MRN","Patient ID")}</small><b style="font-family:var(--mono)">${p.mrn}</b></div><div><small>Location</small><b>${p.bed||(p.state==="discharged"?"Discharged":"Waiting room")}</b></div><div><small>${L("Acuity","How urgent")}</small><b>${URGL(p.esi)}</b></div><div class="${al?"al":""}"><small>Allergies</small><b>${al?"⚠ "+esc(p.allergies.join(", ")):"No known allergies"}</b></div><div><small>Reason</small><b>${esc(p.reason)}</b></div></div>`;}
+/* ---------- Status board ---------- */
+function vBoard(){const c={occ:0,tri:0,dis:0,cln:0,emp:0};ST.beds.forEach(b=>c[b.st]++);const wait=ST.pts.filter(p=>p.state==="waiting").sort((a,b)=>a.esi-b.esi||new Date(a.arrived)-new Date(b.arrived));
+ const units=[...new Set(ST.beds.map(b=>b.unit))];const lbl={occ:"Occupied",tri:"Triage",dis:"Discharging",cln:"Cleaning",emp:"Empty"};
+ return `${K()?missionsHTML():""}<div class="kpis"><div class="kpi b"><b>${c.occ}</b><span>Occupied</span></div><div class="kpi y"><b>${wait.length}</b><span>${L("Waiting for triage","Waiting for a bed")}</span></div><div class="kpi"><b>${c.dis}</b><span>Discharging</span></div><div class="kpi"><b>${c.cln}</b><span>Being cleaned</span></div><div class="kpi"><b>${c.emp}</b><span>Empty beds</span></div><div class="kpi"><b>${ST.pts.filter(p=>p.state==="discharged").length}</b><span>Checked out today</span></div></div>
+ <div class="panel"><div class="ph"><h2>${L("Waiting for triage","Waiting for a bed")}</h2><button class="btn" data-a="checkin">+ Check in patient</button></div><div class="tw"><table><thead><tr><th>Patient</th><th>Reason</th><th>${L("ESI","How urgent")}</th><th class="n">Waiting</th><th>Allergies</th><th></th></tr></thead><tbody>
+ ${wait.map(p=>`<tr><td><b>${esc(p.name)}</b><br><span class="muted">${p.mrn}</span></td><td>${esc(p.reason)}</td><td><span class="pill ${p.esi<=2?"s-tri":""}">${URGL(p.esi)}</span></td><td class="n">${mins(p.arrived)} min</td><td>${p.allergies.length?`<span class="flag">${esc(p.allergies.join(", "))}</span>`:"NKA"}</td><td><button class="btn sm" data-a="assign" data-p="${p.id}">${L("Assign bed","Give a bed")}</button></td></tr>`).join("")||`<tr><td colspan="6" class="muted">No one waiting.</td></tr>`}</tbody></table></div></div>
+ ${units.map(u=>`<div class="panel"><div class="ph"><h2>${u}</h2><span class="muted">${ST.beds.filter(b=>b.unit===u&&b.st==="emp").length} empty</span></div><div class="pb"><div class="beds">${ST.beds.filter(b=>b.unit===u).map(b=>{const p=pt(b.pt);return `<button class="bed ${b.st}" data-a="bed" data-b="${b.id}"><span class="row" style="justify-content:space-between"><span class="bid">${b.id}</span><span class="pill s-${b.st}">${lbl[b.st]}</span></span>${p?`<span class="who">${esc(p.name)}</span><small>${esc(p.reason)}</small><small>${URGL(p.esi)} · ${mins(p.arrived)} min</small>`:`<small>${b.st==="cln"?"Tap when clean":"Available"}</small>`}</button>`}).join("")}</div></div></div>`).join("")}`;}
+function bedAction(id){const b=ST.beds.find(x=>x.id===id),p=pt(b.pt);
+ if(b.st==="emp"){const w=ST.pts.filter(x=>x.state==="waiting").sort((a,c)=>a.esi-c.esi);if(!w.length){toast("No patients waiting.");return;}
+  modal(`<div class="ph"><h2>Assign ${b.id}</h2></div><div class="pb"><label class="f">Patient<select id="m-p">${w.map(x=>`<option value="${x.id}">${esc(x.name)} · ESI ${x.esi} · ${esc(x.reason)}</option>`).join("")}</select></label><div class="row"><button class="btn" data-a="doassign" data-b="${b.id}">Assign</button><button class="btn sec" data-a="close">Cancel</button></div></div>`);}
+ else if(b.st==="occ"){modal(`<div class="ph"><h2>${b.id} · ${esc(p.name)}</h2></div><div class="pb"><p>${esc(p.reason)}</p><div class="row"><button class="btn" data-a="open" data-p="${p.id}">Open chart</button><button class="btn sec" data-a="startdc" data-b="${b.id}">${L("Start discharge","Get ready to go home")}</button><button class="btn sec" data-a="close">Close</button></div></div>`);}
+ else if(b.st==="dis"){modal(`<div class="ph"><h2>Check out ${esc(p.name)}</h2></div><div class="pb"><div class="alert"><b>Discharge checklist</b><label class="row"><input type="checkbox" id="dc1" style="width:auto"> Discharge instructions reviewed with family</label><label class="row"><input type="checkbox" id="dc2" style="width:auto"> Medicines and follow-up explained</label><label class="row"><input type="checkbox" id="dc3" style="width:auto"> Wristband removed</label></div><label class="f">Follow-up<select id="dcf"><option>Primary care in 1 week</option><option>Orthopedics in 2 weeks</option><option>Return if worse</option></select></label><div class="row"><button class="btn" data-a="checkout" data-b="${b.id}">${L("Complete check-out","Send home 🎉")}</button><button class="btn sec" data-a="close">Cancel</button></div><p class="muted" id="dcm"></p></div>`);}
+ else if(b.st==="cln"){b.st="emp";toast(b.id+" is clean and ready.");render();}}
+/* ---------- Chart ---------- */
+function vitFlags(v,a){const f={};const [s,d]=String(v.bp).split("/").map(Number);if(s&&(s>=140||s<90))f.bp=1;if(a>=18?(v.hr>100||v.hr<60):(v.hr>130||v.hr<60))f.hr=1;if(v.temp>=100.4)f.temp=1;if(v.spo2<94)f.spo2=1;if(a>=18?(v.rr>20||v.rr<12):(v.rr>30||v.rr<14))f.rr=1;return f;}
+function vChart(){const p=cur();if(!p)return banner(null);const S=ST.sub,a=age(p.dob);
+ const tabs=[["summary","Summary"],["vitals","Vital signs"],["notes","Progress notes"],["exam","Physical exam"]];
+ let body="";
+ if(S==="summary")body=`<div class="grid2"><div class="panel"><div class="ph"><h3>Problem list</h3></div><div class="pb"><div class="chips">${p.problems.map((x,i)=>`<span class="chip">${esc(x)}<button data-a="rmprob" data-i="${i}" aria-label="Remove ${esc(x)}">✕</button></span>`).join("")||`<span class="muted">No active problems.</span>`}</div><div class="row"><input id="newprob" placeholder="Add a problem"><button class="btn sm" data-a="addprob">Add</button></div></div></div>
+  <div class="panel"><div class="ph"><h3>Allergies</h3></div><div class="pb"><div class="chips">${p.allergies.map((x,i)=>`<span class="chip al">⚠ ${esc(x)}<button data-a="rmall" data-i="${i}" aria-label="Remove ${esc(x)}">✕</button></span>`).join("")||`<span class="muted">No known allergies.</span>`}</div><div class="row"><select id="newall"><option>Penicillin</option><option>Cephalosporins</option><option>NSAIDs</option><option>Aspirin</option><option>Peanuts</option><option>Latex</option></select><button class="btn sm" data-a="addall">Add</button></div></div></div>
+  <div class="panel"><div class="ph"><h3>Latest vitals</h3></div><div class="pb">${p.vitals.length?vtable(p.vitals.slice(-1),a):`<span class="muted">None recorded.</span>`}</div></div>
+  <div class="panel"><div class="ph"><h3>Active orders</h3></div><div class="pb">${p.orders.filter(o=>o.st!=="Resulted"&&o.st!=="Discontinued").map(o=>`<div>${esc(o.kind)}: ${esc(o.item)} <span class="pill">${o.st}</span></div>`).join("")||`<span class="muted">No active orders.</span>`}</div></div></div>`;
+ if(S==="vitals")body=`<div class="panel"><div class="ph"><h3>Record vital signs</h3></div><div class="pb"><div class="fr"><label class="f">BP (mmHg)<input id="v-bp" placeholder="110/70"></label><label class="f">Heart rate (/min)<input id="v-hr" type="number"></label><label class="f">Temp (°F)<input id="v-temp" type="number" step="0.1"></label><label class="f">Resp rate (/min)<input id="v-rr" type="number"></label><label class="f">SpO₂ (%)<input id="v-spo2" type="number"></label></div><div class="row"><button class="btn" data-a="addvit">File vitals</button><span class="muted">Out-of-range values are flagged ▲.</span></div></div></div>
+  <div class="panel"><div class="ph"><h3>Vital signs log</h3></div><div class="pb tw">${p.vitals.length?vtable(p.vitals.slice().reverse(),a):`<span class="muted">None recorded.</span>`}</div></div>`;
+ if(S==="notes")body=`<div class="panel"><div class="ph"><h3>New progress note</h3><div class="row"><button class="btn sm sec" data-a="soap">Insert SOAP template</button><button class="btn sm sec" data-a="dictate">🎙 Mock dictation</button></div></div><div class="pb"><textarea id="note" placeholder="Type the note…">${esc(ST.draft||"")}</textarea><div class="row"><button class="btn" data-a="signnote">Sign note</button><span class="muted">Mock dictation types a sample note. No microphone is used.</span></div></div></div>
+  <div class="panel"><div class="ph"><h3>Notes</h3></div><div class="pb">${p.notes.slice().reverse().map(n=>`<div style="border-bottom:1px solid var(--line2);padding-bottom:8px"><b>${esc(n.by)}</b> <span class="muted">· ${tOf(n.t)}</span><p style="white-space:pre-wrap">${esc(n.text)}</p></div>`).join("")||`<span class="muted">No notes yet.</span>`}</div></div>`;
+ if(S==="exam"){const sys=["General","HEENT","Neck","Lungs","Heart","Abdomen","Extremities","Skin","Neuro"];body=`<div class="panel"><div class="ph"><h3>Physical exam</h3><button class="btn sm" data-a="saveexam">Save exam</button></div><div class="pb tw"><table><thead><tr><th>System</th><th>Finding</th><th>Comment</th></tr></thead><tbody>${sys.map(s=>{const e=p.exam[s]||{};return `<tr><td><b>${s}</b></td><td><select data-ex="${s}"><option${e.f!=="Abnormal"&&e.f!=="Not examined"?" selected":""}>Normal</option><option${e.f==="Abnormal"?" selected":""}>Abnormal</option><option${e.f==="Not examined"?" selected":""}>Not examined</option></select></td><td><input data-exc="${s}" value="${esc(e.c||"")}"></td></tr>`}).join("")}</tbody></table></div></div>`;}
+ return `${banner(p)}<div class="panel"><div class="sub" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-a="sub" data-s="${k}" aria-selected="${S===k}">${l}</button>`).join("")}</div></div>${body}`;}
+function vtable(vs,a){return `<table><thead><tr><th>Time</th><th>BP</th><th class="n">HR</th><th class="n">Temp</th><th class="n">RR</th><th class="n">SpO₂</th><th>By</th></tr></thead><tbody>${vs.map(v=>{const f=vitFlags(v,a);return `<tr><td>${tOf(v.t)}</td><td class="${f.bp?"flag":""}">${esc(v.bp)}</td><td class="n ${f.hr?"flag":""}">${v.hr}</td><td class="n ${f.temp?"flag":""}">${Number(v.temp).toFixed(1)}</td><td class="n ${f.rr?"flag":""}">${v.rr}</td><td class="n ${f.spo2?"flag":""}">${v.spo2}%</td><td>${esc(v.by)}</td></tr>`}).join("")}</tbody></table>`;}
+/* ---------- Orders ---------- */
+function checks(p,keys){const out=[],active=p.orders.filter(o=>o.med&&o.st==="Active").map(o=>o.med),all=[...active,...keys],child=age(p.dob)<18;
+ keys.forEach(k=>{const c=MEDS[k].cls;p.allergies.forEach(al=>{if((ALLERGYCLS[al]||[]).includes(c))out.push(`Allergy: ${p.name} is allergic to ${al}. ${MEDS[k].name} may cause a reaction.`);});});
+ RULES.forEach(([a,b,msg])=>{const hasA=a.some(x=>all.includes(x)),hasB=b.some(x=>x==="__child"?child&&a.some(y=>keys.includes(y)):all.includes(x));if(hasA&&hasB&&(a.some(x=>keys.includes(x))||b.some(x=>keys.includes(x))))out.push("Interaction: "+msg);});
+ if(keys.some(k=>active.includes(k)))out.push("Duplicate: this medicine is already active.");
+ return [...new Set(out)];}
+function vOrders(){const p=cur();if(!p)return banner(null);
+ return `${banner(p)}<div class="panel"><div class="ph"><h2>Order entry</h2><span class="muted">Pick orders, then sign. Medicines are checked for allergies and interactions.</span></div><div class="pb"><div class="cat">${Object.entries(CATALOG).map(([g,items])=>`<div class="grp"><b>${g}</b>${items.map(i=>`<label><input type="checkbox" data-ord="${g}|${esc(i)}"> ${esc(i)}</label>`).join("")}</div>`).join("")}
+  <div class="grp"><b>Medications</b>${Object.entries(MEDS).map(([k,m])=>`<label><input type="checkbox" data-med="${k}"> ${m.name} <span class="muted">${m.dose} ${m.route}</span></label>`).join("")}</div></div>
+  <div id="ordalert"></div><div class="row"><button class="btn" data-a="sign">${L("Sign orders","Send orders")}</button></div></div></div>
+  <div class="panel"><div class="ph"><h3>Orders for ${esc(p.name)}</h3><span class="muted">Click a status to advance it</span></div><div class="pb tw"><table><thead><tr><th>Time</th><th>Type</th><th>Order</th><th>Status</th><th></th></tr></thead><tbody>${p.orders.slice().reverse().map(o=>`<tr><td>${tOf(o.t)}</td><td>${esc(o.kind)}</td><td>${esc(o.item)}${o.override?`<br><span class="flag">Override: ${esc(o.override)}</span>`:""}</td><td><button class="btn sm sec" data-a="adv" data-o="${o.id}">${o.st}</button></td><td>${o.st!=="Discontinued"?`<button class="btn sm sec" data-a="dcord" data-o="${o.id}">Discontinue</button>`:""}</td></tr>`).join("")||`<tr><td colspan="5" class="muted">No orders yet.</td></tr>`}</tbody></table></div></div>`;}
+function signOrders(override){const p=cur();const ords=[...document.querySelectorAll("[data-ord]:checked")].map(x=>x.dataset.ord.split("|")),meds=[...document.querySelectorAll("[data-med]:checked")].map(x=>x.dataset.med);
+ if(!ords.length&&!meds.length){toast("Pick at least one order.");return;}
+ const w=checks(p,meds);
+ if(w.length&&override===undefined){$("ordalert").innerHTML=`<div class="alert" role="alert"><b>⚠ Safety check: ${w.length} warning${w.length>1?"s":""}</b>${w.map(x=>`<div>${esc(x)}</div>`).join("")}<label class="f">Override reason (required to continue)<input id="ovr" placeholder="e.g. Benefits outweigh risk, discussed with pharmacist"></label><div class="row"><button class="btn warn" data-a="override">Override and sign</button><button class="btn sec" data-a="cancelord">Cancel these medicines</button></div></div>`;return;}
+ ords.forEach(([g,i])=>p.orders.push({id:Date.now()+Math.random(),t:new Date().toISOString(),kind:g==="Labs"?"Lab":g,item:i,st:"Ordered"}));
+ meds.forEach(k=>{addMed(p,k);if(override)p.orders[p.orders.length-1].override=override;});
+ toast(`${ords.length+meds.length} order${ords.length+meds.length>1?"s":""} signed for ${p.name}.`);mission("order");render();}
+/* ---------- Medication administration ---------- */
+function qrSVG(text,px){if(typeof qrcode==="undefined")return `<span class="qrph" style="display:inline-grid;place-items:center;width:${px}px;height:${px}px;border:1px dashed #8FA3B8;font-size:10px;color:#5A6B7E;background:#fff">QR</span>`;const q=qrcode(0,"M");q.addData(String(text));q.make();const n=q.getModuleCount(),m=2,s=n+m*2;let r="";for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(q.isDark(y,x))r+=`M${x+m} ${y+m}h1v1h-1z`;return `<svg viewBox="0 0 ${s} ${s}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="${s}" height="${s}" fill="#fff"/><path d="${r}" fill="#000"/></svg>`;}
+function vMar(){const p=cur();if(!p)return banner(null);const sc=ST.scan,due=p.mar.filter(m=>!m.given);
+ const bp=sc.band?pt(sc.band):null,med=sc.med?p.mar.find(m=>m.oid===sc.med.oid):null,pk=sc.med;
+ let rights="";if(bp&&pk){const rp=bp.id===p.id,rm=!!med&&pk.key===med.key,dmin=med?Math.abs(Date.now()-new Date(med.due))/60000:999;
+  const R=[["Right patient",rp],["Right medication",rm],["Right dose",rm&&pk.dose===MEDS[med.key].dose],["Right route",rm&&pk.route===MEDS[med.key].route],["Right time",rm&&dmin<=60]];sc.ok=R.every(x=>x[1]);
+  rights=`<div class="rights">${R.map(([l,v])=>`<div class="${v?"y":"n"}"><i>${v?"✓":"!"}</i>${l}${v?"":` <span class="flag">${l==="Right time"&&rm?"Outside the 1-hour window":"Mismatch"}</span>`}</div>`).join("")}</div>${sc.ok?`<div class="ok">All Five Rights confirmed. You can document the dose.</div>`:`<div class="alert"><b>Stop. Do not give this dose.</b>Recheck the wristband and the medicine packet.</div>`}`;}
+ const tray=[...due.map(m=>({oid:m.oid,key:m.key,dose:MEDS[m.key].dose,route:MEDS[m.key].route,lab:MEDS[m.key].name})),{oid:"x1",key:"ibu",dose:"10 mg/kg",route:"PO",lab:"Ibuprofen"},{oid:"x2",key:"acet",dose:"30 mg/kg",route:"PO",lab:"Acetaminophen (wrong dose)"}];
+ const others=ST.pts.filter(x=>x.state!=="discharged"&&x.id!==p.id).slice(0,2);
+ return `${banner(p)}<div class="grid2"><div class="panel"><div class="ph"><h2>${L("QR medication administration","Scan and give medicine")}</h2><button class="btn sm sec" data-a="resetscan">Reset scan</button></div><div class="pb"><div class="scan">
+  <div class="step ${bp?"done":""}"><b>1 · Scan wristband</b><div class="row"><button class="btn sm" data-a="scanband" data-p="${p.id}">Scan ${esc(p.name.split(" ")[0])}'s band</button>${others.map(o=>`<button class="btn sm sec" data-a="scanband" data-p="${o.id}">Scan ${esc(o.name.split(" ")[0])}'s band</button>`).join("")}</div><label class="f">Or type the QR code<input id="bandtxt" placeholder="${p.mrn}"></label>${bp?`<span>Scanned: <b>${esc(bp.name)}</b> · ${bp.mrn}</span>`:""}</div>
+  <div class="step ${pk?"done":""}"><b>2 · Scan medicine packet</b><div class="row">${tray.map((t,i)=>`<button class="btn sm sec" data-a="scanmed" data-i="${i}">${esc(t.lab)}</button>`).join("")}</div>${pk?`<span>Scanned: <b>${esc(pk.lab)}</b> ${pk.dose} ${pk.route}</span>`:""}</div></div>
+  ${rights}<div class="row"><button class="btn" data-a="give" ${sc.ok?"":"disabled"}>${L("Document administration","Give the medicine ✓")}</button></div></div></div>
+  <div class="panel"><div class="ph"><h2>Medication schedule (MAR)</h2></div><div class="pb tw"><table><thead><tr><th>Medicine</th><th>Due</th><th>Status</th></tr></thead><tbody>${p.mar.map(m=>`<tr><td>${MEDS[m.key].name} ${MEDS[m.key].dose} ${MEDS[m.key].route}</td><td>${tOf(m.due)}</td><td>${m.given?`<span class="pill s-occ">Given ${tOf(m.given)}</span>`:`<span class="pill">Due</span>`}</td></tr>`).join("")||`<tr><td colspan="3" class="muted">No medicines ordered. Use Orders to add one.</td></tr>`}</tbody></table></div></div></div>
+  <div class="panel"><div class="ph"><h2>Wristband &amp; labels</h2><span class="row"><span class="muted">QR codes made from the patient ID at check-in. Scan them with any phone camera.</span>${window.self===window.top?`<button class="btn sm" data-a="print">🖨 Print wristband &amp; labels</button>`:""}</span></div><div class="pb" id="printarea"><div class="band">${qrSVG("LHH|PT|"+p.mrn+"|"+p.name+"|"+p.dob,76)}<div class="bt"><b>${esc(p.name)}</b><br>MRN ${p.mrn} · DOB ${esc(p.dob)}${p.allergies.length?`<br><span class="flag">ALLERGY: ${esc(p.allergies.join(", "))}</span>`:""}</div></div>
+  <div class="labels">${p.mar.map(m=>`<div class="label">${qrSVG("LHH|MED|"+p.mrn+"|"+MEDS[m.key].name+"|"+MEDS[m.key].dose+"|"+MEDS[m.key].route,64)}<b>${MEDS[m.key].name}</b><span>${MEDS[m.key].dose} ${MEDS[m.key].route} · ${esc(p.name)}</span></div>`).join("")}</div></div></div>`;}
+/* ---------- Surgery ---------- */
+function vSurgery(){const c=ST.cases.find(x=>x.id===ST.selCase);const hrs=[7,8,9,10,11,12,13,14,15,16];
+ const grid=`<div class="orgrid"><div class="hd"></div>${hrs.map(h=>`<div class="hd">${pad(h)}:00</div>`).join("")}${["OR 1","OR 2","OR 3"].map(or=>`<div class="rn">${or}</div><div class="ln">${ST.cases.filter(x=>x.or===or).map(x=>`<button class="case ${x.id===ST.selCase?"sel":""}" data-a="selcase" data-c="${x.id}" style="left:${(x.start-7)*10}%;width:${x.dur*10}%">${esc(x.proc)}</button>`).join("")}</div>`).join("")}</div>`;
+ let det="";if(c){const p=pt(c.pt);const mis=c.inst.filter(i=>i.pre!==""&&i.post!==""&&+i.pre!==+i.post),done=c.inst.every(i=>i.pre!==""&&i.post!=="");
+  const steps=["Scheduled","In room","Time-out","Surgery","Recovery","Done"];
+  det=`<div class="panel"><div class="ph"><h2>${esc(c.proc)} · ${c.or}</h2><span class="muted">${esc(p?p.name:"Unassigned")} · ${esc(c.surgeon)}</span></div><div class="pb"><div class="row">${steps.map(s=>`<button class="btn sm ${c.st===s?"":"sec"}" data-a="cst" data-s="${s}">${s}</button>`).join("")}</div></div></div>
+  <div class="grid2"><div class="panel"><div class="ph"><h3>Instrument count</h3>${done?(mis.length?`<span class="pill s-tri">Count mismatch</span>`:`<span class="pill s-occ">Count correct</span>`):`<span class="pill">Counting</span>`}</div><div class="pb tw"><table><thead><tr><th>Item</th><th class="n">Before</th><th class="n">After</th></tr></thead><tbody>${c.inst.map((i,k)=>`<tr><td>${i.n}</td><td><input type="number" min="0" data-ins="${k}|pre" value="${i.pre}" style="width:80px"></td><td><input type="number" min="0" data-ins="${k}|post" value="${i.post}" style="width:80px;${i.pre!==""&&i.post!==""&&+i.pre!==+i.post?"background:var(--sun-l);border-color:#E0B800":""}"></td></tr>`).join("")}</tbody></table>${mis.length?`<div class="alert"><b>Count does not match: ${mis.map(m=>m.n).join(", ")}</b>Do not close until the count is reconciled.</div>`:""}</div></div>
+  <div class="panel"><div class="ph"><h3>Anesthesia record</h3><button class="btn sm" data-a="anes">Log reading</button></div><div class="pb"><div class="fr"><label class="f">HR<input id="a-hr" type="number" value="88"></label><label class="f">BP<input id="a-bp" value="104/62"></label><label class="f">SpO₂<input id="a-sp" type="number" value="99"></label><label class="f">Sevoflurane %<input id="a-ag" type="number" step="0.1" value="2.0"></label></div>${spark(c.anes)}<div class="tw"><table><thead><tr><th>Time</th><th class="n">HR</th><th>BP</th><th class="n">SpO₂</th><th class="n">Agent %</th></tr></thead><tbody>${c.anes.slice().reverse().map(r=>`<tr><td>${r.t}</td><td class="n">${r.hr}</td><td>${esc(r.bp)}</td><td class="n ${r.sp<94?"flag":""}">${r.sp}</td><td class="n">${r.ag}</td></tr>`).join("")}</tbody></table></div></div></div></div>
+  <div class="panel"><div class="ph"><h3>Post-op recovery note</h3><button class="btn sm" data-a="postop">Save note</button></div><div class="pb"><textarea id="postop" placeholder="Procedure, findings, estimated blood loss, condition on arrival to recovery, pain plan…">${esc(c.postop)}</textarea></div></div>`;}
+ return `<div class="panel"><div class="ph"><h2>Operating room schedule · today</h2><button class="btn sm" data-a="newcase">+ Schedule case</button></div><div class="pb tw">${grid}</div></div>${det}`;}
+function spark(rs){if(rs.length<2)return `<p class="muted">Log two or more readings to see the trend.</p>`;const W=400,H=130,x=i=>20+i*(W-30)/(rs.length-1);const y=(v,lo,hi)=>H-14-(v-lo)/(hi-lo)*(H-28);
+ const line=(k,lo,hi,c)=>`<polyline fill="none" stroke="${c}" stroke-width="2" points="${rs.map((r,i)=>x(i)+","+y(+r[k],lo,hi)).join(" ")}"/>`+rs.map((r,i)=>`<circle cx="${x(i)}" cy="${y(+r[k],lo,hi)}" r="2.5" fill="${c}"/>`).join("");
+ return `<svg class="spark" viewBox="0 0 ${W} ${H}" role="img" aria-label="Heart rate and oxygen trend"><line x1="20" x2="${W-10}" y1="${H-14}" y2="${H-14}" stroke="#CCD5E0"/>${line("hr",40,160,"#1F5FAD")}${line("sp",80,100,"#E0B800")}<text x="22" y="12" font-size="10" fill="#1F5FAD">HR</text><text x="50" y="12" font-size="10" fill="#8A6A00">SpO₂</text></svg>`;}
+/* ---------- Schedule ---------- */
+function vSchedule(){const days=["Monday","Tuesday","Wednesday","Thursday","Friday"];const today=Math.min(4,Math.max(0,new Date().getDay()-1));
+ const q=ST.appts.filter(a=>a.day===today).sort((a,b)=>a.time.localeCompare(b.time));const nxt={Scheduled:"Checked in",["Checked in"]:"Roomed",Roomed:"Done",Done:"Done"};
+ return `<div class="panel"><div class="ph"><h2>Clinic check-in queue · ${days[today]}</h2></div><div class="pb tw"><table><thead><tr><th>Time</th><th>Patient</th><th>Specialty</th><th>Status</th><th></th></tr></thead><tbody>${q.map(a=>`<tr><td class="n" style="text-align:left">${a.time}</td><td><b>${esc(a.who)}</b></td><td>${SPECS[a.sp][0]}</td><td><span class="pill ${a.st==="Checked in"?"s-tri":a.st==="Roomed"?"s-occ":a.st==="Done"?"s-dis":""}">${a.st}</span></td><td>${a.st!=="Done"?`<button class="btn sm" data-a="appt" data-i="${a.id}">${a.st==="Scheduled"?"Check in":a.st==="Checked in"?"Room patient":"Check out"}</button>`:""}</td></tr>`).join("")||`<tr><td colspan="5" class="muted">No visits today. Add one below.</td></tr>`}</tbody></table></div></div>
+ <div class="panel"><div class="ph"><h2>Master calendar · this week</h2><span class="row">${SPECS.map(([n,c])=>`<span class="appt ${c}" style="margin:0;display:inline-block">${n}</span>`).join("")}</span></div><div class="pb tw"><div class="cal">${days.map((d,i)=>`<div class="day"><h3>${d}${i===today?" · today":""}</h3>${ST.appts.filter(a=>a.day===i).sort((a,b)=>a.time.localeCompare(b.time)).map(a=>`<div class="appt ${SPECS[a.sp][1]} ${a.rec?"rec":""}"><b>${a.time} · ${esc(a.who)}</b><span>${SPECS[a.sp][0]}${a.rec?" · repeats weekly":""}</span></div>`).join("")}</div>`).join("")}</div></div></div>
+ <div class="panel"><div class="ph"><h2>Book an appointment</h2></div><div class="pb"><div class="fr"><label class="f">Patient<input id="ap-who" placeholder="Patient name"></label><label class="f">Specialty<select id="ap-sp">${SPECS.map((s,i)=>`<option value="${i}">${s[0]}</option>`).join("")}</select></label><label class="f">Day<select id="ap-day">${days.map((d,i)=>`<option value="${i}">${d}</option>`).join("")}</select></label><label class="f">Time<input id="ap-time" type="time" value="09:00"></label><label class="f">Repeat<select id="ap-rec"><option value="0">One time</option><option value="1">Weekly</option></select></label></div><div class="row"><button class="btn" data-a="book">Book</button><span class="muted">Coordinate multi-specialty visits by booking each specialty on the same day.</span></div></div></div>`;}
+/* ---------- Mobile ---------- */
+function vMobile(){const list=ST.pts.filter(p=>p.state==="admitted"||p.state==="discharging"),p=pt(ST.mobPt);
+ let inner;if(!p)inner=`<b>My patients</b>${list.map(x=>`<button class="mcard" data-a="mobpt" data-p="${x.id}"><b>${esc(x.name)}</b><span class="muted">${x.bed} · ${esc(x.reason)}</span>${x.allergies.length?`<span class="flag">${esc(x.allergies.join(", "))}</span>`:""}</button>`).join("")}`;
+ else{const v=p.vitals[p.vitals.length-1];inner=`<button class="btn sm sec" data-a="mobpt" data-p="">‹ All patients</button><div><b style="font-size:1.05rem">${esc(p.name)}</b><div class="muted">${p.bed} · ${age(p.dob)} y · ${p.mrn}</div></div>${p.allergies.length?`<div class="alert" style="padding:6px 10px"><b>⚠ ${esc(p.allergies.join(", "))}</b></div>`:""}
+  <div class="mcard"><b>Latest vitals</b>${v?`<span>BP ${esc(v.bp)} · HR ${v.hr} · T ${Number(v.temp).toFixed(1)} · SpO₂ ${v.spo2}%</span><span class="muted">${tOf(v.t)}</span>`:"<span class='muted'>None</span>"}</div>
+  <div class="mcard"><b>Problems</b><span>${esc(p.problems.join(", ")||"None")}</span></div>
+  <div class="mcard"><b>Clinical images</b><div class="thumbs">${p.photos.map(u=>`<img src="${u}" alt="Clinical image">`).join("")||"<span class='muted'>None this session</span>"}</div><button class="btn sm" data-a="photo">＋ Add image to chart</button><input type="file" id="photoin" accept="image/*" hidden><span class="muted">Grown-ups only. Images stay in this browser tab and clear on reload.</span></div>
+  <div class="mcard"><b>Quick note</b><textarea id="mnote" style="min-height:90px"></textarea><div class="row"><button class="btn sm sec" data-a="mdict">🎙 Mock dictation</button><button class="btn sm" data-a="msave">Save to chart</button></div></div>`;}
+ return `<div class="panel"><div class="ph"><h2>Mobile access</h2><div class="row"><button class="btn sm ${ST.mob==="phone"?"":"sec"}" data-a="mob" data-m="phone">Phone</button><button class="btn sm ${ST.mob==="tab"?"":"sec"}" data-a="mob" data-m="tab">Tablet</button></div></div><div class="pb"><div class="phone ${ST.mob==="tab"?"tab":""}"><div class="ptop"><span>Hero Mobile</span><span style="font-family:var(--mono);font-size:.8rem">${hm(new Date())}</span></div><div class="pbody">${inner}</div></div></div></div>`;}
+/* ---------- Shell ---------- */
+function plist(){const q=ST.q.toLowerCase();const L=ST.pts.filter(p=>p.state!=="discharged"&&(!q||p.name.toLowerCase().includes(q)||p.mrn.toLowerCase().includes(q))).sort((a,b)=>(a.bed||"zz").localeCompare(b.bed||"zz"));
+ $("plist").innerHTML=L.map(p=>`<button class="pt" data-a="open" data-p="${p.id}" aria-current="${p.id===ST.sel}"><b>${esc(p.name)}</b><span class="pill ${p.state==="waiting"?"s-tri":p.state==="discharging"?"s-dis":"s-occ"}">${p.bed||"Waiting"}</span><small>${p.mrn} · ${esc(p.reason)}</small></button>`).join("")||`<p class="pb muted">No patients match.</p>`;}
+function render(){$("acts").innerHTML=ACTS.map(([k,l])=>`<button role="tab" data-a="act" data-k="${k}" aria-selected="${ST.act===k}">${K()?KIDACTS[k]:l}</button>`).join("");
+ const tp=TIPS[ST.act];
+ $("view").innerHTML=(K()?`<div class="tip"><span class="ti" aria-hidden="true">${tp[0]}</span><div><b>${tp[1]}</b>${tp[2]}</div></div>`:"")+{board:vBoard,chart:vChart,orders:vOrders,mar:vMar,surgery:vSurgery,schedule:vSchedule,mobile:vMobile,hospital:vHospital,join:vJoin}[ST.act]();document.querySelector(".main").classList.toggle("wide",ST.act==="hospital"||ST.act==="join");acctBtn();plist();}
+function modal(h){closeModal();const m=document.createElement("div");m.className="modal";m.innerHTML=`<div role="dialog" aria-modal="true">${h}</div>`;document.body.appendChild(m);const f=m.querySelector("input,select");if(f)f.focus();}
+function closeModal(){document.querySelectorAll(".modal").forEach(m=>m.remove());}
+let gateOK=false;
+function gate(cb){if(gateOK){cb();return;}const a=6+Math.floor(Math.random()*4),b=12+Math.floor(Math.random()*8);modal(`<div class="ph"><h2>Grown-ups only</h2></div><div class="pb"><label class="f">What is ${a} × ${b}?<input id="g-a" inputmode="numeric"></label><p class="muted" id="g-m"></p><div class="row"><button class="btn" id="g-ok">Continue</button><button class="btn sec" data-a="close">Cancel</button></div></div>`);
+ document.getElementById("g-ok").onclick=()=>{if(+document.getElementById("g-a").value===a*b){gateOK=true;closeModal();cb();}else document.getElementById("g-m").textContent="Not quite. Ask a grown-up.";};}
+function typeOut(el,text){let i=0;const t=setInterval(()=>{el.value=text.slice(0,i+=3);if(i>=text.length)clearInterval(t);},30);}
+const SOAP="S: \nO: \nA: \nP: ";
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,p=cur();
+ if(a==="act"){ST.act=b.dataset.k;ST.msg="";}
+ else if(a==="open"){ST.sel=b.dataset.p;closeModal();if(ST.act==="board"||ST.act==="schedule"||ST.act==="surgery"||ST.act==="mobile")ST.act="chart";ST.scan={band:null,med:null};}
+ else if(a==="close"){closeModal();return;}
+ else if(a==="mode"){setMode(b.dataset.m);}
+ else if(a==="print"){window.print();return;}
+ else if(a==="sub"){ST.sub=b.dataset.s;}
+ else if(a==="checkin"){modal(`<div class="ph"><h2>Check in a patient</h2></div><div class="pb"><div class="fr"><label class="f">Name<input id="ci-n" placeholder="First Last"></label><label class="f">Date of birth<input id="ci-d" type="date" value="2016-01-01"></label></div><label class="f">Reason for visit<input id="ci-r" placeholder="e.g. Fever and cough"></label><div class="fr"><label class="f">${L("Triage acuity","How urgent?")}<select id="ci-e">${[1,2,3,4,5].map(n=>`<option value="${n}"${n===3?" selected":""}>${K()?URG[n]:"ESI "+n+" · "+["","Immediate","Emergent","Urgent","Less urgent","Non-urgent"][n]}</option>`).join("")}</select></label><label class="f">Allergy<select id="ci-a"><option value="">None known</option><option>Penicillin</option><option>Cephalosporins</option><option>NSAIDs</option><option>Aspirin</option><option>Peanuts</option><option>Latex</option></select></label></div><p class="muted" id="ci-m"></p><div class="row"><button class="btn" data-a="docheckin">Check in</button><button class="btn sec" data-a="close">Cancel</button></div></div>`);return;}
+ else if(a==="docheckin"){const n=$("ci-n").value.trim(),r=$("ci-r").value.trim();if(!n||!r){$("ci-m").textContent="Add a name and a reason to check in.";return;}const np=mkPt({name:n,dob:$("ci-d").value||"2016-01-01",reason:r,esi:+$("ci-e").value,allergies:$("ci-a").value?[$("ci-a").value]:[],arrived:new Date().toISOString()});ST.pts.push(np);ST.sel=np.id;closeModal();toast(`${n} checked in · ${np.mrn}. Wristband generated.`);mission("checkin");}
+ else if(a==="assign"){const q=pt(b.dataset.p),bed=ST.beds.find(x=>x.st==="emp"&&(q.esi<=3?x.unit==="Emergency":true))||ST.beds.find(x=>x.st==="emp");if(!bed){toast("No empty beds. Mark a bed clean first.");return;}bed.pt=q.id;bed.st="occ";q.bed=bed.id;q.state="admitted";toast(`${q.name} → ${bed.id}`);mission("bed");}
+ else if(a==="bed"){bedAction(b.dataset.b);return;}
+ else if(a==="doassign"){const bed=ST.beds.find(x=>x.id===b.dataset.b),q=pt($("m-p").value);bed.pt=q.id;bed.st="occ";q.bed=bed.id;q.state="admitted";closeModal();toast(`${q.name} → ${bed.id}`);mission("bed");}
+ else if(a==="startdc"){const bed=ST.beds.find(x=>x.id===b.dataset.b);bed.st="dis";pt(bed.pt).state="discharging";closeModal();toast("Discharge started.");}
+ else if(a==="checkout"){if(!["dc1","dc2","dc3"].every(id=>$(id).checked)){$("dcm").textContent="Finish the checklist to check out.";return;}const bed=ST.beds.find(x=>x.id===b.dataset.b),q=pt(bed.pt);q.state="discharged";q.notes.push({t:new Date().toISOString(),by:ST.role,text:"Discharged. Follow-up: "+$("dcf").value});q.bed=null;bed.pt=null;bed.st="cln";if(ST.sel===q.id)ST.sel=null;closeModal();toast(`${q.name} checked out. ${bed.id} sent for cleaning.`);mission("home");}
+ else if(a==="addprob"){const v=$("newprob").value.trim();if(v)p.problems.push(v);}
+ else if(a==="rmprob"){p.problems.splice(+b.dataset.i,1);}
+ else if(a==="addall"){const v=$("newall").value;if(!p.allergies.includes(v))p.allergies.push(v);}
+ else if(a==="rmall"){p.allergies.splice(+b.dataset.i,1);}
+ else if(a==="addvit"){const v={t:new Date().toISOString(),bp:$("v-bp").value||"—",hr:+$("v-hr").value||0,temp:+$("v-temp").value||0,rr:+$("v-rr").value||0,spo2:+$("v-spo2").value||0,by:ST.role};if(!v.hr&&!v.temp){toast("Enter at least heart rate or temperature.");return;}p.vitals.push(v);mission("vitals");const f=vitFlags(v,age(p.dob));toast(Object.keys(f).length?"Vitals filed. Out-of-range values flagged.":"Vitals filed.");}
+ else if(a==="soap"){const t=$("note");t.value=(t.value?t.value+"\n":"")+SOAP;ST.draft=t.value;return;}
+ else if(a==="dictate"){typeOut($("note"),`S: ${p.name} reports ${p.reason.toLowerCase()}. Pain 4/10.\nO: Vitals reviewed. Alert and comfortable. Exam as documented.\nA: ${p.problems[0]||p.reason}.\nP: Continue current plan, recheck in 4 hours, update family.`);return;}
+ else if(a==="signnote"){const t=$("note").value.trim();if(!t){toast("The note is empty.");return;}p.notes.push({t:new Date().toISOString(),by:ST.role,text:t});ST.draft="";toast("Note signed.");}
+ else if(a==="saveexam"){document.querySelectorAll("[data-ex]").forEach(s=>{const k=s.dataset.ex;p.exam[k]={f:s.value,c:document.querySelector(`[data-exc="${k}"]`).value};});toast("Exam saved.");return;}
+ else if(a==="sign"){signOrders();return;}
+ else if(a==="override"){const r=$("ovr").value.trim();if(!r){$("ovr").focus();$("ovr").style.borderColor="#E0B800";return;}signOrders(r);return;}
+ else if(a==="cancelord"){document.querySelectorAll("[data-med]:checked").forEach(x=>x.checked=false);$("ordalert").innerHTML="";return;}
+ else if(a==="adv"){const o=p.orders.find(x=>x.id==b.dataset.o);const nx=o.kind==="Medication"?{Active:"Active"}:{Ordered:"In progress",["In progress"]:"Resulted",Resulted:"Resulted"};o.st=nx[o.st]||o.st;}
+ else if(a==="dcord"){const o=p.orders.find(x=>x.id==b.dataset.o);o.st="Discontinued";p.mar=p.mar.filter(m=>m.oid!=o.id||m.given);}
+ else if(a==="scanband"){ST.scan.band=b.dataset.p;}
+ else if(a==="scanmed"){const due=p.mar.filter(m=>!m.given);const tray=[...due.map(m=>({oid:m.oid,key:m.key,dose:MEDS[m.key].dose,route:MEDS[m.key].route,lab:MEDS[m.key].name})),{oid:"x1",key:"ibu",dose:"10 mg/kg",route:"PO",lab:"Ibuprofen"},{oid:"x2",key:"acet",dose:"30 mg/kg",route:"PO",lab:"Acetaminophen (wrong dose)"}];const t=tray[+b.dataset.i];ST.scan.med=t.oid.toString().startsWith("x")?{...t,oid:(due.find(m=>m.key===t.key)||{}).oid||t.oid}:t;}
+ else if(a==="resetscan"){ST.scan={band:null,med:null};}
+ else if(a==="give"){const m=p.mar.find(x=>x.oid===ST.scan.med.oid);if(m&&ST.scan.ok){m.given=new Date().toISOString();toast(`${MEDS[m.key].name} documented for ${p.name}.`);mission("med");}ST.scan={band:null,med:null};}
+ else if(a==="selcase"){ST.selCase=+b.dataset.c;}
+ else if(a==="cst"){ST.cases.find(x=>x.id===ST.selCase).st=b.dataset.s;}
+ else if(a==="anes"){const c=ST.cases.find(x=>x.id===ST.selCase);c.anes.push({t:hm(new Date()),hr:+$("a-hr").value,bp:$("a-bp").value,sp:+$("a-sp").value,ag:+$("a-ag").value});}
+ else if(a==="postop"){ST.cases.find(x=>x.id===ST.selCase).postop=$("postop").value;toast("Post-op note saved.");return;}
+ else if(a==="newcase"){modal(`<div class="ph"><h2>Schedule a case</h2></div><div class="pb"><label class="f">Procedure<input id="nc-p" placeholder="e.g. Cast application"></label><div class="fr"><label class="f">Room<select id="nc-or"><option>OR 1</option><option>OR 2</option><option>OR 3</option></select></label><label class="f">Start<select id="nc-s">${[7,8,9,10,11,12,13,14,15].map(h=>`<option value="${h}">${pad(h)}:00</option>`).join("")}</select></label><label class="f">Hours<select id="nc-d"><option>1</option><option>1.5</option><option>2</option><option>3</option></select></label></div><label class="f">Patient<select id="nc-pt">${ST.pts.filter(x=>x.state!=="discharged").map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select></label><p class="muted" id="nc-m"></p><div class="row"><button class="btn" data-a="donewcase">Schedule</button><button class="btn sec" data-a="close">Cancel</button></div></div>`);return;}
+ else if(a==="donewcase"){const or=$("nc-or").value,s=+$("nc-s").value,d=+$("nc-d").value,proc=$("nc-p").value.trim()||"Procedure";if(s+d>17){$("nc-m").textContent="That case runs past 17:00. Pick an earlier start.";return;}if(ST.cases.some(x=>x.or===or&&s<x.start+x.dur&&x.start<s+d)){$("nc-m").textContent=or+" is already booked then. Pick another room or time.";return;}const id=Math.max(...ST.cases.map(x=>x.id))+1;ST.cases.push({id,or,start:s,dur:d,pt:$("nc-pt").value,proc,surgeon:"Dr. Training",st:"Scheduled",inst:defInst(),anes:[],postop:""});ST.selCase=id;closeModal();toast("Case scheduled.");}
+ else if(a==="appt"){const ap=ST.appts.find(x=>x.id==b.dataset.i);ap.st={Scheduled:"Checked in",["Checked in"]:"Roomed",Roomed:"Done"}[ap.st]||ap.st;}
+ else if(a==="book"){const who=$("ap-who").value.trim();if(!who){$("ap-who").focus();return;}const base={day:+$("ap-day").value,time:$("ap-time").value||"09:00",sp:+$("ap-sp").value,who,rec:$("ap-rec").value==="1",st:"Scheduled"};if(ST.appts.some(x=>x.day===base.day&&x.time===base.time&&x.sp===base.sp)){toast("That specialty already has a visit at that time.");return;}ST.appts.push({...base,id:Date.now()});toast(`Booked ${who}${base.rec?" weekly":""}.`);}
+ else if(a==="mob"){ST.mob=b.dataset.m;}
+ else if(a==="mobpt"){ST.mobPt=b.dataset.p||null;}
+ else if(a==="photo"){gate(()=>{$("photoin").click();});return;}
+ else if(a==="mdict"){const q=pt(ST.mobPt);typeOut($("mnote"),`Bedside check on ${q.name}. Comfortable, family at bedside. Will recheck vitals in 2 hours.`);return;}
+ else if(a==="msave"){const q=pt(ST.mobPt),t=$("mnote").value.trim();if(!t)return;q.notes.push({t:new Date().toISOString(),by:ST.role+" (mobile)",text:t});toast("Saved to chart.");}
+ render();});
+document.addEventListener("change",e=>{const t=e.target;
+ if(t.id==="role"){ST.role=t.value;ST.act=ROLEHOME[t.value];render();}
+ if(t.dataset.ins){const[k,f]=t.dataset.ins.split("|");ST.cases.find(x=>x.id===ST.selCase).inst[+k][f]=t.value;const nx=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.ins:null;render();if(nx){const el=document.querySelector(`[data-ins="${nx}"]`);if(el)el.focus();}}
+ if(t.id==="photoin"&&t.files[0]){const r=new FileReader();r.onload=()=>{pt(ST.mobPt).photos.push(r.result);render();toast("Image added to chart for this session.");};r.readAsDataURL(t.files[0]);}
+ if(t.id==="bandtxt"){const raw=t.value.trim(),code=(raw.split("|")[2]||raw).toLowerCase(),q=ST.pts.find(x=>x.mrn.toLowerCase()===code);if(q){ST.scan.band=q.id;render();}else toast("No patient with that QR code.");}});
+document.addEventListener("input",e=>{if(e.target.id==="q"){ST.q=e.target.value;plist();}if(e.target.id==="note")ST.draft=e.target.value;});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+setInterval(()=>{$("clk").textContent=new Date().toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});},1000);
+$("clk").textContent=new Date().toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+/* ---------- Hero accounts & hospital keys ---------- */
+const ROLES=[
+ ["owner","👑","Hospital Owner","Co-owner badge for the top team."],
+ ["admin","🗂️","Administrator","Runs the schedule and the staff."],
+ ["chief","⭐","Chief of Medicine","Leads all the doctors."],
+ ["doctor","🩺","Doctor","Sees patients and writes orders."],
+ ["surgeon","😷","Surgeon","Runs the operating rooms."],
+ ["nurse","💉","Nurse","Cares for patients and gives medicine."],
+ ["paramedic","🚑","Paramedic","Brings patients in by ambulance."],
+ ["pharmacist","💊","Pharmacist","Checks and hands out medicine."],
+ ["lab","🧪","Lab Tech","Runs the tests."],
+ ["xray","🩻","Radiographer","Takes X-rays and scans."],
+ ["reception","🛎️","Receptionist","Checks people in at the desk."],
+ ["volunteer","🤝","Volunteer","Helps out everywhere."],
+ ["patient","🤒","Patient","Gets well soon!"],
+ ["visitor","🎈","Visitor","Comes to cheer patients up."]];
+const ROLEWS={owner:["Administrator","board"],admin:["Administrator","schedule"],chief:["Doctor","chart"],doctor:["Doctor","chart"],surgeon:["Surgeon","surgery"],nurse:["Nurse","board"],paramedic:["Nurse","board"],pharmacist:["Nurse","mar"],lab:["Nurse","orders"],xray:["Nurse","orders"],reception:["Administrator","schedule"],volunteer:["Nurse","board"],patient:["Nurse","mobile"],visitor:["Nurse","mobile"]};
+const WARDS=[["er","🚨","Emergency"],["peds","🧸","Kids' ward"],["or","😷","Surgery"],["icu","❤️","Intensive care"],["mat","👶","Maternity"],["pharm","💊","Pharmacy"],["rad","🩻","X-ray"],["lab","🧪","Lab"],["heli","🚁","Helipad"],["amb","🚑","Ambulance bay"],["dent","🦷","Dental"],["pet","🐾","Therapy dogs"]];
+const LOGOS=["🏥","❤️","⭐","🌟","🦸","🩺","🚑","🌈","🐻","🦁","🐳","🚀"];
+const HCOL=[["#1F5FAD","Hero blue"],["#0A2A6B","Night blue"],["#5AAEFF","Sky blue"],["#FFD21F","Sunshine"],["#E0B800","Gold"]];
+const AVATARS=["🦸","🦸‍♀️","🦸‍♂️","🧑‍⚕️","👩‍⚕️","👨‍⚕️","🐻","🦊","🐼","🦁","🐯","🐸","🐧","🦄","🐲","🤖"];
+const RANKS=[[0,"Rookie"],[60,"Intern"],[200,"Resident"],[500,"Attending"],[1200,"Chief"],[2500,"Legend"]];
+const BADGES=[["build","🏗️","Builder","Built a hospital"],["key","🔑","Key maker","Made a hospital key"],["join","🤝","Team player","Joined a hospital"],["shift","⏱️","On the clock","Finished a shift"],["five","🏅","Hard worker","Finished 5 shifts"],["three","🌍","Explorer","In 3 hospitals"]];
+const role=k=>ROLES.find(r=>r[0]===k)||ROLES[3];
+const HS={accts:[],cur:null,unlocked:false,hsub:"",ownSel:null,lastKey:null,preview:null,pendingKey:"",joinMsg:"",kRole:"doctor",newAcct:false};
+function hLoad(){try{HS.accts=JSON.parse(localStorage.getItem("lhh-accounts")||"[]")}catch(e){HS.accts=[]}if(!Array.isArray(HS.accts))HS.accts=[];let c=null;try{c=localStorage.getItem("lhh-acct-cur")}catch(e){}const a=HS.accts.find(x=>x.id===c);if(a){HS.cur=a.id;HS.unlocked=!a.pin;}}
+function hSave(){try{localStorage.setItem("lhh-accounts",JSON.stringify(HS.accts));localStorage.setItem("lhh-acct-cur",HS.cur||"")}catch(e){}}
+const me=()=>HS.unlocked?HS.accts.find(a=>a.id===HS.cur)||null:null;
+const b64u={enc:u8=>{let s="";u8.forEach(b=>s+=String.fromCharCode(b));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},dec:s=>{s=String(s).replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";const b=atob(s);return Uint8Array.from(b,c=>c.charCodeAt(0))}};
+const TE={encode:s=>new TextEncoder().encode(s)},TD={decode:u=>new TextDecoder().decode(u)};
+function needCrypto(){if(!(window.crypto&&crypto.subtle))throw new Error("Hospital keys need a secure (https) page. Open the app from your website.");}
+async function sha(s){return new Uint8Array(await crypto.subtle.digest("SHA-256",typeof s==="string"?TE.encode(s):s));}
+const hex=u=>[...u].map(b=>b.toString(16).padStart(2,"0")).join("");
+async function hidOf(pub){const x=hex((await sha(b64u.dec(pub))).slice(0,4)).toUpperCase();return "H-"+x.slice(0,4)+"-"+x.slice(4);}
+const EC={name:"ECDSA",namedCurve:"P-256"},SG={name:"ECDSA",hash:"SHA-256"};
+const clean=(s,n)=>String(s??"").replace(/[\u0000-\u001f]/g,"").trim().slice(0,n);
+function cleanHosp(o){return {name:clean(o.name,40)||"Hero Hospital",logo:LOGOS.includes(o.logo)?o.logo:"🏥",color:HCOL.some(c=>c[0]===o.color)?o.color:"#1F5FAD",motto:clean(o.motto,60),wards:(Array.isArray(o.wards)?o.wards:[]).filter(w=>WARDS.some(x=>x[0]===w))};}
+async function mintKey(h,r,label,days){needCrypto();const priv=await crypto.subtle.importKey("jwk",h.priv,EC,false,["sign"]);
+ const kid=b64u.enc(crypto.getRandomValues(new Uint8Array(6))),now=Date.now();
+ const p={n:h.name,e:h.logo,c:h.color,m:h.motto,r,l:label,i:kid,x:days?Math.floor((now+days*864e5)/1e3):0,k:h.pub};
+ const pb=TE.encode(JSON.stringify(p));const sig=new Uint8Array(await crypto.subtle.sign(SG,priv,pb));
+ return {code:"LHK1."+b64u.enc(pb)+"."+b64u.enc(sig),kid,role:r,label,exp:p.x*1e3,made:now};}
+async function readKey(raw){needCrypto();const m=String(raw||"").match(/LHK1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/);if(!m)throw new Error("That isn't a hospital key. Keys start with LHK1.");
+ const [,pb,sg]=m[0].split(".");let bytes,p;try{bytes=b64u.dec(pb);p=JSON.parse(TD.decode(bytes))}catch(e){throw new Error("This key is broken. Ask the hospital for a new one.")}
+ let ok=false;try{const pub=await crypto.subtle.importKey("raw",b64u.dec(p.k),EC,false,["verify"]);ok=await crypto.subtle.verify(SG,pub,b64u.dec(sg),bytes);}catch(e){ok=false}
+ if(!ok)throw new Error("This key was changed or copied wrong, so it can't be trusted. Ask the hospital for a new one.");
+ if(!ROLES.some(r=>r[0]===p.r))throw new Error("This key has a job the app doesn't know.");
+ if(p.x&&Date.now()>p.x*1e3)throw new Error("This key has expired. Ask the hospital for a new one.");
+ return Object.assign(cleanHosp({name:p.n,logo:p.e,color:p.c,motto:p.m,wards:p.w}),{role:p.r,label:clean(p.l,24),kid:clean(p.i,16),exp:(+p.x||0)*1e3,pub:p.k,hid:await hidOf(p.k)});}
+async function readBackup(raw){needCrypto();const m=String(raw||"").match(/LHO1\.[A-Za-z0-9_-]+/);let o;try{o=JSON.parse(TD.decode(b64u.dec(m[0].slice(5))))}catch(e){throw new Error("That owner backup is broken.")}
+ try{const priv=await crypto.subtle.importKey("jwk",o.priv,EC,false,["sign"]),pub=await crypto.subtle.importKey("raw",b64u.dec(o.pub),EC,false,["verify"]);const t=TE.encode("lhh-check"),s=await crypto.subtle.sign(SG,priv,t);if(!await crypto.subtle.verify(SG,pub,s,t))throw 0;}catch(e){throw new Error("That owner backup doesn't match its hospital.")}
+ return Object.assign(cleanHosp(o),{pub:o.pub,priv:o.priv,hid:await hidOf(o.pub),keys:[],created:+o.created||Date.now()});}
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(_){}a.remove();return ok}}
+const inviteLink=code=>location.href.split("#")[0]+"#key="+code;
+function rankOf(xp){let i=0;RANKS.forEach((r,j)=>{if(xp>=r[0])i=j});const nx=RANKS[i+1];return {name:RANKS[i][1],next:nx?nx[1]:"",need:nx?nx[0]-xp:0,pct:nx?Math.round((xp-RANKS[i][0])/(nx[0]-RANKS[i][0])*100):100};}
+function award(a,k){a.badges=a.badges||[];if(a.badges.includes(k))return;a.badges.push(k);a.xp+=25;const b=BADGES.find(x=>x[0]===k);setTimeout(()=>toast(`${b[1]} Badge unlocked: ${b[2]}! +25 XP`),700);}
+function acctBar(a){const r=rankOf(a.xp);return `<div class="panel"><div class="pb acctbar"><span class="av" aria-hidden="true">${a.avatar}</span><div><b class="hh">${esc(a.name)}</b><span class="muted">${r.name} · ${a.xp} XP${r.next?` · ${r.need} XP to ${r.next}`:" · Top rank!"}</span><div class="xpbar" role="img" aria-label="${r.pct}% to next rank"><i style="width:${r.pct}%"></i></div></div><span class="sp"></span><div class="hbs" aria-label="Badges">${BADGES.map(([k,i,n,d])=>`<span class="hb ${(a.badges||[]).includes(k)?"on":""}" title="${n}: ${d}">${i}</span>`).join("")}</div><button class="btn sec sm" data-h="switch">Switch hero</button><button class="btn sec sm" data-h="signout">Sign out</button></div></div>`;}
+function gateView(){
+ if(!HS.accts.length||HS.newAcct)return `<div class="panel"><div class="ph"><h2>👤 Make your hero account</h2></div><div class="pb"><p class="muted">Your account lives on this device only. Use a hero name, never your real name.</p><label class="f">Hero name<input id="ha-n" maxlength="20" placeholder="e.g. Captain Bandage" autocomplete="off"></label><div class="f">Pick your hero<div class="avs">${AVATARS.map((v,i)=>`<label><input type="radio" name="ha-a" value="${v}" ${i?"":"checked"}><span>${v}</span></label>`).join("")}</div></div><label class="f">4-digit PIN (optional, keeps your account yours)<input id="ha-p" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></label><p class="muted" id="ha-m" role="alert"></p><div class="row"><button class="btn" data-h="mkacct">Create account</button>${HS.accts.length?`<button class="btn sec" data-h="cancelnew">Cancel</button>`:""}</div></div></div>`;
+ return `<div class="panel"><div class="ph"><h2>👤 Who's playing?</h2><button class="btn sm" data-h="newacct">+ New hero</button></div><div class="pb"><div class="heroes">${HS.accts.map(a=>`<button class="hero" data-h="pick" data-c="${a.id}"><span aria-hidden="true">${a.avatar}</span><b>${esc(a.name)}</b><small class="muted">${a.pin?"🔒 PIN":""} ${rankOf(a.xp).name}</small></button>`).join("")}</div></div></div>`;}
+function sign(h,sub){const dk=["#FFD21F","#E0B800","#5AAEFF"].includes(h.color);return `<div class="hsign" style="background:${h.color};color:${dk?"#0A2A6B":"#fff"}"><span class="hl" aria-hidden="true">${h.logo}</span><div><b>${esc(h.name)}</b>${h.motto?`<span>${esc(h.motto)}</span>`:""}${sub?`<small>${sub}</small>`:""}</div></div>`;}
+function builder(h){const ed=!!h;h=h||{name:"",logo:"🏥",color:"#1F5FAD",motto:"",wards:["er","peds"]};const a=me();return `<div class="panel"><div class="ph"><h2>${ed?"✏️ Edit your hospital":"🏗️ Build your hospital"}</h2></div><div class="pb">
+<div class="fr"><label class="f">Hospital name<input id="hb-n" maxlength="40" value="${esc(h.name)}" placeholder="e.g. Sunny Hills Hospital"></label><label class="f">Motto (optional)<input id="hb-m" maxlength="60" value="${esc(h.motto)}" placeholder="e.g. Every hero helps"></label></div>
+<div class="f">Logo<div class="avs">${LOGOS.map(v=>`<label><input type="radio" name="hb-l" value="${v}" ${v===h.logo?"checked":""}><span>${v}</span></label>`).join("")}</div></div>
+<div class="f">Color<div class="avs">${HCOL.map(([c,n])=>`<label title="${n}"><input type="radio" name="hb-c" value="${c}" ${c===h.color?"checked":""} aria-label="${n}"><span style="background:${c}"></span></label>`).join("")}</div></div>
+<div class="f">Wards<div class="wards">${WARDS.map(([k,i,n])=>`<label><input type="checkbox" name="hb-w" value="${k}" ${h.wards.includes(k)?"checked":""}><span>${i} ${n}</span></label>`).join("")}</div></div>
+${ed?`<p class="muted">Keys you already made keep the old name and logo. New keys use the new ones.</p>`:""}<p class="muted" id="hb-msg" role="alert"></p><div class="row"><button class="btn" data-h="${ed?"savehosp":"mkhosp"}">${ed?"Save changes":"🏥 Open my hospital"}</button>${(a.own||[]).length?`<button class="btn sec" data-h="cancelb">Cancel</button>`:""}</div></div></div>`;}
+function keyCard(k){const r=role(k.role);return `<div class="keycard"><div class="kq">${qrSVG(inviteLink(k.code),232)}</div><div style="display:grid;gap:8px;min-width:0"><b class="hh">${r[1]} ${r[2]}${k.label?` · ${esc(k.label)}`:""}</b><span class="muted">${k.exp?"Works until "+new Date(k.exp).toLocaleDateString():"Never expires"}. Scan the QR with a phone camera, or copy the key.</span><textarea readonly class="kcode" rows="4" aria-label="Hospital key">${k.code}</textarea><div class="row"><button class="btn sm" data-h="copy" data-t="key" data-c="${k.kid}">📋 Copy key</button><button class="btn sec sm" data-h="copy" data-t="link" data-c="${k.kid}">🔗 Copy invite link</button></div></div></div>`;}
+function vHospital(){const a=me();if(!a)return gateView();const own=a.own||[];
+ if(!own.length||HS.hsub==="new")return acctBar(a)+builder();
+ const h=own.find(x=>x.hid===HS.ownSel)||own[0];HS.ownSel=h.hid;
+ if(HS.hsub==="edit")return acctBar(a)+builder(h);
+ const lk=HS.lastKey&&HS.lastKey.hid===h.hid?h.keys.find(k=>k.kid===HS.lastKey.kid):null;
+ return acctBar(a)+`<div class="panel"><div class="pb"><div class="row">${own.length>1?`<label class="f" style="min-width:220px">Your hospitals<select id="hsel">${own.map(x=>`<option value="${x.hid}" ${x.hid===h.hid?"selected":""}>${x.logo} ${esc(x.name)}</option>`).join("")}</select></label>`:""}<span class="sp"></span><button class="btn sec sm" data-h="edith">✏️ Edit hospital</button><button class="btn sec sm" data-h="newh">+ Build another</button></div>
+ ${sign(h,`Hospital ID ${h.hid} · 👑 Owner ${esc(a.name)} · ${h.keys.length} key${h.keys.length===1?"":"s"} made`)}
+ <div class="chips">${WARDS.filter(w=>h.wards.includes(w[0])).map(w=>`<span class="chip">${w[1]} ${w[2]}</span>`).join("")||`<span class="muted">No wards yet. Tap Edit hospital to add some.</span>`}</div></div></div>
+ <div class="grid2"><div class="panel"><div class="ph"><h2>🔑 Make a hospital key</h2></div><div class="pb"><div class="f">Pick the job<div class="rolegrid">${ROLES.map(([k,i,n,d])=>`<label><input type="radio" name="hk-r" value="${k}" ${k===HS.kRole?"checked":""}><span><b>${i} ${n}</b><small>${d}</small></span></label>`).join("")}</div></div>
+ <div class="fr"><label class="f">Name on badge (optional)<input id="hk-l" maxlength="24" placeholder="e.g. Dr. Sunny"></label><label class="f">Key works for<select id="hk-x"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option><option value="0">Forever</option></select></label></div>
+ <div class="row"><button class="btn" data-h="mkkey">✨ Make key</button></div></div></div>
+ <div class="panel"><div class="ph"><h2>${lk?"🎉 Your new key":"How keys work"}</h2></div><div class="pb">${lk?keyCard(lk):`<p>Each key gives one job at <b>${esc(h.name)}</b>. Give it to a friend in person, or post it in the Little Hero Discord. They paste it into the <b>Join</b> tab.</p><p class="muted">Every key is signed with your hospital's secret, which never leaves this device. If anyone changes a key, it stops working, so nobody can fake a job at your hospital.</p>`}</div></div></div>
+ <div class="panel"><div class="ph"><h2>Keys you've made</h2></div>${h.keys.length?`<div class="tw"><table><thead><tr><th>Job</th><th>Name on badge</th><th>Made</th><th>Status</th><th></th></tr></thead><tbody>${h.keys.slice().reverse().map(k=>{const r=role(k.role),ex=k.exp&&Date.now()>k.exp;return `<tr><td>${r[1]} ${r[2]}</td><td>${esc(k.label||"—")}</td><td>${new Date(k.made).toLocaleDateString()}</td><td><span class="pill ${ex?"":"s-dis"}">${ex?"Expired":k.exp?"Until "+new Date(k.exp).toLocaleDateString():"Forever"}</span></td><td><button class="btn sec sm" data-h="showkey" data-c="${k.kid}">Show</button></td></tr>`}).join("")}</tbody></table></div>`:`<div class="pb muted">No keys yet. Make one above!</div>`}</div>
+ <div class="panel"><div class="ph"><h2>🛡️ Owner backup</h2></div><div class="pb"><p>Only this device can make keys for <b>${esc(h.name)}</b>. Save an owner backup code somewhere safe, like with a parent. To own the hospital on another device, paste the code into the <b>Join</b> tab there.</p><p class="muted">Never share it. Anyone with this code can make keys for your hospital.</p><div class="row"><button class="btn sec sm" data-h="backup">Show owner backup</button><button class="btn sec sm" data-h="closeh">Close this hospital</button></div></div></div>`;}
+function memberCard(m,a){const r=role(m.role);return `<div class="badge">${sign(m,`${m.hid}${m.own?" · Your hospital":""}`)}<div class="pb"><div class="row"><span class="av" aria-hidden="true">${a.avatar}</span><div style="display:grid"><b class="hh">${esc(m.label||a.name)}</b><span>${r[1]} ${r[2]}</span><small class="muted">${m.shifts||0} shift${m.shifts===1?"":"s"} · ${Math.round(m.mins||0)} min on duty</small></div><span class="sp"></span>${qrSVG("LHH|STAFF|"+m.hid+"|"+m.role+"|"+m.kid,76)}</div>
+ <div class="row">${m.on?`<span class="pill s-tri">On shift <span data-since="${m.on}">0:00:00</span></span><button class="btn sm" data-h="station" data-c="${m.hid}">Go to my station →</button><button class="btn warn sm" data-h="clockout" data-c="${m.hid}">Clock out</button>`:`<button class="btn sm" data-h="clockin" data-c="${m.hid}">⏱️ Clock in</button>`}<span class="sp"></span>${m.own?"":`<button class="btn sec sm" data-h="leave" data-c="${m.hid}">Leave</button>`}</div></div></div>`;}
+function vJoin(){const a=me();if(!a)return gateView();const j=a.joined||[],pv=HS.preview;
+ const already=pv&&j.find(x=>x.hid===pv.hid);
+ return acctBar(a)+`<div class="grid2"><div class="panel"><div class="ph"><h2>🔑 Enter a hospital key</h2></div><div class="pb"><label class="f">Paste your key<textarea id="hj-k" rows="4" placeholder="LHK1.…" autocomplete="off">${esc(HS.pendingKey)}</textarea></label><p class="muted" id="hj-m" role="alert">${esc(HS.joinMsg)}</p><div class="row"><button class="btn" data-h="checkkey">Check key</button></div><p class="muted">Got an owner backup code (LHO1…)? Paste it here to own your hospital on this device.</p></div></div>
+ <div class="panel"><div class="ph"><h2>${pv?"✅ This key is real":"What you get"}</h2></div><div class="pb">${pv?`${sign(pv,`Hospital ID ${pv.hid}`)}<p class="hh"><b>${role(pv.role)[1]} ${role(pv.role)[2]}</b>${pv.label?` · ${esc(pv.label)}`:""}</p><p class="muted">Signed by the hospital owner · ${pv.exp?"key works until "+new Date(pv.exp).toLocaleDateString():"key never expires"}${already?` · You're already a ${role(already.role)[2]} here`:""}</p><div class="row"><button class="btn" data-h="join">${already?"Switch to this job":"Join as "+role(pv.role)[2]}</button><button class="btn sec" data-h="cancelpv">Cancel</button></div>`:`<p>Ask a hospital owner for a key. When you enter it, you get:</p><ul class="hl2"><li>🪪 A staff badge with your job and a QR code</li><li>⏱️ Clock in for shifts and earn XP</li><li>🏅 Ranks from Rookie to Legend, plus badges</li><li>🏥 A shortcut to your job's station in the workstation</li></ul>`}</div></div></div>`
+ +(j.length?`<div class="panel"><div class="ph"><h2>🪪 My hospitals</h2><span class="muted">${j.length} hospital${j.length===1?"":"s"}</span></div><div class="pb"><div class="grid2">${j.map(m=>memberCard(m,a)).join("")}</div></div></div>`:"");}
+async function hAct(k,b){const a=me(),c=b.dataset.c;
+ if(k==="acctbtn"){if(a){hAct("switch",b);return;}ST.act="join";render();return;}
+ if(k==="newacct"){HS.newAcct=true;closeModal();ST.act=ST.act==="hospital"?"hospital":"join";render();return;}
+ if(k==="cancelnew"){HS.newAcct=false;render();return;}
+ if(k==="mkacct"){const n=clean($("ha-n").value,20),p=$("ha-p").value.trim(),av=(document.querySelector('input[name="ha-a"]:checked')||{}).value||"🦸";
+  if(n.length<2){$("ha-m").textContent="Give your hero a name (at least 2 letters).";return;}
+  if(p&&!/^\d{4}$/.test(p)){$("ha-m").textContent="A PIN is 4 numbers, or leave it empty.";return;}
+  if(p)needCrypto();const id="u"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+  HS.accts.push({id,name:n,avatar:AVATARS.includes(av)?av:"🦸",pin:p?hex(await sha(id+":"+p)):"",xp:0,badges:[],own:[],joined:[],created:Date.now()});
+  HS.cur=id;HS.unlocked=true;HS.newAcct=false;hSave();toast(`Welcome, ${n}! 🎉`);render();if(HS.pendingKey)hAct("checkkey",b);return;}
+ if(k==="switch"){modal(`<div class="ph"><h2>Switch hero</h2></div><div class="pb"><div class="heroes">${HS.accts.map(x=>`<button class="hero" data-h="pick" data-c="${x.id}" ${x.id===HS.cur?'aria-current="true"':""}><span aria-hidden="true">${x.avatar}</span><b>${esc(x.name)}</b></button>`).join("")}</div><div class="row"><button class="btn sm" data-h="newacct">+ New hero</button><span class="sp"></span>${a?`<button class="btn sec sm" data-h="delacct">Remove ${esc(a.name)} from this device</button>`:""}<button class="btn sec sm" data-a="close">Close</button></div></div>`);return;}
+ if(k==="pick"){const x=HS.accts.find(y=>y.id===c);if(!x)return;if(!x.pin){HS.cur=x.id;HS.unlocked=true;hSave();closeModal();HS.preview=null;render();return;}
+  modal(`<div class="ph"><h2>${x.avatar} Hi, ${esc(x.name)}!</h2></div><div class="pb"><label class="f">Enter your 4-digit PIN<input id="pin-in" type="password" inputmode="numeric" maxlength="4" autocomplete="off"></label><p class="muted" id="pin-m" role="alert"></p><div class="row"><button class="btn" data-h="pinok" data-c="${x.id}">Sign in</button><button class="btn sec" data-a="close">Cancel</button></div></div>`);return;}
+ if(k==="pinok"){const x=HS.accts.find(y=>y.id===c);needCrypto();if(hex(await sha(x.id+":"+$("pin-in").value.trim()))!==x.pin){$("pin-m").textContent="That PIN isn't right. Try again.";return;}
+  HS.cur=x.id;HS.unlocked=true;hSave();closeModal();HS.preview=null;toast(`Welcome back, ${x.name}!`);render();return;}
+ if(k==="signout"){HS.unlocked=false;HS.preview=null;HS.lastKey=null;render();toast("Signed out.");return;}
+ if(k==="delacct"){if(!b.dataset.sure){b.dataset.sure="1";b.textContent="Tap again to remove forever";return;}HS.accts=HS.accts.filter(x=>x.id!==HS.cur);HS.cur=null;HS.unlocked=false;hSave();closeModal();render();toast("Hero removed from this device.");return;}
+ if(!a)return;
+ if(k==="newh"){HS.hsub="new";render();return;}
+ if(k==="edith"){HS.hsub="edit";render();return;}
+ if(k==="cancelb"){HS.hsub="";render();return;}
+ if(k==="mkhosp"||k==="savehosp"){const v=cleanHosp({name:$("hb-n").value,motto:$("hb-m").value,logo:(document.querySelector('input[name="hb-l"]:checked')||{}).value,color:(document.querySelector('input[name="hb-c"]:checked')||{}).value,wards:[...document.querySelectorAll('input[name="hb-w"]:checked')].map(x=>x.value)});
+  if(clean($("hb-n").value,40).length<3){$("hb-msg").textContent="Give your hospital a name (at least 3 letters).";return;}
+  if(k==="savehosp"){const h=a.own.find(x=>x.hid===HS.ownSel);Object.assign(h,v);const m=a.joined.find(x=>x.hid===h.hid&&x.own);if(m)Object.assign(m,v);HS.hsub="";hSave();toast("Hospital updated.");render();return;}
+  needCrypto();b.disabled=true;const {pub,priv}=await (async()=>{const kp=await crypto.subtle.generateKey(EC,true,["sign","verify"]);return {pub:b64u.enc(new Uint8Array(await crypto.subtle.exportKey("raw",kp.publicKey))),priv:await crypto.subtle.exportKey("jwk",kp.privateKey)};})();
+  const hid=await hidOf(pub);a.own.push(Object.assign({hid,pub,priv,keys:[],created:Date.now()},v));
+  a.joined.push(Object.assign({hid,role:"owner",label:a.name,kid:"owner",exp:0,joined:Date.now(),own:true,shifts:0,mins:0,on:0},v));
+  HS.ownSel=hid;HS.hsub="";award(a,"build");hSave();toast(`🎉 ${v.name} is open!`);render();return;}
+ const h=(a.own||[]).find(x=>x.hid===HS.ownSel);
+ if(k==="mkkey"&&h){const r=(document.querySelector('input[name="hk-r"]:checked')||{}).value||"doctor";HS.kRole=r;b.disabled=true;
+  const key=await mintKey(h,r,clean($("hk-l").value,24),+$("hk-x").value);h.keys.push(key);HS.lastKey={hid:h.hid,kid:key.kid};award(a,"key");hSave();toast(`🔑 ${role(r)[2]} key made!`);render();return;}
+ if(k==="showkey"&&h){HS.lastKey={hid:h.hid,kid:c};render();document.querySelector(".keycard")?.scrollIntoView({behavior:"smooth",block:"center"});return;}
+ if(k==="copy"&&h){const key=h.keys.find(x=>x.kid===c);if(!key)return;const ok=await copyText(b.dataset.t==="link"?inviteLink(key.code):key.code);toast(ok?(b.dataset.t==="link"?"Invite link copied!":"Key copied!"):"Couldn't copy. Select the key and copy it yourself.");return;}
+ if(k==="backup"&&h){const code="LHO1."+b64u.enc(TE.encode(JSON.stringify({name:h.name,logo:h.logo,color:h.color,motto:h.motto,wards:h.wards,pub:h.pub,priv:h.priv,created:h.created})));
+  modal(`<div class="ph"><h2>🛡️ Owner backup for ${esc(h.name)}</h2></div><div class="pb"><div class="alert"><b>Keep this secret!</b>Anyone with this code can make keys for your hospital. Give a copy to a parent to keep safe.</div><textarea readonly class="kcode" rows="6" id="bk-c">${code}</textarea><div class="row"><button class="btn" data-h="copybk">📋 Copy backup</button><button class="btn sec" data-a="close">Done</button></div></div>`);return;}
+ if(k==="copybk"){toast(await copyText($("bk-c").value)?"Backup copied. Keep it safe!":"Couldn't copy. Select it and copy it yourself.");return;}
+ if(k==="closeh"&&h){if(!b.dataset.sure){b.dataset.sure="1";b.textContent="Tap again to close forever";return;}a.own=a.own.filter(x=>x!==h);a.joined=a.joined.filter(x=>!(x.hid===h.hid&&x.own));HS.ownSel=null;HS.lastKey=null;hSave();toast("Hospital closed.");render();return;}
+ if(k==="checkkey"){const raw=($("hj-k")?$("hj-k").value:HS.pendingKey)||"";HS.pendingKey=raw.trim();HS.joinMsg="";HS.preview=null;
+  try{if(/LHO1\./.test(raw)){const o=await readBackup(raw);if(a.own.some(x=>x.hid===o.hid))throw new Error("You already own this hospital on this device.");
+    a.own.push(o);if(!a.joined.some(x=>x.hid===o.hid))a.joined.push(Object.assign({hid:o.hid,role:"owner",label:a.name,kid:"owner",exp:0,joined:Date.now(),own:true,shifts:0,mins:0,on:0},cleanHosp(o)));
+    HS.pendingKey="";HS.ownSel=o.hid;award(a,"build");hSave();toast(`👑 You own ${o.name} on this device now!`);ST.act="hospital";render();return;}
+   HS.preview=await readKey(raw);}catch(e){HS.joinMsg=e.message;}render();return;}
+ if(k==="cancelpv"){HS.preview=null;HS.pendingKey="";render();return;}
+ if(k==="join"&&HS.preview){const p=HS.preview,m=a.joined.find(x=>x.hid===p.hid);
+  if(m){if(m.own){toast("You own this hospital already. 👑");HS.preview=null;HS.pendingKey="";render();return;}Object.assign(m,cleanHosp(p),{role:p.role,label:p.label,kid:p.kid});}
+  else a.joined.push(Object.assign(cleanHosp(p),{hid:p.hid,role:p.role,label:p.label,kid:p.kid,exp:p.exp,joined:Date.now(),own:false,shifts:0,mins:0,on:0}));
+  award(a,"join");if(a.joined.length>=3)award(a,"three");HS.preview=null;HS.pendingKey="";hSave();toast(`🎉 Welcome to ${p.name}, ${role(p.role)[2]}!`);render();return;}
+ const m=(a.joined||[]).find(x=>x.hid===c);if(!m)return;
+ if(k==="clockin"){a.joined.forEach(x=>{if(x.on&&x!==m)clockOut(a,x)});m.on=Date.now();a.xp+=5;hSave();toast(`⏱️ Clocked in at ${m.name}. +5 XP`);render();return;}
+ if(k==="clockout"){const got=clockOut(a,m);hSave();toast(`Shift done! ${got.mins} min · +${got.xp} XP`);render();return;}
+ if(k==="station"){const [rl,act]=ROLEWS[m.role]||ROLEWS.nurse;ST.role=rl;$("role").value=rl;ST.act=act;render();toast(`${role(m.role)[1]} ${role(m.role)[2]} station at ${m.name}`);return;}
+ if(k==="leave"){if(!b.dataset.sure){b.dataset.sure="1";b.textContent="Tap again to leave";return;}a.joined=a.joined.filter(x=>x!==m);hSave();toast(`You left ${m.name}.`);render();return;}}
+function clockOut(a,m){const mins=Math.max(0,(Date.now()-m.on)/60000);m.on=0;m.mins=(m.mins||0)+mins;m.shifts=(m.shifts||0)+1;const xp=10+Math.min(120,Math.round(mins)*2);a.xp+=xp;award(a,"shift");if(a.joined.reduce((s,x)=>s+(x.shifts||0),0)>=5)award(a,"five");return {mins:Math.round(mins),xp};}
+function acctBtn(){const a=me(),e=$("acctBtn");if(e)e.textContent=a?`${a.avatar} ${a.name}`:"👤 Sign in";}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-h]");if(!b||b.disabled)return;e.preventDefault();hAct(b.dataset.h,b).catch(err=>{b.disabled=false;toast(err&&err.message?err.message:"Something went wrong. Try again.");});});
+document.addEventListener("change",e=>{if(e.target.id==="hsel"){HS.ownSel=e.target.value;HS.lastKey=null;render();}});
+document.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.id==="pin-in"){const b=document.querySelector('[data-h="pinok"]');if(b)b.click();}});
+setInterval(()=>{document.querySelectorAll("[data-since]").forEach(el=>{const s=Math.max(0,Math.floor((Date.now()-+el.dataset.since)/1000));el.textContent=Math.floor(s/3600)+":"+pad(Math.floor(s/60)%60)+":"+pad(s%60);});},1000);
+hLoad();
+const hashTab=()=>{const h=location.hash.slice(1);if(h==="hospital"||h==="join"){ST.act=h;return true}return false};window.addEventListener("hashchange",()=>{if(hashTab())render();});hashTab();
+(()=>{const m=location.hash.match(/key=(LHK1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)/);if(m){HS.pendingKey=m[1];ST.act="join";try{history.replaceState(null,"",location.href.split("#")[0])}catch(e){}}})();
+
+seed();let m0="kid";try{m0=localStorage.getItem("lhh-ws-mode")||"kid"}catch(e){}setMode(m0);render();
+if(HS.pendingKey&&me())hAct("checkkey",{dataset:{}}).catch(()=>{});
+</script>
+
+</body>
+</html>

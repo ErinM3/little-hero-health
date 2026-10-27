@@ -1,0 +1,50 @@
+Little Hero Health · Discord setup bot
+======================================
+Builds your whole Little Hero server in about a minute: 15 roles, 7 categories,
+22 channels with topics and permissions, the welcome and rules posts, AutoMod,
+safety settings and the logo. Do this with a grown-up.
+
+1. Get Node.js (one time)
+   Go to nodejs.org, download the "LTS" version and install it.
+
+2. Make the setup bot
+   a. Go to discord.com/developers/applications and sign in.
+   b. Click "New Application", name it "Little Hero Setup", click Create.
+   c. Click "Bot" on the left, then "Reset Token", then Copy.
+      Keep this token secret! It works like a password.
+   d. Click "OAuth2" on the left, then "URL Generator".
+      Tick "bot". Under Bot Permissions tick "Administrator".
+   e. Copy the link at the bottom, open it, pick your Little Hero server,
+      and click Authorize.
+
+3. Get your server ID
+   In Discord: User Settings > Advanced > turn on Developer Mode.
+   Right-click your server icon > Copy Server ID.
+
+4. Run it
+   Put little-hero-discord-setup.mjs in a folder (like Downloads).
+   Windows: open the folder, click the address bar, type  cmd  and press Enter.
+   Mac: right-click the folder > New Terminal at Folder.
+   Then type this and press Enter:
+
+       node little-hero-discord-setup.mjs
+
+   Paste your bot token, press Enter. Paste your server ID, press Enter.
+   Type  yes  and press Enter. Watch the green ticks!
+
+5. When it says Done
+   - Give yourself the Owner role and your parent the Grown-up Admin role.
+   - Server Settings > Enable Community. Then turn on Rules Screening and
+     Onboarding (the Discord Kit page has the words to paste).
+   - Kick the "Little Hero Setup" bot from your server, then go back to the
+     Developer Portal and click Reset Token so the old token stops working.
+   - Make your template link: Server Settings > Server Template >
+     Generate Template. That link copies your whole server for anyone.
+
+Good to know
+- It never deletes anything. Channels and roles that already exist are skipped,
+  so it is safe to run again.
+- Posts are only added to channels the bot made, so nothing gets posted twice.
+- Announcement and forum channels need Community turned on. If Community is off,
+  the bot makes them as normal text channels.
+- Never paste your bot token into a chat, a website or Discord.

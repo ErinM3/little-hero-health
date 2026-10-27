@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Little Hero Health Demo</title>
+<meta name="description" content="Little Hero Health: the in-real-life hospital role-play game.">
+<link rel="icon" type="image/png" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
+<meta property="og:image" content="brand/discord-banner-960x540.png">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+#lhbar{position:sticky;top:0;z-index:80;background:#0A2A6B;border-bottom:3px solid #FFD21F;font-family:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif;color:#fff}
+#lhbar *{box-sizing:border-box}
+#lhbar .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px 14px;min-height:56px}
+#lhbar .home{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;margin-right:auto;border-radius:10px;padding:2px 6px 2px 0}
+#lhbar .home svg{width:38px;height:38px;flex:none}
+#lhbar .home b{font-weight:800;font-size:1.25rem;line-height:1;color:#FFD21F;white-space:nowrap}
+#lhbar .home small{display:block;font:700 .58rem "Atkinson Hyperlegible",system-ui;letter-spacing:.3em;color:#fff;margin-top:2px}
+#lhbar .grp{position:relative}
+#lhbar .gb{display:flex;align-items:center;gap:6px;background:none;border:2px solid transparent;color:#fff;font:700 1rem "Baloo 2",system-ui;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+#lhbar .gb:hover{background:#1756C2}
+#lhbar .gb[aria-expanded="true"],#lhbar .grp.cur>.gb{border-color:#FFD21F}
+#lhbar .gb[aria-expanded="true"]{background:#FFD21F;color:#0A2A6B}
+#lhbar .gb .car{font-size:.7em;opacity:.8}
+#lhbar .pn{position:absolute;right:0;top:calc(100% + 8px);background:#fff;color:#0A2A6B;border:3px solid #FFD21F;border-radius:18px;padding:8px;min-width:280px;box-shadow:0 18px 40px rgba(0,0,0,.35);display:grid;gap:2px}
+#lhbar .pn[hidden]{display:none}
+#lhbar .pn a{display:grid;grid-template-columns:34px 1fr;gap:0 10px;align-items:center;text-decoration:none;color:#0A2A6B;padding:8px 10px;border-radius:12px}
+#lhbar .pn a:hover,#lhbar .pn a:focus-visible{background:#E6F0FA;outline:none}
+#lhbar .pn a[aria-current="page"]{background:#FFF7D1}
+#lhbar .pn a .i{grid-row:span 2;font-size:1.5rem;text-align:center}
+#lhbar .pn a b{font:700 1rem "Baloo 2",system-ui;line-height:1.1}
+#lhbar .pn a span{font:400 .82rem "Atkinson Hyperlegible",system-ui;color:#3D5A80}
+#lhbar .lock{color:#CFE2FF;text-decoration:none;font-size:1.05rem;padding:6px 8px;border-radius:999px}
+#lhbar .lock:hover{background:#1756C2;color:#fff}
+#lhbar .menu{display:none}
+#lhbar a:focus-visible,#lhbar button:focus-visible{outline:3px solid #FFD21F;outline-offset:2px}
+@media (max-width:760px){
+ #lhbar .grp{display:none}
+ #lhbar .menu{display:flex}
+ #lhbar.open .grp{display:block;position:static;width:100%}
+ #lhbar.open .in{flex-wrap:wrap}
+ #lhbar.open .grp>.gb{display:none}
+ #lhbar .home{order:0}#lhbar .lock{order:1}#lhbar .menu{order:2}#lhbar .grp{order:3}
+ #lhbar.open .pn{position:static;display:grid!important;box-shadow:none;margin:4px 0;min-width:0}
+ #lhbar.open .pn::before{content:attr(data-t);font:800 .8rem "Baloo 2",system-ui;letter-spacing:.08em;text-transform:uppercase;color:#1F5FAD;padding:2px 10px}
+ #lhbar .home b{font-size:1.1rem}
+}
+</style>
+<header id="lhbar" aria-label="Little Hero menu"><div class="in">
+ <a class="home" href="index.html" aria-label="Little Hero Health home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+ <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
+ <path d="M60 18 L88 27.5 V54 C88 75 76 89 60 98" fill="none" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+ <path d="M51 34 H69 V49 H84 V67 H69 V82 H51 V67 H36 V49 H51 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="4.5" stroke-linejoin="round"/>
+ <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
+ <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>
+<span><b>Little Hero</b><small>HEALTH</small></span></a>
+ <div class="grp" data-g="play"><button class="gb" aria-expanded="false" aria-controls="lhp-play">🎮 Play <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-play" data-t="Play" hidden>
+   <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
+   <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
+   <a href="workstation.html" data-p="workstation"><span class="i">🖥️</span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
+   <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
+  </div></div>
+ <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
+   <a href="events.html" data-p="events"><span class="i">🎟️</span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
+   <a href="index.html#shop" data-p="shop"><span class="i">🎒</span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
+   <a href="camp.html" data-p="camp"><span class="i">⛺</span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
+   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Little Hero</b><span>Ages, jobs, levels and safety rules</span></a>
+  </div></div>
+ <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-comm" data-t="Community" hidden>
+   <a href="community.html" data-p="community"><span class="i">💬</span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
+   <a href="roblox.html" data-p="roblox"><span class="i">🎮</span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
+  </div></div>
+ <a class="lock" href="admin.html" title="Admin sign-in" aria-label="Admin sign-in">🔒</a>
+ <button class="gb menu" aria-expanded="false" aria-controls="lhbar">☰ Menu</button>
+</div></header>
+<script>
+(()=>{const bar=document.getElementById("lhbar");if(!bar)return;const page=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";
+bar.querySelectorAll(".pn a").forEach(a=>{if(a.dataset.p===page){a.setAttribute("aria-current","page");a.closest(".grp").classList.add("cur");}});
+const closeAll=ex=>bar.querySelectorAll(".grp").forEach(g=>{if(g===ex)return;g.querySelector(".gb").setAttribute("aria-expanded","false");g.querySelector(".pn").hidden=true;});
+bar.querySelectorAll(".grp>.gb").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const g=b.parentElement,p=g.querySelector(".pn"),open=p.hidden;closeAll(g);p.hidden=!open;b.setAttribute("aria-expanded",open);if(open)p.querySelector("a").focus({preventScroll:true});}));
+const m=bar.querySelector(".menu");m.addEventListener("click",e=>{e.stopPropagation();const o=!bar.classList.contains("open");bar.classList.toggle("open",o);m.setAttribute("aria-expanded",o);m.textContent=o?"✕ Close":"☰ Menu";});
+bar.querySelectorAll(".pn a").forEach(a=>a.addEventListener("click",()=>{closeAll();bar.classList.remove("open");m.setAttribute("aria-expanded","false");m.textContent="☰ Menu";}));
+document.addEventListener("click",e=>{if(!bar.contains(e.target))closeAll();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){const o=bar.querySelector('.gb[aria-expanded="true"]');closeAll();if(o)o.focus();}});})();
+</script>
+<style>nav.toplinks,div.top>nav[aria-label="Pages"],header.top>a[href$=".html"]{display:none!important}.bgtoggle{top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: deep-blue stage, sunshine-yellow highlights; one bold hero panel, then the game "wristband" as the showpiece. Single committed look (blue + yellow, white/black only as support). */
+:root{
+  color-scheme:dark;
+  --night:#061637; --bg:#0A2A6B; --deep:#0D3486; --surface:#11449F; --surface2:#1756C2; --line:#2F72DD;
+  --sky:#5AAEFF; --ice:#D8EAFF; --ink:#FFFFFF; --muted:#BCD6FF;
+  --sun:#FFD21F; --gold:#FFB400; --butter:#FFF0A3; --cream:#FFF9DB;
+  --well:#061637; --hl:var(--sun); --hl2:var(--sky);
+  --accent:var(--sun); --accent-soft:var(--surface2); --sun-soft:#1A4FB0; --good:var(--hl); --good-soft:#1B5BC9; --coral:var(--butter);
+  --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body{background:radial-gradient(circle at 20% 0%,#164FB8 0,transparent 45%),radial-gradient(circle at 90% 30%,#0F3C99 0,transparent 40%),var(--bg);background-color:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:16px;padding-block:24px 72px;display:grid;gap:64px}
+h1,h2,h3{font-family:var(--display);line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,7.5vw,4.6rem);font-weight:800;color:var(--hl);text-shadow:0 4px 0 var(--night),0 0 40px rgba(255,210,31,.35)}
+h2{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:800}
+h2 em{font-style:normal;color:var(--hl)}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0;max-width:66ch}
+a{color:var(--hl)}
+.eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--hl)}
+.stack{display:grid;gap:16px}
+.muted{color:var(--muted)}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;display:grid;gap:20px;padding:clamp(24px,5vw,48px);border-radius:28px;background:linear-gradient(135deg,#1A63DB 0%,#0F3FA0 55%,#0A2A6B 100%);border:3px solid var(--sun);box-shadow:0 10px 0 var(--night),0 30px 60px rgba(0,0,0,.35)}
+.hero>*{position:relative;z-index:1}
+.pluses{position:absolute;inset:0;z-index:0;pointer-events:none}
+.pluses span{position:absolute;font-family:var(--display);font-weight:800;color:var(--hl);opacity:.18;animation:float 7s ease-in-out infinite}
+.pluses span:nth-child(odd){color:var(--sky);opacity:.35}
+.pluses span:nth-child(1){left:6%;top:12%;font-size:3rem}
+.pluses span:nth-child(2){left:78%;top:8%;font-size:5rem;animation-delay:-2s}
+.pluses span:nth-child(3){left:88%;top:62%;font-size:2.4rem;animation-delay:-4s}
+.pluses span:nth-child(4){left:55%;top:78%;font-size:4rem;animation-delay:-1s}
+.pluses span:nth-child(5){left:20%;top:70%;font-size:2rem;animation-delay:-3s}
+.pluses span:nth-child(6){left:66%;top:34%;font-size:1.6rem;animation-delay:-5s}
+.pluses span:nth-child(7){left:40%;top:4%;font-size:2.2rem;animation-delay:-6s}
+@keyframes float{50%{transform:translateY(-14px) rotate(12deg)}}
+.band{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;background:var(--sun);color:var(--night);font-weight:700;width:fit-content;max-width:100%;box-shadow:0 4px 0 var(--gold)}
+nav.jump{display:flex;flex-wrap:wrap;gap:8px}
+nav.jump a{padding:8px 16px;border-radius:999px;background:rgba(6,22,55,.35);border:2px solid var(--sky);color:var(--ink);text-decoration:none;font-weight:700;font-size:.92rem;transition:transform .15s,background .15s}
+nav.jump a:hover{background:var(--sun);color:var(--night);border-color:var(--hl);transform:translateY(-2px)}
+
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;counter-reset:f;padding:0;margin:0;list-style:none}
+.flow li{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:6px;counter-increment:f;transition:transform .2s,border-color .2s}
+.flow li:hover{transform:translateY(-4px) rotate(-1deg);border-color:var(--hl)}
+.flow li::before{content:counter(f);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--sun);color:var(--night);font-family:var(--display);font-weight:800;font-size:1.2rem}
+.flow b{font-family:var(--display);font-size:1.15rem}
+.tablebox{overflow-x:auto;border:2px solid var(--line);border-radius:18px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:.95rem}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-weight:700;font-size:1.05rem;background:var(--sun);color:var(--night)}
+tbody tr:nth-child(even){background:var(--deep)}
+tr:last-child td{border-bottom:0}
+td.age{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--hl);font-family:var(--display);font-size:1.1rem}
+.jobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.dept{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px 18px}
+.dept h3{color:var(--hl)}
+.dept ul{margin:8px 0 0;padding-left:18px;display:grid;gap:3px}
+.dept .play{display:inline-block;background:var(--sun);color:var(--night)!important;font-weight:800;font-size:.68rem;letter-spacing:.06em;padding:1px 7px;border-radius:999px;vertical-align:middle}
+.note{border-left:6px solid var(--sun);background:var(--well);padding:14px 18px;border-radius:0 14px 14px 0}
+
+/* Game */
+.game{background:var(--deep);border:4px solid var(--sun);border-radius:28px;overflow:hidden;box-shadow:0 10px 0 var(--gold),0 0 0 8px rgba(255,210,31,.12),0 30px 70px rgba(0,0,0,.4)}
+.game-top{background:repeating-linear-gradient(-45deg,var(--sun) 0 18px,var(--gold) 18px 36px);color:var(--night);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.game-top b{font-family:var(--display);font-size:1.5rem;background:var(--well);color:var(--hl);padding:2px 14px;border-radius:10px}
+.game-top .bc{font-family:ui-monospace,Menlo,monospace;letter-spacing:2px;font-weight:700;background:#fff;color:#000;padding:3px 10px 3px 3px;border-radius:6px;font-size:.8rem;display:inline-flex;align-items:center;gap:8px}
+.game-body{padding:clamp(16px,3vw,26px);display:grid;gap:20px}
+.game-body h3{font-size:1.5rem;color:var(--hl)}
+.btn{font:inherit;font-weight:800;font-family:var(--display);font-size:1.1rem;border:0;border-radius:16px;padding:12px 22px;cursor:pointer;background:var(--sky);color:var(--night);box-shadow:0 5px 0 #2C7FD8;transition:transform .1s,box-shadow .1s}
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 7px 0 #2C7FD8}
+.btn:active:not(:disabled){transform:translateY(4px);box-shadow:0 1px 0 #2C7FD8}
+.btn.ghost{background:var(--surface2);color:var(--ink);box-shadow:0 5px 0 var(--night)}
+.btn.sun{background:var(--sun);color:var(--night);box-shadow:0 5px 0 var(--gold);font-size:1.25rem;padding:14px 28px}
+.btn.sun:not(:disabled){animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{filter:brightness(1.1);box-shadow:0 5px 0 var(--gold),0 0 0 8px rgba(255,210,31,.18)}}
+.btn:disabled{opacity:.4;cursor:not-allowed;animation:none}
+.btn:focus-visible,.chip:focus-visible,.item:focus-visible,.step:focus-visible,input:focus-visible,select:focus-visible,.x:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.players{display:grid;gap:10px}
+.player{display:grid;grid-template-columns:1.2fr 1.4fr 1.2fr auto;gap:10px;align-items:end;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px}
+.player label{display:grid;gap:4px;font-size:.8rem;font-weight:700;color:var(--muted);min-width:0;text-transform:uppercase;letter-spacing:.06em}
+input,select{font:inherit;font-weight:700;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--well);color:var(--ink);width:100%;min-width:0}
+input:focus,select:focus{border-color:var(--hl)}
+.x{background:transparent;border:2px solid var(--line);color:var(--muted);border-radius:12px;padding:10px 12px;cursor:pointer;font:inherit;font-weight:700}
+.x:hover{border-color:var(--hl);color:var(--hl)}
+@media (max-width:640px){.player{grid-template-columns:1fr 1fr}.player label:first-child{grid-column:1/-1}}
+.scen{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.chip{font:inherit;text-align:left;border:3px solid var(--line);background:var(--surface);color:var(--ink);border-radius:18px;padding:14px;cursor:pointer;display:grid;gap:4px;transition:transform .15s,border-color .15s}
+.chip b{font-family:var(--display);font-size:1.2rem}
+.chip:hover{transform:translateY(-3px);border-color:var(--sky)}
+.chip small{color:var(--muted)}
+.chip[aria-pressed="true"]{border-color:var(--hl);background:var(--sun);color:var(--night);transform:scale(1.03) rotate(-1deg)}
+.chip[aria-pressed="true"] small{color:var(--night)}
+.locked{font-size:.88rem;color:var(--muted)}
+.dress{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:640px){.dress{grid-template-columns:1fr}}
+.avatar{background:linear-gradient(180deg,var(--surface2),var(--surface));border:3px solid var(--sky);border-radius:22px;padding:20px;display:grid;justify-items:center;gap:8px;text-align:center}
+.face{font-size:4.6rem;line-height:1;width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:var(--sun);border:6px solid #fff;box-shadow:0 0 0 6px var(--sky),0 0 40px rgba(255,210,31,.5);animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.worn{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:2.2rem;font-size:1.8rem}
+.worn span{animation:pop .35s cubic-bezier(.3,1.8,.5,1)}
+@keyframes pop{from{transform:scale(0)}}
+.wardrobe{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:12px}
+.item{font:inherit;border:3px solid var(--line);background:var(--surface);color:var(--ink);border-radius:18px;padding:12px 6px;cursor:pointer;display:grid;justify-items:center;gap:4px;font-size:.82rem;font-weight:700;transition:transform .15s,border-color .15s}
+.item span{font-size:2.3rem;line-height:1.1}
+.item:hover{transform:translateY(-4px) rotate(2deg);border-color:var(--sky)}
+.item.on{border-color:var(--hl);background:var(--sun);color:var(--night)}
+.item.oops{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.msg{min-height:1.6em;font-weight:800;font-family:var(--display);font-size:1.2rem}
+.beats{display:flex;gap:6px;flex-wrap:wrap}
+.beat{flex:1 1 120px;padding:10px 12px;border-radius:14px;background:var(--well);font-family:var(--display);font-size:1rem;font-weight:700;color:var(--muted);border:2px solid var(--line)}
+.beat.now{background:var(--sun);color:var(--night);border-color:var(--hl);box-shadow:0 0 24px rgba(255,210,31,.45)}
+.beat.past{background:var(--surface2);color:var(--ink);border-color:var(--sky)}
+.beat.past::before{content:"★ ";color:var(--hl)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.card{background:var(--surface);border:3px solid var(--line);border-radius:22px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0;transition:border-color .2s,box-shadow .2s,transform .2s}
+.card.done{border-color:var(--hl);box-shadow:0 0 0 4px rgba(255,210,31,.25),0 0 30px rgba(255,210,31,.25);transform:translateY(-3px)}
+.card-h{display:flex;gap:12px;align-items:center}
+.card-h .ic{font-size:2rem;width:52px;height:52px;border-radius:50%;background:var(--sun);display:grid;place-items:center;flex:none}
+.card-h b{font-family:var(--display);font-size:1.15rem}
+.tag{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 10px;border-radius:999px;background:var(--sky);color:var(--night)}
+.irl{background:var(--well);border:2px dashed var(--sun);border-radius:12px;padding:8px 12px;font-size:.9rem;color:var(--butter)}
+.fact{font-size:.9rem;color:var(--muted)}
+.fact::before{content:"💡 "}
+.real{font-size:.9rem;background:var(--sun);color:var(--night);border-radius:12px;padding:10px 12px}
+.steps{display:grid;gap:8px}
+.step{font:inherit;font-weight:700;text-align:left;display:flex;gap:10px;align-items:center;border:2px solid var(--line);background:var(--deep);color:var(--ink);border-radius:12px;padding:10px 12px;cursor:pointer;transition:transform .1s,border-color .15s}
+.step:hover{border-color:var(--sky);transform:translateX(3px)}
+.step .bx{width:26px;height:26px;border-radius:8px;border:3px solid var(--sky);display:grid;place-items:center;font-size:.9rem;flex:none}
+.step.ok{border-color:var(--hl)}
+.step.ok .bx{background:var(--sun);border-color:var(--hl);color:var(--night);animation:pop .3s cubic-bezier(.3,1.8,.5,1)}
+.stars{color:var(--hl);letter-spacing:2px;font-size:1.25rem;font-family:var(--display);font-weight:800}
+.cert{border:4px dashed var(--sun);border-radius:22px;padding:20px 16px;display:grid;gap:6px;text-align:center;background:linear-gradient(180deg,var(--surface2),var(--deep));animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.cert .stars{font-size:1.8rem}
+.win{font-size:clamp(1.8rem,5vw,2.8rem)!important;text-align:center}
+
+/* Market */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.stat{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:6px}
+.stat:first-child{background:var(--sun);color:var(--night);border-color:var(--hl)}
+.stat:first-child b{color:var(--night)}
+.stat b{font-family:var(--display);font-size:2.2rem;line-height:1;font-variant-numeric:tabular-nums;color:var(--hl)}
+.comp{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.comp div{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px 18px;display:grid;gap:6px;align-content:start;min-width:0}
+.comp div b{font-family:var(--display);font-size:1.1rem;color:var(--hl)}
+.sources{font-size:.85rem;display:grid;gap:4px;padding-left:18px;margin:0;color:var(--muted)}
+.sources a{color:var(--hl2)}
+
+/* Confetti */
+.boom{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+.boom i{position:absolute;width:10px;height:14px;border-radius:2px;animation:fly 1.1s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.boom{display:none}}
+
+/* Shop + economics */
+.kitlink{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--sun);color:var(--night);font-family:var(--display);font-weight:800;font-size:1.1rem;padding:12px 16px;border-radius:16px;text-decoration:none;box-shadow:0 5px 0 var(--gold);transition:transform .15s}
+.kitlink:hover{transform:translateY(-2px)}
+.kitlink small{font-family:var(--body);font-weight:700;font-size:.85rem}
+.shop{background:var(--deep);border:4px solid var(--sky);border-radius:28px;padding:clamp(16px,3vw,26px);display:grid;gap:20px;box-shadow:0 10px 0 var(--night)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:inherit;font-family:var(--display);font-weight:800;font-size:1.1rem;padding:10px 20px;border-radius:999px;border:3px solid var(--sky);background:transparent;color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--sky);color:var(--night)}
+.tab:focus-visible,.prod:focus-visible,.plan:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.prod{font:inherit;text-align:left;color:var(--ink);background:var(--surface);border:3px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;display:grid;gap:10px;align-content:start;transition:transform .15s,border-color .15s;min-width:0}
+.prod:hover{transform:translateY(-4px);border-color:var(--sky)}
+.prod[aria-pressed="true"]{border-color:var(--hl);box-shadow:0 0 0 4px rgba(255,210,31,.25);transform:translateY(-4px)}
+.prod .ptop{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.prod b{font-family:var(--display);font-size:1.3rem}
+.price{font-family:var(--display);font-weight:800;font-size:1.8rem;color:var(--hl);font-variant-numeric:tabular-nums;line-height:1}
+.price small{font-size:.8rem;color:var(--muted);font-weight:700;font-family:var(--body)}
+.prod ul{margin:0;padding-left:18px;font-size:.9rem;display:grid;gap:2px;color:var(--ice)}
+.pill{display:inline-block;background:var(--sun);color:var(--night);font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 10px;border-radius:999px;width:fit-content}
+.options{display:grid;gap:12px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.plan{font:inherit;text-align:left;color:var(--ink);background:var(--well);border:3px solid var(--line);border-radius:16px;padding:12px 14px;cursor:pointer;display:grid;gap:2px}
+.plan[aria-pressed="true"]{border-color:var(--hl);background:var(--sun);color:var(--night)}
+.plan[aria-pressed="true"] small{color:var(--night)}
+.plan small{color:var(--muted)}
+.qty{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-weight:700}
+.qty input{width:110px}
+.summary{background:var(--sun);color:var(--night);border-radius:20px;padding:18px;display:grid;gap:10px}
+.summary .line{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.summary .total{font-family:var(--display);font-weight:800;font-size:1.6rem;border-top:3px dashed var(--night);padding-top:8px}
+.summary .btn{background:var(--well);color:var(--hl);box-shadow:0 5px 0 #000;width:fit-content}
+.summary .demo{font-size:.85rem}
+table.num td:not(:first-child),table.num th:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.hi{color:var(--hl);font-weight:800}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px}
+@media (max-width:760px){.calc{grid-template-columns:1fr}}
+.calc-in{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.calc-in label{display:grid;gap:4px;font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;min-width:0}
+.calc-out{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px;display:grid;gap:12px;align-content:start}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.big div{background:var(--well);border-radius:14px;padding:12px;display:grid;gap:2px}
+.big b{font-family:var(--display);font-size:clamp(1.4rem,4vw,2rem);color:var(--hl);font-variant-numeric:tabular-nums;line-height:1.1}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:110px 1fr 90px;gap:8px;align-items:center;font-size:.85rem;font-variant-numeric:tabular-nums}
+.bar .track{height:14px;border-radius:999px;background:var(--well);overflow:hidden}
+.bar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--sky),var(--sun))}
+.bar span:last-child{text-align:right}
+
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.modes{grid-template-columns:1fr}}
+.mode{font:inherit;font-family:var(--display);font-weight:800;font-size:1.25rem;padding:14px;border-radius:18px;border:3px solid var(--sun);background:transparent;color:var(--hl);cursor:pointer}
+.mode[aria-pressed="true"]{background:var(--sun);color:var(--night);box-shadow:0 5px 0 var(--gold)}
+.mode:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.kitrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.kitlink.home{background:var(--sky);box-shadow:0 5px 0 #2C7FD8}
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.idea{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px;min-width:0}
+.idea .ic{font-size:1.8rem;width:48px;height:48px;border-radius:50%;background:var(--sun);display:grid;place-items:center;flex:none}
+.idea b{font-family:var(--display);font-size:1.1rem;color:var(--hl)}
+.ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.rung{background:var(--surface);border:3px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:6px;align-content:start}
+.rung b{font-family:var(--display);font-size:1.15rem}
+.rung.now{border-color:var(--hl);box-shadow:0 0 0 4px rgba(255,210,31,.25)}
+#shop-home{display:grid;gap:14px}
+#shop-home[hidden]{display:none!important}
+
+.mood{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--well);border:2px solid var(--sky);border-radius:18px;padding:10px 16px}
+.mood .mface{font-size:2.6rem;line-height:1;animation:bob 2.4s ease-in-out infinite}
+.mood .mtrack{height:16px;border-radius:999px;background:var(--surface);overflow:hidden}
+.mood .mfill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--sky),var(--sun));transition:width .5s}
+.mood b{font-family:var(--display)}
+.chal{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:repeating-linear-gradient(-45deg,var(--surface2) 0 16px,var(--surface) 16px 32px);border:3px solid var(--sun);border-radius:20px;padding:14px 18px}
+.chal b{font-family:var(--display);font-size:1.3rem;color:var(--hl)}
+.chal .t{font-family:var(--display);font-size:2rem;font-weight:800;color:var(--hl);min-width:3ch;text-align:center;font-variant-numeric:tabular-nums}
+.say{font:inherit;font-weight:800;width:fit-content;border:2px solid var(--sky);background:transparent;color:var(--hl2);border-radius:999px;padding:4px 12px;cursor:pointer}
+.say:hover{background:var(--sky);color:var(--night)}
+.say:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.score{display:flex;flex-wrap:wrap;gap:8px}
+.score span{background:var(--well);border:2px solid var(--line);border-radius:999px;padding:4px 12px;font-weight:700;font-size:.9rem}
+.score b{color:var(--hl)}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.howto div{background:var(--well);border-radius:14px;padding:10px 14px;font-size:.92rem}
+.howto b{color:var(--hl);font-family:var(--display);font-size:1.05rem;display:block}
+.badgewall{display:flex;flex-wrap:wrap;gap:8px}
+.badgewall span{background:var(--sun);color:var(--night);font-weight:800;border-radius:999px;padding:4px 12px;font-size:.85rem}
+.badgewall span.new{background:#fff;box-shadow:0 0 0 3px var(--sun)}
+
+/* White background mode (toggle) */
+:root[data-bg="white"]{color-scheme:light;--bg:#FFFFFF;--deep:#F2F8FF;--surface:#FFFFFF;--surface2:#DDECFF;--line:#B7D3F7;--well:#EAF3FF;--ink:#0A2A6B;--muted:#3F619A;--ice:#1F4A8A;--sky:#5AAEFF;--hl:#1565D8;--hl2:#1565D8;--butter:#0A2A6B;--sun-soft:#DDECFF;--good-soft:#DDECFF}
+:root[data-bg="white"] body{background:#FFFFFF}
+:root[data-bg="white"] .hero{background:linear-gradient(135deg,#FFFFFF 0%,#EAF3FF 60%,#D3E6FF 100%);box-shadow:0 10px 0 #BFD8FA,0 20px 40px rgba(10,42,107,.12)}
+:root[data-bg="white"] h1{text-shadow:0 4px 0 var(--sun)}
+:root[data-bg="white"] nav.jump a{background:#fff}
+:root[data-bg="white"] .pluses span{opacity:.45}
+:root[data-bg="white"] .shop,:root[data-bg="white"] .game{box-shadow:0 10px 0 #BFD8FA}
+.bgtoggle{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;z-index:60;display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--well);border:2px solid var(--sun);box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.bgtoggle button{font:inherit;font-weight:800;font-size:.85rem;border:0;border-radius:999px;padding:6px 12px;cursor:pointer;background:transparent;color:var(--ink)}
+.bgtoggle button[aria-pressed="true"]{background:var(--sun);color:#0A2A6B}
+.bgtoggle button:focus-visible{outline:3px solid var(--hl);outline-offset:1px}
+.gate{position:fixed;inset:0;z-index:70;background:rgba(6,22,55,.7);display:grid;place-items:center;padding:16px}
+.gate>div{background:var(--surface);color:var(--ink);border:4px solid var(--sun);border-radius:22px;padding:22px;max-width:380px;width:100%;display:grid;gap:12px}
+.gate h3{color:var(--hl)}
+.atabs .tab{font-size:.95rem;padding:6px 14px}
+.actlib{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.actlib div{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px 16px}
+.actlib h3{color:var(--hl);font-size:1.1rem}
+.actlib ol{margin:8px 0 0;padding-left:22px;display:grid;gap:2px;font-size:.92rem}
+
+.modes{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important}
+.mfilters .tab{font-size:.9rem;padding:6px 14px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.mitem{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:10px;align-content:space-between;min-width:0}
+.mitem.spec{border-color:var(--sun);box-shadow:0 0 0 3px rgba(255,210,31,.2)}
+.mitem .mic{font-size:1.6rem;width:44px;height:44px;border-radius:50%;background:var(--sun);display:grid;place-items:center}
+.mitem .mbody{display:grid;gap:4px}
+.mitem b{font-family:var(--display);font-size:1.1rem}
+.mitem .price{font-size:1.3rem}
+.mitem .btn{font-size:1rem;padding:8px 14px;width:100%}
+#shop-market{display:grid;gap:14px}
+#shop-market[hidden]{display:none!important}
+
+/* Gamification */
+.lv{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 10px;border-radius:999px;background:var(--sky);color:#0A2A6B;margin-top:4px}
+.lv3,.lv4{background:var(--sun)}.lv5,.lv6{background:linear-gradient(90deg,var(--sun),#fff);box-shadow:0 0 12px rgba(255,210,31,.6)}
+.xpbar{display:block;height:6px;border-radius:999px;background:var(--well);overflow:hidden;margin-top:4px;max-width:160px}
+.xpbar span{display:block;height:100%;background:linear-gradient(90deg,var(--sky),var(--sun));border-radius:999px}
+.player .xpbar{max-width:none}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 20px);transform:translateX(-50%);z-index:80;background:var(--sun);color:#0A2A6B;font-weight:700;padding:10px 18px;border-radius:999px;box-shadow:0 6px 0 var(--gold),0 10px 30px rgba(0,0,0,.3);animation:tin .3s cubic-bezier(.3,1.6,.5,1);max-width:calc(100% - 32px);text-align:center}
+.toast.out{opacity:0;transform:translate(-50%,20px);transition:all .3s}
+.toast .tb{font-size:1.3rem;vertical-align:middle}
+@keyframes tin{from{transform:translate(-50%,40px) scale(.8);opacity:0}}
+.ovl{position:fixed;inset:0;z-index:75;background:rgba(6,22,55,.78);display:grid;place-items:center;padding:16px;overflow:auto}
+.ovl.pass{pointer-events:none;background:transparent}
+.mg{background:var(--surface);color:var(--ink);border:4px solid var(--sun);border-radius:26px;padding:22px;width:min(560px,100%);display:grid;gap:12px;text-align:center;box-shadow:0 10px 0 var(--gold);animation:pop .4s cubic-bezier(.3,1.6,.5,1)}
+.mg h2{font-size:clamp(1.5rem,5vw,2.2rem)}
+.mgc{font-weight:700;font-size:1.1rem}
+.heart{font-size:6rem;background:none;border:0;cursor:pointer;justify-self:center;animation:pulsebeat 1s ease-in-out infinite}
+.heart.thump{animation:thump .25s}
+@keyframes pulsebeat{15%{transform:scale(1.12)}30%{transform:scale(1)}45%{transform:scale(1.08)}60%{transform:scale(1)}}
+@keyframes thump{50%{transform:scale(1.35)}}
+.field{position:relative;height:260px;border-radius:18px;background:var(--well);border:3px dashed var(--sky);overflow:hidden}
+.germ{position:absolute;font-size:2.4rem;background:none;border:0;cursor:pointer;animation:pop .3s cubic-bezier(.3,1.8,.5,1);padding:4px}
+.cnt{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:2.4rem;min-height:3rem}
+.chestbtn{font-size:6rem;background:none;border:0;cursor:pointer;justify-self:center;animation:wobble 1.2s ease-in-out infinite}
+@keyframes wobble{20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(0)}}
+.loots{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.loot{background:var(--well);border:2px solid var(--sun);border-radius:16px;padding:10px;display:grid;gap:4px}
+.stk{font-family:var(--display);font-weight:800;font-size:1.15rem;color:var(--hl)}
+.lvlup .lvnum{font-family:var(--display);font-weight:800;font-size:6rem;line-height:1;color:var(--hl);text-shadow:0 6px 0 var(--gold)}
+.bn{background:var(--sun);color:#0A2A6B;border-radius:24px;padding:18px 34px;display:grid;gap:2px;text-align:center;box-shadow:0 8px 0 var(--gold),0 0 60px rgba(255,210,31,.6);animation:bnin 1.5s ease forwards}
+.bn b{font-family:var(--display);font-size:clamp(2rem,7vw,3.6rem);line-height:1}
+.bn span{font-weight:800}
+@keyframes bnin{0%{transform:scale(.4) rotate(-6deg);opacity:0}15%{transform:scale(1.08) rotate(2deg);opacity:1}25%{transform:scale(1) rotate(0)}85%{opacity:1}100%{opacity:0;transform:scale(1.1)}}
+.mgbtn{width:100%}
+.bbook{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;text-align:center}
+.bdg{background:var(--well);border:2px dashed var(--line);border-radius:16px;padding:10px 6px;display:grid;gap:2px;font-size:.8rem}
+.bdg span{font-size:2rem;filter:grayscale(1);opacity:.5}
+.bdg.on{border:2px solid var(--sun);background:var(--surface2)}
+.bdg.on span{filter:none;opacity:1}
+.nb{display:inline-block;background:#fff;color:#0A2A6B;font-weight:800;border-radius:999px;padding:2px 10px;margin:2px;font-size:.85rem;box-shadow:0 0 0 2px var(--sun)}
+.big-chest{font-size:1.5rem;padding:16px 34px}
+.loops{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.loops div{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px 16px;display:grid;gap:4px}
+.loops b{font-family:var(--display);font-size:1.15rem;color:var(--hl)}
+
+/* Patient banner (both modes) */
+.ptbanner{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;background:var(--well);border:2px solid var(--sky);border-radius:16px;padding:10px 16px}
+.ptbanner>div{min-width:0}
+.ptbanner small{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700}
+.ptbanner b{font-size:.95rem}
+.ptbanner .ptav{font-size:1.9rem}
+.ptbanner .alg{background:var(--sun);color:#0A2A6B;padding:4px 10px;border-radius:8px}
+.ptbanner .alg small{color:#0A2A6B}
+/* White mode: clinical hospital-system look */
+:root[data-bg="white"]{--bg:#F2F4F7;--deep:#F7F9FB;--surface:#FFFFFF;--surface2:#E8EFF7;--line:#C8D2DE;--well:#F2F5F9;--ink:#1B2A3A;--muted:#5A6B7E;--sky:#2A6EBB;--hl:#1F5FAD;--hl2:#1F5FAD;--butter:#1B2A3A;--sun-soft:#FFF6CC;--good-soft:#E6F0FA;--body:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;--display:var(--body)}
+:root[data-bg="white"] body{background:var(--bg);font-size:15px}
+:root[data-bg="white"] .wrap{gap:40px}
+:root[data-bg="white"] h1{font-size:clamp(1.6rem,4vw,2.4rem);color:#fff;text-shadow:none;font-weight:700}
+:root[data-bg="white"] h2{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:700}
+:root[data-bg="white"] h3{font-weight:700}
+:root[data-bg="white"] .eyebrow{letter-spacing:.08em}
+:root[data-bg="white"] .hero{background:#17324F;border:0;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.2);padding:20px 24px;color:#fff}
+:root[data-bg="white"] .hero .eyebrow{color:#FFD21F}
+:root[data-bg="white"] .pluses{display:none}
+:root[data-bg="white"] .band{background:#FFF6CC;color:#1B2A3A;box-shadow:none;border-radius:4px;border-left:4px solid #FFD21F}
+:root[data-bg="white"] nav.jump a{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:4px;font-weight:600}
+:root[data-bg="white"] nav.jump a:hover{background:#FFD21F;color:#17324F;border-color:#FFD21F;transform:none}
+:root[data-bg="white"] .flow li,:root[data-bg="white"] .dept,:root[data-bg="white"] .stat,:root[data-bg="white"] .comp div,:root[data-bg="white"] .loops div,:root[data-bg="white"] .actlib div,:root[data-bg="white"] .tablebox,:root[data-bg="white"] .idea,:root[data-bg="white"] .rung,:root[data-bg="white"] .mitem,:root[data-bg="white"] .calc-in,:root[data-bg="white"] .calc-out,:root[data-bg="white"] .player,:root[data-bg="white"] .avatar,:root[data-bg="white"] .card,:root[data-bg="white"] .chip,:root[data-bg="white"] .item,:root[data-bg="white"] .prod,:root[data-bg="white"] .plan,:root[data-bg="white"] .loot,:root[data-bg="white"] .bdg,:root[data-bg="white"] .cert,:root[data-bg="white"] .shop,:root[data-bg="white"] .game,:root[data-bg="white"] .mood{border-radius:6px!important;border-width:1px!important;box-shadow:none!important;animation:none!important}
+:root[data-bg="white"] .flow li:hover,:root[data-bg="white"] .chip:hover,:root[data-bg="white"] .item:hover,:root[data-bg="white"] .prod:hover,:root[data-bg="white"] .step:hover,:root[data-bg="white"] .prod[aria-pressed="true"],:root[data-bg="white"] .card.done{transform:none}
+:root[data-bg="white"] .flow li::before{border-radius:4px;width:30px;height:30px;font-size:1rem}
+:root[data-bg="white"] th{background:#E9EEF4;color:#1B2A3A;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+:root[data-bg="white"] tbody tr:nth-child(even){background:#F7F9FB}
+:root[data-bg="white"] .game{border-color:#C8D2DE!important;box-shadow:0 1px 3px rgba(0,0,0,.12)!important}
+:root[data-bg="white"] .game-top{background:#17324F;padding:8px 14px}
+:root[data-bg="white"] .game-top b{background:transparent;color:#fff;font-size:1.05rem;padding:0}
+:root[data-bg="white"] .game-body h3{color:var(--ink);font-size:1.15rem}
+:root[data-bg="white"] .btn{border-radius:4px;box-shadow:none!important;background:#1F5FAD;color:#fff;font-weight:600;font-size:.95rem;padding:9px 16px;animation:none!important}
+:root[data-bg="white"] .btn:hover:not(:disabled){transform:none;background:#174C8C}
+:root[data-bg="white"] .btn:active:not(:disabled){transform:none}
+:root[data-bg="white"] .btn.ghost{background:#fff;color:#1F5FAD;border:1px solid #1F5FAD}
+:root[data-bg="white"] .btn.ghost:hover:not(:disabled){background:#E6F0FA}
+:root[data-bg="white"] .btn.sun{background:#FFD21F;color:#1B2A3A;font-size:1rem;padding:10px 18px}
+:root[data-bg="white"] .btn.sun:hover:not(:disabled){background:#F2C200}
+:root[data-bg="white"] input,:root[data-bg="white"] select{border-radius:4px;border-width:1px;background:#fff;font-weight:400}
+:root[data-bg="white"] .chip b{font-size:1rem}
+:root[data-bg="white"] .chip[aria-pressed="true"]{background:#E6F0FA;color:var(--ink);border-color:#1F5FAD!important;border-left:4px solid #1F5FAD!important;transform:none}
+:root[data-bg="white"] .chip[aria-pressed="true"] small{color:var(--muted)}
+:root[data-bg="white"] .beats{gap:0;border-bottom:2px solid #C8D2DE}
+:root[data-bg="white"] .beat{border-radius:0;border:0;background:transparent;font-size:.9rem;padding:8px 12px;border-bottom:3px solid transparent;margin-bottom:-2px}
+:root[data-bg="white"] .beat.now{background:transparent;color:#1F5FAD;border-bottom-color:#1F5FAD;box-shadow:none}
+:root[data-bg="white"] .beat.past{background:transparent;color:var(--ink)}
+:root[data-bg="white"] .card{border-top:3px solid #C8D2DE!important}
+:root[data-bg="white"] .card.done{border-top-color:#1F5FAD!important}
+:root[data-bg="white"] .card-h .ic{width:40px;height:40px;font-size:1.4rem;border-radius:4px;background:#E8EFF7}
+:root[data-bg="white"] .card-h b{font-size:1rem}
+:root[data-bg="white"] .tag{border-radius:3px;background:#E8EFF7;color:#1B2A3A}
+:root[data-bg="white"] .irl{border:0;border-left:4px solid #FFD21F;background:#FFFBEA;border-radius:0 4px 4px 0;color:var(--ink)}
+:root[data-bg="white"] .real{background:#E6F0FA;color:var(--ink);border-radius:4px}
+:root[data-bg="white"] .step{border-radius:4px;background:#fff;border-width:1px}
+:root[data-bg="white"] .step .bx{border-radius:3px;border-width:2px;border-color:#8FA3B8}
+:root[data-bg="white"] .step.ok{border-color:#1F5FAD}
+:root[data-bg="white"] .step.ok .bx{background:#1F5FAD;border-color:#1F5FAD;color:#fff}
+:root[data-bg="white"] .mood{background:#fff;border-color:#C8D2DE}
+:root[data-bg="white"] .mood .mface{animation:none}
+:root[data-bg="white"] .chal{background:#FFFBEA;border:1px solid #F2C200;border-left:4px solid #FFD21F;border-radius:4px}
+:root[data-bg="white"] .chal b{color:var(--ink);font-size:1.05rem}
+:root[data-bg="white"] .chal .t{color:#1F5FAD}
+:root[data-bg="white"] .score span{border-radius:4px;border-width:1px;background:#fff}
+:root[data-bg="white"] .howto div{border-radius:4px;background:#fff;border:1px solid #C8D2DE}
+:root[data-bg="white"] .face{width:96px;height:96px;font-size:3.2rem;border:3px solid #fff;box-shadow:0 0 0 2px #1F5FAD;animation:none;background:#E8EFF7}
+:root[data-bg="white"] .item.on{background:#E6F0FA;color:var(--ink);border-color:#1F5FAD!important}
+:root[data-bg="white"] .kitlink{border-radius:4px;box-shadow:none;font-size:1rem}
+:root[data-bg="white"] .kitlink.home{background:#E6F0FA;color:#1F5FAD;border:1px solid #1F5FAD}
+:root[data-bg="white"] .cert{background:#fff}
+:root[data-bg="white"] .mode{border-radius:4px;border-width:1px;font-size:1rem;color:#1F5FAD;border-color:#1F5FAD}
+:root[data-bg="white"] .mode[aria-pressed="true"]{background:#1F5FAD;color:#fff;box-shadow:none}
+:root[data-bg="white"] .tab{border-radius:4px;border-width:1px;font-size:.92rem;color:#1F5FAD;border-color:#1F5FAD}
+:root[data-bg="white"] .tab[aria-selected="true"]{background:#1F5FAD;color:#fff}
+:root[data-bg="white"] .summary{background:#FFFBEA;border:1px solid #F2C200;border-radius:6px}
+:root[data-bg="white"] .summary .btn{background:#1F5FAD;color:#fff}
+:root[data-bg="white"] .pill{border-radius:3px}
+:root[data-bg="white"] .price{color:var(--ink)}
+:root[data-bg="white"] .stat:first-child{background:#17324F!important;color:#fff;border-color:#17324F!important}
+:root[data-bg="white"] .stat:first-child b{color:#FFD21F}
+:root[data-bg="white"] .note{border-radius:0 4px 4px 0;background:#fff}
+:root[data-bg="white"] .ovl{background:rgba(23,50,79,.55)}
+:root[data-bg="white"] .mg{border:1px solid #C8D2DE;border-top:6px solid #1F5FAD;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+:root[data-bg="white"] .bn{border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+:root[data-bg="white"] .toast{border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+:root[data-bg="white"] .lv{border-radius:3px}
+:root[data-bg="white"] .bgtoggle{border-color:#1F5FAD;background:#fff}
+:root[data-bg="white"] .bgtoggle button[aria-pressed="true"]{background:#1F5FAD;color:#fff}
+:root[data-bg="white"] .ptbanner{background:#E8EFF7;border:0;border-left:6px solid #17324F;border-radius:0}
+:root[data-bg="white"] .ptbanner .alg{border-radius:3px}
+.xr{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:#061637;border-radius:18px;padding:18px}
+.bone{font-size:2.6rem;background:none;border:0;cursor:pointer;filter:brightness(1.6) grayscale(1);padding:4px;position:relative}
+.bone.crack::after{content:"";position:absolute;left:46%;top:30%;width:3px;height:40%;background:#FFD21F;transform:rotate(25deg);border-radius:2px}
+.bubble{font-size:4rem;background:none;border:0;cursor:pointer;justify-self:center;transition:transform 2.5s ease}
+.bubble.big{transform:scale(1.8)}
+.weekly{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--surface);border:3px dashed var(--sun);border-radius:20px;padding:12px 16px}
+.weekly b{font-family:var(--display);font-size:1.2rem;color:var(--hl)}
+.hcode{display:inline-flex;gap:8px;align-items:center;background:#fff;color:#0A2A6B;border-radius:10px;padding:4px 8px 4px 4px;font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:.85rem;margin:4px 0}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<div class="wrap">
+<style>
+.hero.hv{grid-template-columns:minmax(0,1fr) minmax(280px,460px);align-items:center;gap:28px}
+.hero.hv>.pluses{position:absolute}
+.hero.hv .htx{display:grid;gap:20px;align-content:center;min-width:0}
+@media (max-width:900px){.hero.hv{grid-template-columns:1fr}}
+.vidcard{background:#061637;border:3px solid var(--sun);border-radius:22px;padding:12px;display:grid;gap:10px;box-shadow:0 8px 0 rgba(0,0,0,.25);min-width:0}
+.vidcard .vt{font-family:var(--display);font-weight:800;color:#FFD21F;font-size:1.05rem;display:flex;align-items:center;gap:8px}
+.vtabs{display:flex;gap:6px}
+.vtabs button{flex:1;min-width:0;border:2px solid #5AAEFF;background:transparent;color:#fff;border-radius:999px;padding:7px 10px;font-family:var(--display);font-weight:700;font-size:.95rem;cursor:pointer}
+.vtabs button[aria-pressed="true"]{background:#FFD21F;border-color:#FFD21F;color:#0A2A6B}
+.vtabs button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.vidcard video{width:100%;aspect-ratio:16/9;border-radius:14px;background:#0A2A6B;display:block}
+.vidcard .vc{color:#CFE2FF;font-size:.9rem;margin:0}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.ctas a{text-decoration:none;font-family:var(--display);font-weight:800;font-size:1.2rem;border-radius:999px;padding:12px 26px;border:3px solid #FFD21F}
+.ctas .cta1{background:#FFD21F;color:#0A2A6B;box-shadow:0 5px 0 #B38F00}
+.ctas .cta2{color:#fff;background:rgba(10,42,107,.35)}
+.ctas a:hover{transform:translateY(-1px)}.ctas a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.hnote{margin:0;color:#CFE2FF;font-size:.95rem}
+:root[data-bg="white"] .ctas .cta2{color:#0A2A6B;background:#fff}:root[data-bg="white"] .hnote{color:#3D5A80}
+#videos{scroll-margin-top:80px}#play,#shop{scroll-margin-top:70px}
+</style>
+<header class="hero hv"><div class="pluses" aria-hidden="true"><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span><span>+</span></div>
+ <div class="htx">
+  <span class="eyebrow">Little Hero Health · Demo V2.4</span>
+  <h1>Run the hospital with your friends</h1>
+  <span class="band">🩹 Pick your heroes, suit up, and play a whole hospital shift together</span>
+  <div class="ctas"><a class="cta1" href="#play">▶ Play now</a><a class="cta2" href="#shop">🎒 Get the Hero Box</a></div>
+  <p class="hnote">Free to play · Ages 0 to 21+ · Nothing you type leaves this device</p>
+ </div>
+ <aside class="vidcard" id="videos" aria-label="How-to videos">
+  <span class="vt">🎬 Watch and learn</span>
+  <div class="vtabs" role="group" aria-label="Pick a video"><button type="button" data-vid="play" aria-pressed="true">▶ How to play</button><button type="button" data-vid="site" aria-pressed="false">🧭 Using the website</button></div>
+  <video id="hvid" controls playsinline preload="metadata" poster="videos/how-to-play.jpg" src="videos/how-to-play.mp4" aria-describedby="hvc"></video>
+  <p class="vc" id="hvc">2 minutes · Build your squad, suit up, play a shift and heal your patient.</p>
+ </aside>
+</header>
+<script>
+(()=>{const V={play:["videos/how-to-play.mp4","videos/how-to-play.jpg","2 minutes · Build your squad, suit up, play a shift and heal your patient."],site:["videos/how-to-use-the-website.mp4","videos/how-to-use-the-website.jpg","2 minutes · A tour of the game, Workstation, My Hospital keys, Camp HQ, Community and Roblox."]};
+const v=document.getElementById("hvid"),c=document.getElementById("hvc");document.querySelectorAll("[data-vid]").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.vid;if(v.getAttribute("src")===V[k][0])return;document.querySelectorAll("[data-vid]").forEach(x=>x.setAttribute("aria-pressed",x===b));v.pause();v.setAttribute("poster",V[k][1]);v.setAttribute("src",V[k][0]);c.textContent=V[k][2];v.load();}));})();
+</script>
+<section id="play" class="stack">
+  <span class="eyebrow">Step 1 · Play</span>
+  <h2>Play a <em>shift</em></h2>
+  <p class="muted">Pass the device around the room. Everything runs on this page with no accounts, no photos and no data leaving the device.</p>
+  <div class="game" aria-live="polite">
+    <div class="game-top"><b>Little Hero Hospital</b><span class="bc" id="gqr">LHH-IRL</span></div>
+    <div class="game-body" id="game"></div>
+  </div>
+</section>
+<section id="shop" class="stack">
+  <span class="eyebrow">Step 2 · Gear up</span>
+  <h2>Get the <em>real kit</em> delivered</h2>
+  <p class="muted">Order a Little Hero kit, shop the marketplace for gear at every level, or build your kit from things already at home. Families buy once and add a monthly Shift Box with a new action, new missions and new gear. Schools, camps and training programs buy by the season or the year.</p>
+  <div class="shop">
+    <div class="modes"><button class="mode" data-mode="order" aria-pressed="true">🛒 Order a kit</button><button class="mode" data-mode="market" aria-pressed="false">🏪 Marketplace</button><button class="mode" data-mode="home" aria-pressed="false">🏠 Use what's at home</button></div>
+    <div class="tabs" role="tablist" id="shop-tabs">
+      <button class="tab" role="tab" id="tab-home" aria-selected="true" data-tab="home">For home</button>
+      <button class="tab" role="tab" id="tab-org" aria-selected="false" data-tab="org">Schools, camps &amp; training</button>
+    </div>
+    <div id="shop-products" class="products"></div>
+    <div id="shop-options" class="options"></div>
+    <div id="shop-summary" class="summary"></div>
+    <div id="shop-market" hidden></div>
+    <div id="shop-home" hidden></div>
+    <div class="stack"><h3>Gear that grows with your hero</h3><p class="muted">Start with plastic play gear, then upgrade as your hero grows, all the way to clinical training equipment. Your current level is highlighted.</p><div id="ladder" class="ladder"></div></div>
+  </div>
+</section>
+<p class="muted" style="text-align:center">Demo build V2.4. No accounts, no payments, and nothing you type leaves this device.</p>
+</div>
+<script>
+const TIERS=[
+ {age:"0–5",name:"Teddy Clinic",mode:"kid"},{age:"5–9",name:"Junior Hero",mode:"kid"},
+ {age:"9–13",name:"Hero Academy",mode:"pro"},{age:"13–16",name:"Hero Explorer",mode:"pro"},
+ {age:"16–18",name:"Hero Volunteer",mode:"pro"},{age:"18–21",name:"Hero Trainee",mode:"pro"},
+ {age:"21+",name:"Real World",mode:"pro"}];
+const SCEN=[
+ [0,"Bumpy Bike Fall","a sore arm after falling off a bike"],[0,"Sniffle Season","a runny nose and a little cough"],[0,"Tummy Rumble","a tummy ache"],[0,"Scraped Knee","a scraped knee from the playground"],[0,"Wobbly Tooth","a wobbly tooth"],[0,"Check-up Day","a yearly check-up to see how much they've grown"],[0,"Splinter Surprise","a tiny splinter in one paw"],[0,"Itchy Bug Bite","an itchy bug bite"],[0,"Sleepy Teddy","trouble falling asleep"],[0,"Hiccup Hurricane","hiccups that won't stop"],
+ [1,"Broken Arm Cast","a broken arm that needs an X-ray and a cast"],[1,"Fever Day","a fever and a sore throat"],[1,"Allergy Sneezes","sneezes and itchy eyes from pollen"],[1,"Soccer Ankle","a twisted ankle from soccer practice"],[1,"Ear Ache","an ear ache"],[1,"Ambulance Call","a bumped head after a playground tumble"],[1,"Vaccine Day","a check-up and a quick vaccine pinch"],[1,"Sunburn Ouch","a sunburn from a day at the beach"],[1,"Chickenpox Spots","itchy chickenpox spots"],[1,"Toothache Trouble","a cavity in a back tooth"],
+ [2,"Allergy Alert","an itchy rash after eating peanuts"],[2,"Asthma Flare","wheezing and trouble catching their breath at recess"],[2,"Appendix Ache","pain low on the right side of the tummy"],[2,"Fire Drill Day","a twisted ankle during the fire drill"],[2,"Head Bump Check","a bump to the head during a game"],[2,"Hot Field Day","dizziness after a hot field day"],[2,"Stitches Needed","a cut on the chin that needs stitches"],[2,"Sugar Check","high blood sugar and feeling very thirsty"],[2,"Tonsil Surgery","sore tonsils that need to come out"],[2,"Germ Detective","a stomach bug that is spreading through class"],
+ [3,"Concussion Protocol","a hit to the head at football practice"],[3,"Broken Leg Surgery","a broken leg that needs surgery to set it"],[3,"Bee Sting Emergency","a severe allergic reaction to a bee sting"],[3,"Asthma Attack","a bad asthma attack"],[3,"Flu Outbreak","the flu that is spreading through school"],[3,"Skateboard Fall","a broken wrist after a skateboard fall"],[3,"New Diagnosis","new type 1 diabetes"],[3,"Sports Physicals","a preseason sports physical"],[3,"Burn Care","a burn from a kitchen accident"],[3,"Busy ER Night","a high fever on a busy ER night"],
+ [4,"CPR Drill","collapsed and is not breathing (practice manikin)"],[4,"Stop the Bleed","a deep cut on the arm that is bleeding a lot"],[4,"Choking Rescue","food stuck in their throat at lunch"],[4,"Heat Stroke","heat stroke at summer practice"],[4,"Seizure First Aid","a seizure in the cafeteria"],[4,"Flu Clinic Rush","flu symptoms on a packed clinic day"],[4,"Kids' Ward Buddy","a scary first night in the hospital"],[4,"Blood Drive","dizziness after giving blood"],[4,"Game Day Taping","a sprained wrist before the big game"],[4,"Storm Drill","injuries from a pretend storm drill"],
+ [5,"Stroke Alert","a drooping face and slurred speech"],[5,"Chest Pain Workup","chest pain and sweating"],[5,"Crash Scene Sim","injuries from a car crash (simulation)"],[5,"Low Sugar Rescue","low blood sugar and confusion"],[5,"Naloxone Training","slow breathing after taking too much pain medicine (simulation)"],[5,"Sepsis Watch","a fever, a fast heart rate and confusion"],[5,"Baby on the Way","contractions and is about to have a baby"],[5,"Fall Risk Ward","weak legs and keeps trying to get up alone"],[5,"Handoff Challenge","pneumonia and needs a careful shift handoff"],[5,"Mock Code","a heart that stopped on the ward (mock code)"],
+ [6,"Code Blue Sim","a cardiac arrest in the simulation lab"],[6,"Mass Casualty Drill","injuries from a bus crash drill"],[6,"Trauma Bay Sim","injuries from a motorcycle crash (simulation)"],[6,"ICU Sepsis Sim","septic shock in the ICU (simulation)"],[6,"Catch the Error","an order with the wrong dose that needs catching"],[6,"Rapid Response","breathing that is getting worse on the ward"],[6,"Discharge Day","new medicines to learn before going home"],[6,"Family Questions","a worried family with lots of questions"],[6,"Team Rounds","kidney and heart problems that need the whole team"],[6,"Volunteer Shift","a long wait and needs a friendly volunteer"]
+].map(([min,name,c])=>({min,name,c}));
+const BEATS=["Start of shift","Morning rounds","The big moment","End of shift"];
+const ITEMS={leadapron:["🦺","Lead apron"],bubbles:["🫧","Bubble wand"],book:["📖","Story book"],coat:["🥼","White coat"],steth:["🩺","Stethoscope"],badge:["🪪","ID badge"],gloves:["🧤","Gloves"],mask:["😷","Mask"],watch:["⌚","Watch"],scrubs:["👕","Scrubs"],cap:["🧢","Surgical cap"],radio:["📻","Radio"],bag:["🎒","Jump bag"],pills:["💊","Pill tray"],headset:["🎧","Headset"],printer:["🖨️","Band printer"],goggles:["🥽","Goggles"]};
+const DECOYS={hat:["🎩","Top hat"],flip:["🩴","Flip-flops"],shades:["🕶️","Sunglasses"],balloon:["🎈","Balloon"],crown:["👑","Crown"]};
+const M=(kid,pro,fact,steps)=>({kid,pro,fact,steps});
+const JOBS={
+ doctor:{name:"Doctor",ic:"🧑‍⚕️",outfit:["coat","steth","badge"],
+  path:"College → medical school (4 years) → residency (3–7 years).",
+  r:["Get CPR certified and ask a local hospital about teen volunteer programs.","Shadow a doctor and join a pre-med or HOSA club.","Apply for a shadowing day or volunteer role through a hospital volunteer office."],
+  m:[M("Wash your hands while you sing Happy Birthday twice.","Hand hygiene: scrub for 20 seconds before touching any patient.","Clean hands are the top way hospitals stop germs.",["Scrub hands","Put on your badge","Say hi to the team"]),
+     M("Meet {p}. Ask what happened. {p} has {c}.","Take a history: ask {p} what happened, when it started, and rate the pain from 0 to 10. {p} has {c}.","Doctors learn the most by listening first.",["Ask what happened","Point to the pain faces","Write it on the chart"]),
+     M("Look, listen, feel! Check {p}'s heart with your stethoscope.","Examine {p}, then order the right test: an X-ray for bones, a blood test for germs.","Bones show up on X-rays because they block the rays.",["Listen to the heart","Look in the ears","Order a test"]),
+     M("Tell {p} the plan and give a brave sticker.","Explain the plan in simple words, then ask {p} to say it back (teach-back).","Teach-back means the patient repeats the plan in their own words.",["Explain the plan","Ask for questions","Give a brave sticker"])]},
+ nurse:{name:"Nurse",ic:"👩‍⚕️",outfit:["scrubs","badge","watch","steth"],
+  path:"Nursing school (2–4 years) → pass the NCLEX exam → registered nurse.",
+  r:["Take a CPR and first aid class, and look for a hospital nursing summer camp.","Train as a certified nursing assistant (CNA) or shadow a nurse.","Volunteer on a hospital unit or book a nurse shadowing day."],
+  m:[M("Get your nurse tools ready and check your watch.","Shift handoff: get the report on {p} from the night nurse.","Nurses pass on information at every shift change so nothing is missed.",["Hear the report","Check your watch","Wash hands"]),
+     M("Check {p}'s wristband for a name and birthday.","Use two identifiers: check {p}'s name and date of birth on the wristband before any care.","Hospitals check two things every time to be sure it is the right patient.",["Check the name","Check the birthday","Look for a red allergy band"]),
+     M("Take {p}'s temperature and listen to the heartbeat.","Vital signs for {p}: temperature, heart rate, breathing rate, blood pressure.","Normal body temperature is about 98.6°F (37°C).",["Temperature","Heart rate","Breathing"]),
+     M("Give {p} pretend medicine. Check it five ways first!","The Five Rights: right patient, medicine, dose, route and time. Then document it.","Nurses check the Five Rights before every medicine.",["Right patient & medicine","Right dose, route & time","Write it down"])]},
+ surgeon:{name:"Surgeon",ic:"🦸",outfit:["cap","mask","gloves","goggles"],
+  path:"College → medical school → surgical residency (5+ years).",
+  r:["Join a HOSA chapter and take biology and anatomy classes.","Look into surgical technologist programs or school-arranged OR observation.","Visit a hospital simulation lab open house or apply for surgical shadowing."],
+  m:[M("Super scrub! Wash your hands and your elbows.","Surgical scrub, then gown, gloves, cap and mask in the right order.","Surgeons scrub for several minutes before every operation.",["Scrub hands & arms","Gown & gloves","Cap & mask"]),
+     M("Everybody STOP! Check it's {p} and the right spot.","Time-out: the whole team confirms the right patient, procedure and side.","The time-out happens right before every surgery.",["Right patient","Right procedure","Right side marked"]),
+     M("{p} is sleeping safely. Fix the boo-boo gently.","Work inside the sterile field while the anesthesia team watches {p}'s monitor.","An anesthesiologist keeps the patient asleep and safe.",["Stay in the clean zone","Watch the heart monitor","Finish the repair"]),
+     M("Count all your tools. None left behind!","Instrument count: the end count must match the start count.","Teams count tools and sponges before and after surgery.",["Count tools","Count sponges","Send {p} to recovery"])]},
+ medic:{name:"Paramedic",ic:"🚑",outfit:["radio","bag","gloves"],
+  path:"EMT course (a few months) → paramedic program (1–2 years).",
+  r:["Take CPR and Stop the Bleed classes. Some areas have youth EMS explorer posts.","Enroll in an EMT course; many accept students at 18.","Ride along through an EMS agency program or volunteer with a rescue squad."],
+  m:[M("Check the ambulance: lights, siren, bag!","Rig check: restock the jump bag and test the radio and equipment.","Paramedics check the ambulance at the start of every shift.",["Check the bag","Test the radio","Lights on"]),
+     M("Beep beep! Drive carefully to {p}.","Scene safety first, then go to {p}.","Rescuers make sure a scene is safe before they help.",["Is it safe?","Put on gloves","Say who you are"]),
+     M("Is {p} breathing? Talk to {p} gently.","Primary survey on {p}: Airway, Breathing, Circulation.","ABC stands for Airway, Breathing, Circulation.",["Airway","Breathing","Circulation"]),
+     M("Bring {p} to the hospital and tell the doctor what happened.","Handoff report to the ER team: what happened, what you found, what you did.","A clear handoff helps the ER team start care fast.",["What happened","What you found","What you did"])]},
+ pharm:{name:"Pharmacist",ic:"💊",outfit:["coat","badge","pills"],
+  path:"College → pharmacy school (PharmD, 4 years) → licensing exam.",
+  r:["Ask about pharmacy volunteer roles or a pharmacy tech program.","Train as a pharmacy technician; many programs take under a year.","Shadow a hospital pharmacist through the hospital volunteer office."],
+  m:[M("Put on your coat and tidy the medicine shelf.","Review the new medicine orders coming in from the doctors.","Pharmacists double-check every medicine order.",["Coat on","Tidy the shelf","Read the orders"]),
+     M("Read {p}'s medicine order. Is it for {p}?","Verify {p}'s order: right patient, right drug, right dose for {p}'s weight.","Kids' medicine doses often depend on body weight.",["Check the name","Check the medicine","Check the dose"]),
+     M("Uh oh! Does {p} have an allergy? Check for a red band.","Screen {p}'s order for allergies and drug interactions.","Some medicines don't mix, and pharmacists catch that.",["Check allergies","Check other medicines","Approve or call the doctor"]),
+     M("Count the pretend pills and teach {p} when to take them.","Prepare, label and explain the medicine to {p} and family.","Kids only take medicine with a grown-up's help.",["Count & label","Explain when to take it","Wash hands"])]},
+ desk:{name:"Front Desk",ic:"🛎️",outfit:["headset","badge","printer"],
+  path:"High school diploma → on-the-job training or a medical office certificate.",
+  r:["Volunteer at a hospital information desk.","Apply for patient registration or unit clerk jobs; many train on the job.","Apply for patient access or registration roles at a local hospital."],
+  m:[M("Put on your headset and smile. The hospital is open!","Open registration: check the schedule and the waiting room.","The front desk is the first face every patient sees.",["Headset on","Check the schedule","Smile!"]),
+     M("Say hello to {p}. Write down {p}'s name and birthday.","Register {p}: name, date of birth and reason for visit ({c}).","Every patient checks in before seeing a doctor.",["Name","Birthday","Why are you here?"]),
+     M("Print {p}'s hero wristband!","Print {p}'s ID wristband with two identifiers and a QR code.","The QR code lets nurses scan for the right patient.",["Print the band","Check the spelling","Put it on {p}"]),
+     M("Who is the most hurt? They go first.","Help triage: tell the nurse right away about anyone very sick.","Triage means the sickest patients are seen first.",["Look at the waiting room","Tell the nurse","Give visitor stickers"])]},
+ xray:{name:"X-ray Tech",ic:"🩻",outfit:["leadapron","badge","gloves"],
+  path:"X-ray technology program (about 2 years) → registry exam → radiologic technologist.",
+  r:["Ask a hospital imaging department about teen volunteer or job-shadow days.","Look into 2-year radiologic technology programs at community colleges.","Book a shadowing day in a hospital imaging department."],
+  m:[M("Put on your heavy apron. It keeps you safe from X-rays!","Safety first: lead apron on, room clear, and check {p}'s wristband.","X-ray techs wear lead aprons to block extra radiation.",["Apron on","Room is clear","Check the wristband"]),
+     M("Help {p} hold very still, like a statue!","Position {p}: line up the body part with the X-ray plate and ask them to hold still.","Moving makes X-ray pictures blurry.",["Line it up","Hold still","Count to 3"]),
+     M("Click! Take the picture and find the bones.","Take the image, then check it's clear enough for the radiologist to read.","Bones look white on an X-ray because they block the rays.",["Take the picture","Is it clear?","Find the bones"]),
+     M("Show the doctor the picture of {p}'s bones.","Send the images to the radiologist and help {p} back to their room.","A radiologist is a doctor who reads X-rays.",["Send the picture","Tell the doctor","Walk {p} back"])]},
+ lab:{name:"Lab Scientist",ic:"🔬",outfit:["coat","goggles","gloves"],
+  path:"College degree in medical lab science → certification exam → lab scientist.",
+  r:["Join a science club or HOSA and try a lab skills event.","Study biology or chemistry and look for lab assistant jobs.","Volunteer or shadow in a hospital laboratory."],
+  m:[M("Goggles and gloves on, scientist!","Lab safety: goggles, gloves, coat, and a clean bench.","Lab scientists keep everything super clean so tests are right.",["Goggles on","Gloves on","Clean the bench"]),
+     M("A sample from {p} arrived! Check the label.","Receive {p}'s sample and match the label to the order.","Every sample has a label with two identifiers, just like a wristband.",["Read the label","Match the name","Match the birthday"]),
+     M("Look in the microscope. Can you spot the germs?","Run the test: look for germs or count the blood cells.","A microscope makes tiny germs look big.",["Look closely","Count the germs","Write it down"]),
+     M("Tell the doctor what you found!","Report the result to the doctor, and phone right away if it's urgent.","Some results are so important the lab calls the doctor straight away.",["Write the result","Tell the doctor","Clean up"])]},
+ childlife:{name:"Child Life Specialist",ic:"🌈",outfit:["badge","bubbles","book"],
+  path:"College degree in child development → internship → child life certification.",
+  r:["Volunteer with young kids at a hospital, library or camp.","Study child development and ask about child life internships.","Shadow a child life specialist at a children's hospital."],
+  m:[M("Say hi to {p} with a big smile and your name.","Meet {p}: introduce yourself and ask what they're worried about.","Child life specialists help kids feel less scared in the hospital.",["Say hi","Say your name","Ask how they feel"]),
+     M("Show {p} what will happen, using a teddy.","Explain {p}'s test or treatment with a teddy, in simple words.","Practicing on a teddy helps kids know what to expect.",["Show on teddy","Use easy words","Answer questions"]),
+     M("Blow bubbles with {p} and breathe slowly together.","Coach {p} through calm breathing during a scary moment.","Slow breathing helps the body feel calmer.",["Breathe in","Breathe out","Do it 3 times"]),
+     M("Give {p} a brave sticker. They did it!","Celebrate {p}'s courage and help them tell their family about it.","Celebrating bravery helps kids feel proud.",["Brave sticker","High five","Tell the family"])]}
+};
+const NAMES=["Ava","Leo","Mia","Sam","Zoe","Max","Ivy","Kai"];
+const CHAL={0:{name:"Team Challenge: Hand-washing race",text:"Everyone scrubs hands together until the timer ends!",secs:20},2:{name:"Team Challenge: Freeze!",text:"Everyone FREEZE and say {p}'s name together, like a real surgery time-out.",secs:5}};
+const FACES=["🤒","😣","😐","🙂","😀","🤩"];
+const BADGE=p=>JOBS[p.job].name+" Hero · "+TIERS[p.tier].name;
+const loadB=()=>{try{return JSON.parse(localStorage.getItem("lhh-badges")||"[]")}catch(e){return []}};
+const saveB=b=>{try{localStorage.setItem("lhh-badges",JSON.stringify(b))}catch(e){}};
+const plain=t=>t.replaceAll("{p}",S.patient||"the patient").replaceAll("{c}",S.scen!==null?SCEN[S.scen].c:"an ouchie");
+function say(t){try{const u=new SpeechSynthesisUtterance(t);u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+const missionsDone=()=>S.players.reduce((n,p)=>n+Object.entries(p.done).filter(([b,d])=>d.length===JOBS[p.job].m[b].steps.length).length,0)+Object.keys(S.bonus||{}).length;
+const missionsMax=()=>S.players.length*4+Object.keys(CHAL).length;
+let S={screen:"squad",players:[{name:"Ava",job:"nurse",tier:0,worn:[],stars:0,done:{}},{name:"Leo",job:"doctor",tier:1,worn:[],stars:0,done:{}}],patient:"Biscuit the Bear",scen:null,di:0,beat:0,msg:""};
+const g=document.getElementById("game");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const minTier=()=>Math.min(...S.players.map(p=>p.tier));
+const fill=(t)=>esc(t).replaceAll("{p}",esc(S.patient||"the patient")).replaceAll("{c}",esc(S.scen!==null?SCEN[S.scen].c:"an ouchie"));
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+const WEEK=()=>Math.floor((Date.now()/864e5+4)/7);
+const weeklyOK=()=>{try{return +localStorage.getItem("lhh-weekly")!==WEEK()}catch(e){return true}};
+function squad(){
+  const jobOpts=k=>Object.entries(JOBS).map(([id,j])=>`<option value="${id}"${id===k?" selected":""}>${j.ic} ${j.name}</option>`).join("");
+  const tierOpts=t=>TIERS.map((x,i)=>`<option value="${i}"${i===t?" selected":""}>${x.age} · ${x.name}</option>`).join("");
+  const mt=minTier(),at=Math.min(S.atab??mt,mt);
+  return `<div class="howto"><div><b>1 · Squad</b>Add up to 8 friends with names and ages.</div><div><b>2 · Suit up</b>Dress your hero, on screen and in real life.</div><div><b>3 · Play</b>Act out each mission together, then tap the steps.</div><div><b>4 · Heal</b>Make the patient feel better and earn badges.</div></div>
+  ${weeklyOK()?`<div class="weekly"><div><b>🎁 Weekly Surprise is ready!</b><br><span class="muted">A free sticker and +20 XP for every hero in your squad. It waits for you all week.</span></div><button class="btn sun" id="weekly">Open it</button></div>`:""}
+  <div class="stack"><h3>1. Build your squad</h3>
+  <div class="players">${S.players.map((p,i)=>`<div class="player">
+    <label>Hero name ${lvChip(p)}<input id="pn${i}" data-i="${i}" class="pname" value="${esc(p.name)}" maxlength="16"></label>
+    <label>Hospital job<select id="pj${i}" data-i="${i}" class="pjob">${jobOpts(p.job)}</select></label>
+    <label>Age<select id="pt${i}" data-i="${i}" class="ptier">${tierOpts(p.tier)}</select></label>
+    ${S.players.length>1?`<button class="x" data-rm="${i}" aria-label="Remove ${esc(p.name)}">Remove</button>`:"<span></span>"}
+  </div>`).join("")}</div>
+  <div class="row">${S.players.length<8?`<button class="btn ghost" id="add">+ Add a friend</button>`:""}
+  <label class="row" style="gap:8px;font-weight:700">Today's patient <input id="patient" value="${esc(S.patient)}" maxlength="24" style="width:auto"></label></div></div>
+  <div class="stack"><h3>2. Choose today's action</h3>
+  <div class="row atabs">${TIERS.map((t,i)=>i<=mt?`<button class="tab" data-atab="${i}" aria-selected="${at===i}">${t.age} · ${t.name}</button>`:"").join("")}</div>
+  <div class="scen">${SCEN.map((s,i)=>s.min===at?`<button class="chip" data-sc="${i}" aria-pressed="${S.scen===i}"><b>${s.name}</b><small>Patient has ${esc(s.c)}</small></button>`:"").join("")}</div>
+  ${mt<6?`<p class="locked">🔒 ${SCEN.filter(s=>s.min>mt).length} more actions unlock as the youngest hero grows up. Groups play at the youngest hero's level.</p>`:""}</div>
+  <div class="row"><button class="btn sun" id="go" ${S.scen===null?"disabled":""}>Suit up →</button>${S.scen===null?`<span class="muted">Pick today's action to start.</span>`:""}</div>`;
+}
+function dress(){
+  const p=S.players[S.di], j=JOBS[p.job];
+  const others=shuffle(Object.keys(ITEMS).filter(k=>!j.outfit.includes(k))).slice(0,2);
+  if(!p.pool) p.pool=shuffle([...j.outfit,...others,...shuffle(Object.keys(DECOYS)).slice(0,3)]);
+  const all=p.worn.length===j.outfit.length;
+  const it=k=>ITEMS[k]||DECOYS[k];
+  return `<div class="row" style="justify-content:space-between"><h3>3. Suit up · ${esc(p.name)} the ${j.name}</h3><span class="tag">Friend ${S.di+1} of ${S.players.length}</span></div>
+  <p class="irl">In real life: put on your ${j.outfit.map(k=>ITEMS[k][1].toLowerCase()).join(", ")}. A pretend version works great!</p>
+  <div class="kitrow"><a class="kitlink" href="#shop" data-kit="${S.players.length<=1?"solo":S.players.length<=4?"squad4":"squad8"}"><span>🛒 Order the real kit</span><small>Your squad of ${S.players.length} fits the ${S.players.length<=1?"Solo Box":S.players.length<=4?"Squad 4 Box":"Squad 8 Box"} →</small></a><a class="kitlink home" href="#shop" data-home="${p.job}" data-tier="${p.tier}"><span>🏠 Use what's at home</span><small>Ideas for a ${j.name.toLowerCase()}, ages ${TIERS[p.tier].age} →</small></a></div>
+  <div class="dress"><div class="avatar"><div class="face">${j.ic}</div><b>${esc(p.name)}</b><div class="worn">${p.worn.map(k=>"<span>"+ITEMS[k][0]+"</span>").join("")}</div><small class="muted">${p.worn.length} of ${j.outfit.length} outfit pieces</small></div>
+  <div class="stack"><p class="muted">Tap the things a ${j.name.toLowerCase()} wears to work.</p>
+  <div class="wardrobe">${p.pool.map(k=>`<button class="item${p.worn.includes(k)?" on":""}" data-it="${k}"><span>${it(k)[0]}</span>${it(k)[1]}</button>`).join("")}</div>
+  <p class="msg" style="color:${all?"var(--good)":"var(--coral)"}">${all?`Looking like a real ${j.name.toLowerCase()}!`:esc(S.msg)}</p>
+  <div class="row"><button class="btn ghost" id="back">← Back</button><button class="btn sun" id="next" ${all?"":"disabled"}>${S.di<S.players.length-1?"Next friend →":"Start the shift →"}</button></div></div></div>`;
+}
+function card(p,i){
+  const j=JOBS[p.job], m=j.m[S.beat], t=TIERS[p.tier], key=S.beat, d=p.done[key]||[];
+  const complete=d.length===m.steps.length;
+  let extra="";
+  if(p.tier===0) extra+=`<p class="irl">🧸 With your teddy patient. A grown-up can read this out loud.</p>`;
+  else extra+=`<p class="irl">In real life: act it out with your squad and props.</p>`;
+  if(p.tier>=1) extra+=`<p class="fact">Fun fact: ${esc(m.fact)}</p>`;
+  if(S.beat===2) extra+=p.mini?`<p class="stars">🎮 Bonus game done!</p>`:`<button class="btn sun mgbtn" data-mg="${i}">🎮 Play the bonus game</button>`;
+  if(S.beat===3&&p.tier===3) extra+=`<p class="real">Career path: ${esc(j.path)}</p>`;
+  if(S.beat===3&&(p.tier===3||p.tier===4)) extra+=`<p class="fact">Questions about this career? Ask a school nurse, counselor or HOSA advisor.</p>`;
+  if(S.beat===3&&p.tier>=4) extra+=`<p class="real"><b>Your real-world step:</b> ${esc(j.r[p.tier-4])}${p.tier===6?" Only licensed staff give real patient care.":""}</p>`;
+  return `<div class="card${complete?" done":""}"><div class="card-h"><span class="ic">${j.ic}</span><div><b>${esc(p.name)} · ${j.name}</b><br><span class="tag">${t.age} · ${t.name}</span> ${lvChip(p)}</div></div>
+  <p><b>${fill(t.mode==="kid"?m.kid:m.pro)}</b></p>${p.tier<=1?`<button class="say" data-say="${i}">🔊 Read it to me</button>`:""}${extra}
+  <div class="steps">${m.steps.map((s,k)=>`<button class="step${d.includes(k)?" ok":""}" data-p="${i}" data-s="${k}" aria-pressed="${d.includes(k)}"><span class="bx">${d.includes(k)?"✓":""}</span>${fill(s)}</button>`).join("")}</div>
+  ${complete?`<span class="stars" aria-label="Star earned">★ Mission done</span>`:""}</div>`;
+}
+function shift(){
+  const allDone=S.players.every(p=>(p.done[S.beat]||[]).length===JOBS[p.job].m[S.beat].steps.length);
+  return `<div class="row" style="justify-content:space-between"><h3>4. ${SCEN[S.scen].name}</h3><span class="muted">Patient: <b>${esc(S.patient)}</b> has ${esc(SCEN[S.scen].c)}</span></div>
+  ${ptBanner()}<div class="beats">${BEATS.map((b,i)=>`<div class="beat ${i===S.beat?"now":i<S.beat?"past":""}">${b}</div>`).join("")}</div>
+  ${(()=>{const pct=missionsDone()/missionsMax(),fi=Math.min(5,Math.floor(pct*5.99));return `<div class="mood"><span class="mface" aria-hidden="true">${FACES[fi]}</span><div><b>${esc(S.patient)} is feeling ${["poorly","a bit sore","okay","better","great","AMAZING"][fi]}</b><span class="mtrack" style="display:block;margin-top:6px"><span class="mfill" style="width:${Math.round(pct*100)}%"></span></span></div><b class="stars">${missionsDone()}★</b></div>`})()}
+  ${CHAL[S.beat]?`<div class="chal"><div><b>${CHAL[S.beat].name}</b><p>${fill(CHAL[S.beat].text)}</p></div>${(S.bonus||{})[S.beat]?`<span class="stars">★ Team bonus!</span>`:`<span class="t" id="chal-t">${CHAL[S.beat].secs}</span><button class="btn sun" id="chal">Start the timer</button>`}</div>`:""}
+  <div class="score">${S.players.map(p=>`<span>${JOBS[p.job].ic} ${esc(p.name)} <b>${Object.entries(p.done).filter(([b,d])=>d.length===JOBS[p.job].m[b].steps.length).length}★</b></span>`).join("")}</div>
+  <div class="cards">${S.players.map(card).join("")}</div>
+  <div class="row"><button class="btn sun" id="beat">${S.beat<3?"Next part of the day →":"Finish the shift →"}</button>${allDone?"":`<span class="muted">Tap each step when your squad has done it in real life.</span>`}</div>`;
+}
+function end(){
+  return `<h3 class="win">Shift complete! ${esc(S.patient)} is feeling much better.</h3>
+  <p class="irl" style="text-align:center">Hero break! Stretch, drink some water, and tell a grown-up your favorite part.</p>
+  <div class="cards">${S.players.map(p=>{const j=JOBS[p.job];const st=Object.entries(p.done).filter(([b,d])=>d.length===j.m[b].steps.length).length;
+   return `<div class="cert"><span style="font-size:2.4rem">${j.ic}</span><b style="font-family:var(--display);font-size:1.3rem">${esc(p.name)}</b><span>Hero ${j.name} · ${TIERS[p.tier].name}</span><span class="stars">${"★".repeat(st)}${"☆".repeat(4-st)}</span><div>${lvChip(p)}</div><b class="stars">+${p.xpGain||0} XP</b><div>${(p.newBadges||[]).map(id=>{const b=BADGES.find(x=>x[0]===id);return `<span class="nb">${b[1]} ${b[2]}</span>`}).join("")}</div><button class="btn ghost" data-book="${S.players.indexOf(p)}">📖 Badge Book</button><small><a href="roblox.html">🏥 Play Little Hero on Roblox</a></small>${p.tier>=4?`<small>Next real step: ${esc(j.r[p.tier-4])}</small>`:""}</div>`}).join("")}</div>
+  ${S.chest?`<p class="stars" style="text-align:center">🎁 Chest opened! Check your Badge Books.</p>`:`<div style="text-align:center"><button class="btn sun big-chest" id="chest">🎁 Open the Hero Chest</button></div>`}
+  <div class="row"><button class="btn" id="again">Play another day</button><button class="btn ghost" id="swap">Swap jobs</button></div>`;
+}
+function boom(x,y,n){const box=document.createElement("div");box.className="boom";const C=["#FFD21F","#FFB400","#FFF0A3","#5AAEFF","#1756C2","#FFFFFF"];
+  for(let i=0;i<n;i++){const e=document.createElement("i");const a=Math.random()*Math.PI*2,v=80+Math.random()*220;
+    e.style.cssText=`left:${x}px;top:${y}px;background:${C[i%C.length]};--dx:${Math.cos(a)*v}px;--dy:${Math.sin(a)*v-60+Math.random()*180}px;--r:${Math.random()*720}deg`;box.appendChild(e);}
+  document.body.appendChild(box);setTimeout(()=>box.remove(),1300);}
+/* ---------- Gamification: levels, XP, badges, stickers, mini-games, chest ---------- */
+const RANKS=["Rookie","Helper","Junior Hero","Hero","Super Hero","Chief Hero","Legend"];
+const LVL=[0,100,250,450,700,1000,1400];
+const lvlOf=xp=>{let l=0;LVL.forEach((t,i)=>{if(xp>=t)l=i});return l;};
+const BADGES=[["first","🎉","First Shift","Finish your first shift"],
+ ...Object.keys(JOBS).map(k=>["job-"+k,JOBS[k].ic,JOBS[k].name+" Badge","Finish a shift as a "+JOBS[k].name.toLowerCase()]),
+ ["alljobs","🏥","Every Job","Play all 9 jobs"],["teddy","🧸","Teddy Healer","Finish a Teddy Clinic shift"],
+ ["hands","🧼","Clean Hands","Finish the hand-washing race"],["freeze","🧊","Freeze Pro","Finish the surgery freeze"],
+ ["fullheal","🤩","Full Heal","Make a patient feel AMAZING"],["squad","🤝","Squad Goals","Play with 4 or more heroes"],
+ ["explorer","🗺️","Action Explorer","Play 5 different actions"],["mini","🎮","Bonus Star","Finish a bonus game"],["super","🦸","Super Hero","Reach level 5"]];
+const STICKERS=["🩹 Brave Bandage","⭐ Gold Star","🚑 Speedy Ambulance","🧸 Teddy Hug","💊 Pill Wizard","🩺 Heart Listener","🧼 Super Suds","🦴 Bone Boss","😷 Mask Master","🏥 Hospital Hero","🫀 Big Heart","🌈 Feel-Better Rainbow"];
+let HEROES={};try{HEROES=JSON.parse(localStorage.getItem("lhh-heroes")||"{}")}catch(e){}
+const saveH=()=>{try{localStorage.setItem("lhh-heroes",JSON.stringify(HEROES))}catch(e){}};
+const hero=p=>{const k=(p.name||"").trim().toLowerCase()||"hero";return HEROES[k]||(HEROES[k]={xp:0,jobs:[],acts:[],badges:[],stickers:[]});};
+let TQ=[],tBusy=false,LQ=[];
+function toast(h){TQ.push(h);if(!tBusy)nextToast();}
+function nextToast(){const h=TQ.shift();if(!h){tBusy=false;return;}tBusy=true;const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.innerHTML=h;document.body.appendChild(t);setTimeout(()=>{t.classList.add("out");setTimeout(()=>{t.remove();nextToast();},300)},1700);}
+function overlay(h,cls){const o=document.createElement("div");o.className="ovl "+(cls||"");o.innerHTML=h;document.body.appendChild(o);return o;}
+function giveXP(p,n,why,quiet){const h=hero(p),b=lvlOf(h.xp);h.xp+=n;p.xpGain=(p.xpGain||0)+n;const a=lvlOf(h.xp);if(!quiet)toast(`<b>+${n} XP</b> ${esc(p.name)} · ${why}`);if(a>b){LQ.push([p,a]);if(a>=4)giveBadge(p,"super",quiet);}saveH();}
+function giveBadge(p,id,quiet){const h=hero(p);if(h.badges.includes(id))return;h.badges.push(id);(p.newBadges=p.newBadges||[]).push(id);const b=BADGES.find(x=>x[0]===id);if(!quiet)toast(`<span class="tb">${b[1]}</span> <b>New badge!</b> ${esc(p.name)}: ${b[2]}`);saveH();}
+function showLevelUps(){const x=LQ.shift();if(!x)return;const[p,l]=x;const o=overlay(`<div class="mg lvlup"><span class="eyebrow">Level up!</span><div class="lvnum">${l+1}</div><h2>${esc(p.name)} is now a <em>${RANKS[l]}</em></h2><p>New hero frame unlocked.${l>=2?" Bonus games just got a little trickier!":""}</p><button class="btn sun" id="lv-ok">Awesome!</button></div>`);boom(innerWidth/2,innerHeight/2,90);o.querySelector("#lv-ok").onclick=()=>{o.remove();showLevelUps();};}
+function lvChip(p){const h=hero(p),l=lvlOf(h.xp),nx=LVL[l+1],pct=nx?Math.round((h.xp-LVL[l])/(nx-LVL[l])*100):100;return `<span class="lv lv${l}">Lv ${l+1} · ${RANKS[l]}</span><span class="xpbar" aria-label="${pct}% to next level"><span style="width:${pct}%"></span></span>`;}
+function banner(t,sub){const o=overlay(`<div class="bn"><b>${t}</b>${sub?`<span>${esc(sub)}</span>`:""}</div>`,"pass");setTimeout(()=>o.remove(),1500);}
+const GAMEOF={xray:"bone",lab:"germ",childlife:"breathe",doctor:"heart",nurse:"heart",medic:"germ",desk:"germ",surgeon:"count",pharm:"count"};
+function miniGame(i){const p=S.players[i],kind=GAMEOF[p.job],lv=lvlOf(hero(p).xp),little=p.tier<=1;let o,fin=false;
+ const done=xp=>{if(fin)return;fin=true;p.mini=true;o.remove();giveXP(p,xp,"bonus game");giveBadge(p,"mini");render();boom(innerWidth/2,innerHeight/2,60);showLevelUps();};
+ if(kind==="heart"){const need=6+Math.min(lv,4)*2;let n=0;o=overlay(`<div class="mg"><span class="eyebrow">Bonus game · Heartbeat</span><h2>Tap the heart to listen!</h2><button class="heart" id="mg-h" aria-label="Heart">🫀</button><p class="mgc"><b id="mg-n">0</b> of ${need} beats heard</p></div>`);
+  o.querySelector("#mg-h").onclick=e=>{n++;o.querySelector("#mg-n").textContent=n;const h=e.currentTarget;h.classList.remove("thump");void h.offsetWidth;h.classList.add("thump");if(n>=need)setTimeout(()=>done(30),250);};}
+ else if(kind==="germ"){let z=0,left=12;const life=little?1800:Math.max(700,1300-lv*120);o=overlay(`<div class="mg"><span class="eyebrow">Bonus game · Germ Zap</span><h2>Zap the germs!</h2><div class="field" id="mg-f"></div><p class="mgc"><b id="mg-n">0</b> zapped · <span id="mg-l">12</span> to go</p></div>`);
+  const f=o.querySelector("#mg-f");const spawn=()=>{if(fin)return;if(left<=0){setTimeout(()=>done(Math.max(10,z*5)),300);return;}left--;o.querySelector("#mg-l").textContent=left;const g=document.createElement("button");g.className="germ";g.textContent=left%2?"🦠":"🧫";g.setAttribute("aria-label","Germ");g.style.left=(5+Math.random()*78)+"%";g.style.top=(5+Math.random()*68)+"%";g.onclick=()=>{if(g.disabled)return;z++;o.querySelector("#mg-n").textContent=z;g.textContent="✨";g.disabled=true;};f.appendChild(g);setTimeout(()=>{g.remove();spawn();},life);};spawn();}
+ else if(kind==="bone"){let r=0,sc=0;o=overlay(`<div class="mg"><span class="eyebrow">Bonus game · X-ray Detective</span><h2>Find the broken bone!</h2><div class="xr" id="mg-x"></div><p class="mgc">Round <b id="mg-r">1</b> of 3</p></div>`);
+  const round=()=>{if(r>=3){done(Math.max(10,sc*10));return;}const n=little?4:6+Math.min(lv,2),bad=Math.floor(Math.random()*n);o.querySelector("#mg-r").textContent=r+1;
+   o.querySelector("#mg-x").innerHTML=Array.from({length:n},(_,k)=>`<button class="bone${k===bad?" crack":""}" data-k="${k}" aria-label="Bone ${k+1}">🦴</button>`).join("");
+   o.querySelectorAll(".bone").forEach(b=>b.onclick=()=>{if(+b.dataset.k===bad){sc++;b.textContent="✅";}else{b.textContent="🔍";o.querySelector(".bone.crack").textContent="⚡";}o.querySelectorAll(".bone").forEach(x=>x.disabled=true);setTimeout(()=>{r++;round();},700);});};round();}
+ else if(kind==="breathe"){let n=0;const need=little?6:10;o=overlay(`<div class="mg"><span class="eyebrow">Bonus game · Calm Breathing</span><h2>Help your patient feel calm</h2><button class="bubble" id="mg-b" aria-label="Breathe">🫧</button><p class="mgc" id="mg-t">Tap to breathe in…</p><p class="muted"><b id="mg-n">0</b> of ${need/2} slow breaths</p></div>`);
+  o.querySelector("#mg-b").onclick=e=>{n++;const b=e.currentTarget;b.classList.toggle("big",n%2===1);o.querySelector("#mg-t").textContent=n%2?"…and breathe out slowly":"Tap to breathe in…";o.querySelector("#mg-n").textContent=Math.floor(n/2);if(n>=need)setTimeout(()=>done(30),500);};}
+ 
+else{let r=0,sc=0;const set=p.job==="pharm"?["💊"]:["✂️","🩺","🔦","🩹"];o=overlay(`<div class="mg"><span class="eyebrow">Bonus game · ${p.job==="pharm"?"Pill":"Tool"} Count</span><h2>How many?</h2><div class="cnt" id="mg-c"></div><div class="row" id="mg-o" style="justify-content:center"></div><p class="mgc">Round <b id="mg-r">1</b> of 3</p></div>`);
+  const round=()=>{if(r>=3){done(Math.max(10,sc*10));return;}const n=(little?2:3+Math.min(lv,3))+Math.floor(Math.random()*(little?3:4));o.querySelector("#mg-r").textContent=r+1;o.querySelector("#mg-c").innerHTML=Array.from({length:n},(_,k)=>`<span>${set[k%set.length]}</span>`).join("");const opts=[...new Set([n,n+1,Math.max(1,n-1)])].sort(()=>Math.random()-.5);o.querySelector("#mg-o").innerHTML=opts.map(v=>`<button class="btn ghost" data-v="${v}">${v}</button>`).join("");o.querySelectorAll("#mg-o button").forEach(b=>b.onclick=()=>{const ok=+b.dataset.v===n;if(ok)sc++;b.textContent=ok?"✓ "+n:"It was "+n;b.className="btn sun";o.querySelectorAll("#mg-o button").forEach(x=>x.disabled=true);setTimeout(()=>{r++;round();},650);});};round();}}
+function openChest(){const o=overlay(`<div class="mg"><span class="eyebrow">Hero Chest</span><h2>Tap the chest!</h2><button class="chestbtn" id="ch" aria-label="Open the chest">🎁</button><div id="ch-r"></div></div>`);
+ o.querySelector("#ch").onclick=e=>{const c=e.currentTarget;if(c.disabled)return;c.disabled=true;c.textContent="✨";boom(innerWidth/2,innerHeight/2,90);
+  const got=S.players.map(p=>{const h=hero(p),s=STICKERS[Math.floor(Math.random()*STICKERS.length)],isNew=!h.stickers.includes(s);if(isNew)h.stickers.push(s);return `<div class="loot"><b>${esc(p.name)}</b><span class="stk">${s}</span><small>${isNew?"New sticker!":"Another one for the swap pile"}</small></div>`;});saveH();S.chest=true;
+  o.querySelector("#ch-r").innerHTML=`<div class="loots">${got.join("")}</div><p class="muted">Real sticker sheets come in every Shift Box. The chest is always free.</p><button class="btn sun" id="ch-ok">Back to my shift</button>`;o.querySelector("#ch-ok").onclick=()=>{o.remove();render();};};}
+function badgeBook(i){const p=S.players[i],h=hero(p);const o=overlay(`<div class="mg book"><span class="eyebrow">Badge Book</span><h2>${esc(p.name)}</h2><div>${lvChip(p)}</div><p class="muted">${h.xp} XP${LVL[lvlOf(h.xp)+1]?` · ${LVL[lvlOf(h.xp)+1]-h.xp} XP to ${RANKS[lvlOf(h.xp)+1]}`:" · Top rank!"}</p>
+ <div class="bbook">${BADGES.map(b=>h.badges.includes(b[0])?`<div class="bdg on"><span>${b[1]}</span><b>${b[2]}</b><small>Real patch in the Badge Patch Pack</small></div>`:`<div class="bdg"><span>❔</span><b>Locked</b><small>${b[3]}</small></div>`).join("")}</div>
+ <h3>Stickers ${h.stickers.length} of ${STICKERS.length}</h3><div class="badgewall">${h.stickers.map(s=>`<span>${s}</span>`).join("")||"<span>Open a Hero Chest to start</span>"}</div>
+ <div class="row"><a class="kitlink" href="#shop" data-mkt="pack"><span>🧵 Get the real patches</span><small>Grown-ups: Marketplace →</small></a><button class="btn sun" id="bb-ok">Close</button></div></div>`);o.querySelector("#bb-ok").onclick=()=>o.remove();}
+function endAwards(){const full=missionsDone()/missionsMax()>=0.83;S.players.forEach(p=>{const h=hero(p);giveXP(p,50,"shift",true);giveBadge(p,"first",true);giveBadge(p,"job-"+p.job,true);if(!h.jobs.includes(p.job))h.jobs.push(p.job);if(h.jobs.length>=Object.keys(JOBS).length)giveBadge(p,"alljobs",true);if(p.tier===0)giveBadge(p,"teddy",true);if(full)giveBadge(p,"fullheal",true);if(S.players.length>=4)giveBadge(p,"squad",true);const a=SCEN[S.scen].name;if(!h.acts.includes(a))h.acts.push(a);if(h.acts.length>=5)giveBadge(p,"explorer",true);});saveH();setTimeout(showLevelUps,900);}
+
+function ptBanner(){const c=SCEN[S.scen].c,al=/peanut/i.test(c)?"Peanuts":/bee sting/i.test(c)?"Bee stings":"";let h=0;for(const ch of (S.patient||"x"))h=(h*31+ch.charCodeAt(0))%9000;
+  return `<div class="ptbanner" aria-label="Patient banner"><span class="ptav" aria-hidden="true">🧸</span><div><b>${esc(S.patient)}</b><small>MRN LHH-${1000+h} · Room ${101+S.scen%30}</small></div><div><small>Problem</small><b>${esc(c)}</b></div><div class="${al?"alg":""}"><small>Allergies</small><b>${al?"⚠ "+al:"No known allergies"}</b></div><div><small>Action</small><b>${SCEN[S.scen].name}</b></div></div>`;}
+function render(){
+  g.innerHTML=S.screen==="squad"?squad():S.screen==="dress"?dress():S.screen==="shift"?shift():end();
+}
+g.addEventListener("input",e=>{const t=e.target;
+  if(t.classList.contains("pname"))S.players[+t.dataset.i].name=t.value;
+  if(t.id==="patient")S.patient=t.value;});
+g.addEventListener("change",e=>{const t=e.target;
+  if(t.classList.contains("pjob")){S.players[+t.dataset.i].job=t.value;}
+  if(t.classList.contains("ptier")){S.players[+t.dataset.i].tier=+t.value;if(S.scen!==null&&SCEN[S.scen].min>minTier())S.scen=null;render();}});
+g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.id==="add"){S.players.push({name:NAMES[S.players.length]||"Hero",job:"surgeon",tier:2,worn:[],stars:0,done:{}});render();}
+  else if(b.dataset.rm){S.players.splice(+b.dataset.rm,1);render();}
+  else if(b.dataset.atab){S.atab=+b.dataset.atab;render();}
+  else if(b.dataset.sc){S.scen=+b.dataset.sc;render();}
+  else if(b.id==="go"){S.players.forEach(p=>{p.worn=[];p.pool=null;p.done={}});S.bonus={};S.newB=[];S.chest=false;S.players.forEach(p=>{p.xpGain=0;p.newBadges=[];p.mini=false});if(S.timer){clearInterval(S.timer);S.timer=null;}S.di=0;S.msg="";S.screen="dress";render();}
+  else if(b.dataset.it){const p=S.players[S.di],j=JOBS[p.job],k=b.dataset.it;
+    if(j.outfit.includes(k)){if(!p.worn.includes(k))p.worn.push(k);S.msg="";render();if(p.worn.length===j.outfit.length)boom(innerWidth/2,innerHeight/2,70);}
+    else{const owner=Object.values(JOBS).find(x=>x.outfit.includes(k));S.msg=DECOYS[k]?"Silly! That's not for the hospital. Try again.":`That belongs to the ${owner.name.toLowerCase()}. Try again!`;render();
+      const el=g.querySelector(`[data-it="${k}"]`);if(el)el.classList.add("oops");}}
+  else if(b.id==="back"){S.msg="";if(S.di>0)S.di--;else S.screen="squad";render();}
+  else if(b.id==="chal"){if(S.timer)return;let n=CHAL[S.beat].secs;const bt=S.beat;b.disabled=true;S.timer=setInterval(()=>{n--;const el=document.getElementById("chal-t");if(el)el.textContent=n;if(n<=0){clearInterval(S.timer);S.timer=null;S.bonus=S.bonus||{};S.bonus[bt]=true;S.players.forEach(p=>{giveXP(p,15,"team challenge");giveBadge(p,bt===0?"hands":"freeze");});render();boom(innerWidth/2,innerHeight/2,70);showLevelUps();}},1000);}
+  else if(b.dataset.say!==undefined){const p=S.players[+b.dataset.say],m=JOBS[p.job].m[S.beat];say(plain(m.kid)+". "+m.steps.map(plain).join(". "));}
+  else if(b.dataset.mg!==undefined){miniGame(+b.dataset.mg);}
+  else if(b.id==="weekly"){S.players.forEach(p=>{const h=hero(p),st=STICKERS[Math.floor(Math.random()*STICKERS.length)];if(!h.stickers.includes(st))h.stickers.push(st);giveXP(p,20,"weekly surprise",true);});saveH();try{localStorage.setItem("lhh-weekly",String(WEEK()))}catch(e){}render();boom(innerWidth/2,innerHeight/3,80);toast("🎁 Every hero got a sticker and +20 XP!");showLevelUps();}
+  else if(b.id==="chest"){openChest();}
+  else if(b.dataset.book!==undefined){badgeBook(+b.dataset.book);}
+  else if(b.id==="next"){S.msg="";if(S.di<S.players.length-1){S.di++;}else{S.beat=0;S.screen="shift";banner("🚨 The hospital is open!","Shift starts now");}render();}
+  else if(b.dataset.s!==undefined){const p=S.players[+b.dataset.p],d=p.done[S.beat]||(p.done[S.beat]=[]),k=+b.dataset.s,ix=d.indexOf(k);ix>-1?d.splice(ix,1):d.push(k);render();if(ix<0&&d.length===JOBS[p.job].m[S.beat].steps.length){const r=b.getBoundingClientRect();boom(r.left+r.width/2,r.top,40);giveXP(p,25,"mission done");showLevelUps();}}
+  else if(b.id==="beat"){if(S.beat<3){S.beat++;render();banner(BEATS[S.beat],SCEN[S.scen].name);}else{const all=loadB();S.newB=S.players.map(BADGE).filter(x=>!all.includes(x));saveB([...all,...S.newB]);endAwards();S.screen="end";render();setTimeout(()=>{boom(innerWidth*.25,innerHeight*.4,80);boom(innerWidth*.75,innerHeight*.4,80)},350);}g.parentElement.scrollIntoView({behavior:"smooth",block:"start"});}
+  else if(b.id==="again"){S.scen=null;S.screen="squad";render();}
+  else if(b.id==="swap"){const jobs=S.players.map(p=>p.job);jobs.push(jobs.shift());S.players.forEach((p,i)=>p.job=jobs[i]);S.scen=null;S.screen="squad";render();}
+});
+try{window.claude?.hot?.snapshot?.(()=>({...S,timer:null}))}catch(e){}
+const start=d=>{if(d&&d.players)S=d;render();};
+window.claude?.hot?.ready?window.claude.hot.ready(start):start(window.claude?.hot?.data??{});
+</script><script>
+(()=>{
+
+const HOMEIDEAS={
+ leadapron:["A raincoat or a heavy blanket (grown-ups help)","A raincoat or a heavy vest","A heavy vest; real lead aprons stay at the hospital"],
+ bubbles:["Bubbles from the toy box","A bubble wand or a pinwheel","A pinwheel or bubble wand for breathing practice"],
+ book:["A favorite picture book","A picture book about going to the doctor","A children's book about hospital visits to read aloud"],
+ coat:["A grown-up's white button-up shirt with the sleeves rolled","An oversized white shirt, or the coat from a science kit","A real lab coat from a uniform store"],
+ steth:["A paper cup on a string, or the toy from a doctor play set","A paper towel tube pressed to a friend's chest. The first stethoscope was a rolled-up paper tube!","A basic real stethoscope from a uniform or medical supply store"],
+ badge:["Draw a badge on paper and clip it on","An index card ID with a drawn photo, on a lanyard","A lanyard with a printed name card"],
+ gloves:["Winter gloves or dish gloves","Kitchen or cleaning gloves","Disposable nitrile gloves from a drugstore"],
+ mask:["Draw a mask on paper (skip masks for toddlers)","A bandana tied loosely","Disposable procedure masks"],
+ watch:["A toy watch, or draw one on your wrist","A phone stopwatch: count heartbeats for 15 seconds, then times 4","A watch with a second hand"],
+ scrubs:["Matching pajamas or a blue or green T-shirt","A blue or green T-shirt and sweatpants","Real scrubs from a uniform store"],
+ cap:["A shower cap","A shower cap or bandana","Disposable bouffant caps"],
+ radio:["A toy walkie-talkie or a TV remote","A pair of walkie-talkies","Walkie-talkies with a call-sign script"],
+ bag:["A backpack of bandages for the stuffed animals","A backpack first aid kit with real bandages","A fully stocked first aid kit"],
+ pills:["Big paper circles in an egg carton (never candy or small parts)","An egg carton with labeled cups for each time of day","An empty weekly pill organizer for practice"],
+ headset:["Headphones, or a headband with a paper microphone","Headphones","A phone headset"],
+ printer:["Paper strips and tape to make wristbands","Write wristbands on masking tape","Print name labels from a computer"],
+ goggles:["Swim goggles or sunglasses","Swim goggles or safety glasses","Safety glasses from a hardware store"]
+};
+const HOMEPATIENT=["Your favorite teddy, doll or stuffed animal","A teddy, or a friend playing the patient","A friend role-playing, or a CPR practice manikin"];
+const HOMEBONUS={xray:["A flashlight behind your hand to see a shadow X-ray"],lab:["A magnifying glass"],childlife:["Crayons for a feelings drawing"],doctor:["A flashlight to check ears and throats"],nurse:["A clipboard for the chart"],surgeon:["A muffin tin as the tool tray"],medic:["A wagon or big cardboard box as the ambulance"],pharm:["Sticky labels and markers"],desk:["A clipboard and a bell for the front desk"]};
+const LADDER=[
+ {name:"Play Gear",ages:"0–9",tiers:[0,1],price:"$29–49",items:"Soft fabric outfits, chunky plastic tools, plush patient, stickers"},
+ {name:"Hero Gear",ages:"9–13",tiers:[2],price:"$59–99",items:"Kid-size coat or scrubs, working toy BP cuff, light-up toy otoscope, real bandages"},
+ {name:"Pro Gear",ages:"13–18",tiers:[3,4],price:"$129–249",items:"Real stethoscope, real scrubs, stocked first aid kit, CPR practice kit"},
+ {name:"Clinical Training Gear",ages:"18+",tiers:[5,6],price:"$399–1,500+",items:"CPR and AED training manikin, manual BP cuff, simulation-lab scenario packs, embroidered scrubs"}
+];
+const band=t=>t<=1?0:t<=3?1:2;
+function ladderHTML(tier){return LADDER.map(r=>`<div class="rung${r.tiers.includes(tier)?" now":""}"><span class="pill">${r.ages}</span><b>${r.name}</b><div class="price">${r.price}</div><span class="muted">${r.items}</span>${r.tiers.includes(tier)?`<small><b>Your level</b></small>`:""}</div>`).join("");}
+function homeHTML(job,tier){
+  const j=JOBS[job],b=band(tier);
+  const jobOpts=Object.entries(JOBS).map(([id,x])=>`<option value="${id}"${id===job?" selected":""}>${x.ic} ${x.name}</option>`).join("");
+  const tierOpts=TIERS.map((x,i)=>`<option value="${i}"${i===tier?" selected":""}>${x.age} · ${x.name}</option>`).join("");
+  const rows=[...j.outfit.map(k=>[ITEMS[k][0],ITEMS[k][1],HOMEIDEAS[k][b]]),["🧸","Patient",HOMEPATIENT[b]],["⭐","Bonus",HOMEBONUS[job][0]]];
+  return `<div class="row"><label class="qty">Job <select id="shop-hjob">${jobOpts}</select></label><label class="qty">Age <select id="shop-htier">${tierOpts}</select></label></div>
+  <h3>Make a ${j.name.toLowerCase()} kit from things at home</h3>
+  <div class="ideas">${rows.map(r=>`<div class="idea"><span class="ic">${r[0]}</span><div><b>${r[1]}</b><p>${r[2]}</p></div></div>`).join("")}</div>
+  <p class="irl">${b===0?"Grown-ups: no small parts, no real medicine and no real needles. Real medicine always stays with grown-ups.":b===1?"Real bandages are fine. Real medicine stays with grown-ups.":"Practice gear only. Real patient care is for licensed staff and supervised programs."}</p>`;
+}
+
+const $=id=>document.getElementById(id);
+const money=n=>"$"+Math.round(n).toLocaleString("en-US");
+const money2=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const FEE=0.03, CHURN=0.10;
+const REFILL={kids:"New action of the month, new mission cards, one new outfit piece, a real badge patch, fresh wristbands and stickers."};
+const HOME=[
+ {id:"solo",name:"Solo Hero Box",tag:"1 player",price:49,sub:{m:24,y:240},
+  items:["1 hero outfit (pick any job)","Toy stethoscope and ID badge","10 hero wristbands","Teddy patient chart pad","Mission card decks for all 9 jobs","Brave sticker sheet","App unlock code"]},
+ {id:"squad4",name:"Squad 4 Box",tag:"Up to 4 players",price:129,sub:{m:34,y:340},popular:true,
+  items:["4 hero outfits (mix any jobs)","Shared doctor and nurse toolkit","Biscuit the Bear plush patient","40 hero wristbands","9 mission card decks","Squad scoreboard poster","4 brave sticker sheets","App unlock code"]},
+ {id:"squad8",name:"Squad 8 Box",tag:"Up to 8 players",price:229,sub:{m:49,y:490},
+  items:["8 hero outfits","2 shared toolkits","2 plush patients","80 hero wristbands","2 sets of mission decks","Party host guide","8 brave sticker sheets","App unlock code"]}
+];
+const ORG=[
+ {id:"camp",name:"Summer Camp Kit",tag:"Camps & schools",unit:"per camper",price:39,min:20,def:40,
+  fee:{name:"Facilitator license",price:299,per:"per site, per season"},
+  items:["4-week, 20-session camp plan","Outfits campers keep","Station kits: ER, OR, ambulance, pharmacy, front desk","Badges and certificates","Facilitator guide and training video"]},
+ {id:"school",name:"School Year License",tag:"Up to 60 students",unit:"per site, per year",price:1499,flat:true,
+  items:["Class set for 30 at a time","2 refill shipments a year","Health and careers lesson plans","All 7 age tiers unlocked","Teacher progress view (V2)"]},
+ {id:"train",name:"College & Training Program",tag:"Ages 16+",unit:"per participant",price:49,min:10,def:30,
+  fee:{name:"Program license",price:2500,per:"per site, per year"},
+  items:["Hero Volunteer, Trainee and Real World tiers","Career ladder modules for every role","Links to CPR, EMT and CNA programs","Simulation-lab scenario cards","Completion certificates"]}
+];
+let shop={mk:{lvl:"all",cat:"all",job:"all",list:[],sent:false},mode:"order",hjob:"nurse",htier:0,tab:"home",home:"squad4",org:"camp",plan:"m",qty:1,people:{camp:40,train:30},placed:false};
+
+function card(p,sel){
+  const unit=p.unit?`<small> ${p.unit}</small>`:`<small> one time</small>`;
+  return `<button class="prod" data-prod="${p.id}" aria-pressed="${sel}"><div class="ptop"><b>${p.name}</b>${p.popular?`<span class="pill">Most popular</span>`:`<span class="pill" style="background:var(--sky)">${p.tag}</span>`}</div>
+  <div class="price">${money(p.price)}${unit}</div>${p.fee?`<small class="muted">+ ${p.fee.name} ${money(p.fee.price)} ${p.fee.per}</small>`:""}
+  <ul>${p.items.map(i=>`<li>${i}</li>`).join("")}</ul></button>`;
+}
+let gateOK=false;
+function gate(cb){if(gateOK){cb();return;}const a=6+Math.floor(Math.random()*4),b=12+Math.floor(Math.random()*8);const g=document.createElement("div");g.className="gate";g.setAttribute("role","dialog");g.setAttribute("aria-modal","true");
+  g.innerHTML=`<div><h3>Grown-ups only</h3><p>Ordering is for grown-ups. Type the answer to continue.</p><label class="qty">What is ${a} × ${b}? <input id="gate-a" inputmode="numeric" autocomplete="off"></label><p class="msg" id="gate-m"></p><div class="row"><button class="btn sun" id="gate-ok">Continue</button><button class="btn ghost" id="gate-x">Back to the game</button></div></div>`;
+  document.body.appendChild(g);g.querySelector("#gate-a").focus();
+  const close=()=>g.remove();
+  g.querySelector("#gate-x").onclick=close;
+  g.querySelector("#gate-ok").onclick=()=>{if(parseInt(g.querySelector("#gate-a").value)===a*b){gateOK=true;close();cb();}else{g.querySelector("#gate-m").textContent="Not quite. Ask a grown-up to help.";}};
+  g.addEventListener("keydown",e=>{if(e.key==="Enter")g.querySelector("#gate-ok").click();if(e.key==="Escape")close();});}
+
+const MLVL=[["play","Play Gear","0–9"],["hero","Hero Gear","9–13"],["pro","Pro Gear","13–18"],["clin","Clinical Training","18+"]];
+const MCAT={out:["👕","Outfits"],tool:["🩺","Tools"],pat:["🧸","Patients"],learn:["📚","Learning"],train:["🫀","Training"],pack:["🎁","Little Hero packs"]};
+const MK=[
+ // [level, category, name, jobs ("all" or list), low, high, seller, specialty]
+ ["play","pat","Biscuit the Bear plush patient","all",18,18,"Little Hero",1],
+ ["play","pack","Badge Patch Pack (16 iron-on patches)","all",24,24,"Little Hero",1],
+ ["play","pack","Sticker sheets (all 12 stickers)","all",6,6,"Little Hero",1],
+ ["hero","pack","Hero rank pins (7 levels)","all",19,19,"Little Hero",1],
+ ["play","pack","Mission card deck (all 9 jobs)","all",12,12,"Little Hero",1],
+ ["play","pack","Hero wristband refill (50)","all",8,8,"Little Hero",1],
+ ["play","pack","Hero badge set","all",10,10,"Little Hero",1],
+ ["play","tool","Toy doctor kit","doctor,nurse",20,35,"Toy store"],
+ ["play","out","Kids' doctor costume","doctor,surgeon",20,30,"Costume shop"],
+ ["play","out","Kids' scrubs set","nurse,surgeon",18,25,"Uniform store"],
+ ["play","tool","Toy ambulance","medic",15,30,"Toy store"],
+ ["play","learn","Glow-in-the-dark X-ray picture cards","xray",10,18,"Toy store"],
+ ["hero","tool","Kids' microscope","lab",25,45,"Science store"],
+ ["play","pack","Calm kit: bubbles, feelings cards and story book","childlife",14,14,"Little Hero",1],
+ ["play","pat","Plush pet patient set","all",15,25,"Toy store"],
+ ["play","learn","Picture book: a visit to the doctor","all",8,15,"Bookstore"],
+ ["play","tool","Bandage sticker pack","all",5,8,"Pharmacy"],
+ ["hero","pack","Squad scoreboard poster","all",9,9,"Little Hero",1],
+ ["hero","out","Junior lab coat","doctor,pharm",20,30,"Uniform store"],
+ ["hero","tool","Light-up toy otoscope","doctor",10,20,"Toy store"],
+ ["hero","tool","Real-bandage first aid starter kit","medic,nurse",15,25,"Pharmacy"],
+ ["hero","learn","Human body anatomy model","all",25,40,"Science store"],
+ ["hero","learn","First aid activity book for kids","all",8,15,"Bookstore"],
+ ["hero","out","Front desk headset and clipboard set","desk",15,25,"Office store"],
+ ["pro","tool","Basic stethoscope","doctor,nurse,medic",25,60,"Medical supply"],
+ ["pro","out","Scrubs set","nurse,surgeon,medic",25,45,"Uniform store"],
+ ["pro","tool","Stocked first aid kit","medic,nurse",25,50,"Pharmacy"],
+ ["pro","train","Personal CPR practice kit","all",40,90,"Training supplier"],
+ ["pro","train","CPR and first aid class seat","all",40,120,"Training partner"],
+ ["pro","learn","Anatomy and physiology study cards","all",15,30,"Bookstore"],
+ ["clin","pack","Simulation scenario pack","all",49,49,"Little Hero",1],
+ ["clin","train","Adult CPR training manikin","all",150,400,"Training supplier"],
+ ["clin","train","AED trainer","medic,nurse,doctor",100,250,"Training supplier"],
+ ["clin","tool","Manual BP cuff and stethoscope set","nurse,medic,doctor",30,70,"Medical supply"],
+ ["clin","learn","EMT course textbook","medic",60,120,"Bookstore"],
+ ["clin","out","Embroidered scrubs","nurse,surgeon,doctor",35,60,"Uniform store"],
+ ["clin","learn","Pharmacy technician study guide","pharm",25,45,"Bookstore"]
+].map(([lvl,cat,name,jobs,lo,hi,seller,spec],i)=>({i,lvl,cat,name,jobs:jobs==="all"?null:jobs.split(","),lo,hi,seller,spec:!!spec}));
+const priceR=(lo,hi)=>lo===hi?money(lo):`${money(lo)}–${money(hi)}`;
+function marketHTML(){
+  const m=shop.mk;
+  const items=MK.filter(x=>(m.lvl==="all"||x.lvl===m.lvl)&&(m.cat==="all"||x.cat===m.cat)&&(m.job==="all"||!x.jobs||x.jobs.includes(m.job))).sort((a,b)=>b.spec-a.spec);
+  const list=MK.filter(x=>m.list.includes(x.i)),lo=list.reduce((s,x)=>s+x.lo,0),hi=list.reduce((s,x)=>s+x.hi,0);
+  return `<div class="stack"><h3>The Little Hero Marketplace</h3><p class="muted">Gear for the whole journey, from a first toy doctor kit to clinical training equipment. <b>Little Hero specialty</b> items come from us; everything else comes from partner stores.</p></div>
+  <div class="row mfilters">${[["all","All levels",""],...MLVL].map(([id,n,a])=>`<button class="tab" data-mlvl="${id}" aria-selected="${m.lvl===id}">${n}${a?` · ${a}`:""}</button>`).join("")}</div>
+  <div class="row"><label class="qty">Type <select id="mk-cat"><option value="all">All types</option>${Object.entries(MCAT).map(([k,v])=>`<option value="${k}"${m.cat===k?" selected":""}>${v[0]} ${v[1]}</option>`).join("")}</select></label>
+  <label class="qty">Job <select id="mk-job"><option value="all">All jobs</option>${Object.entries(JOBS).map(([k,v])=>`<option value="${k}"${m.job===k?" selected":""}>${v.ic} ${v.name}</option>`).join("")}</select></label></div>
+  <div class="mgrid">${items.map(x=>`<div class="mitem${x.spec?" spec":""}"><span class="mic">${MCAT[x.cat][0]}</span><div class="mbody"><span class="pill"${x.spec?"":' style="background:var(--sky)"'}>${x.spec?"Little Hero specialty":MLVL.find(l=>l[0]===x.lvl)[1]}</span><b>${x.name}</b><small class="muted">${x.spec?"Made by Little Hero":"Sold by partner: "+x.seller}</small><div class="price">${priceR(x.lo,x.hi)}</div></div>
+   <button class="btn ${m.list.includes(x.i)?"sun":"ghost"}" data-madd="${x.i}" aria-pressed="${m.list.includes(x.i)}">${m.list.includes(x.i)?"✓ On my list":"+ Add to list"}</button></div>`).join("")||`<p class="muted">Nothing matches those filters yet.</p>`}</div>
+  <div class="summary"><h3 style="color:#0A2A6B">My gear list</h3>${list.length?list.map(x=>`<div class="line"><span>${x.name}</span><b>${priceR(x.lo,x.hi)}</b></div>`).join(""):`<p>Add items to build a list for your hero.</p>`}
+   ${list.length?`<div class="line total"><span>Estimated total</span><span>${priceR(lo,hi)}</span></div><button class="btn" id="mk-go">${m.sent?"List saved ✓":"Shop this list at our partners"}</button><p class="demo">${m.sent?"This is a demo, so no store was opened. In the live version, each item opens at its partner store.":"Prices are estimates. Partner items are sold by partner stores, and Little Hero may earn a commission."}</p>`:""}</div>`;
+}
+
+function renderHome(){$("shop-home").innerHTML=homeHTML(shop.hjob,shop.htier);}
+function renderShop(){
+  document.querySelectorAll(".mode").forEach(m=>m.setAttribute("aria-pressed",m.dataset.mode===shop.mode));
+  $("ladder").innerHTML=ladderHTML(shop.mode==="market"?({all:-1,play:0,hero:2,pro:3,clin:5})[shop.mk.lvl]:shop.mode==="home"?shop.htier:({solo:0,squad4:0,squad8:0,camp:1,school:2,train:5})[shop[shop.tab]]);
+  const hm=shop.mode==="home",mm=shop.mode==="market";["shop-tabs","shop-products","shop-options","shop-summary"].forEach(id=>$(id).hidden=hm||mm);$("shop-home").hidden=!hm;$("shop-market").hidden=!mm;if(hm){renderHome();return;}if(mm){$("shop-market").innerHTML=marketHTML();return;}
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===shop.tab));
+  const list=shop.tab==="home"?HOME:ORG, selId=shop[shop.tab], p=list.find(x=>x.id===selId);
+  $("shop-products").innerHTML=list.map(x=>card(x,x.id===selId)).join("");
+  let opt="", lines=[], today=0, rec=null;
+  if(shop.tab==="home"){
+    opt=`<h3>Add the monthly Shift Box?</h3><p class="muted">${REFILL.kids}</p><div class="plans">
+      <button class="plan" data-plan="m" aria-pressed="${shop.plan==="m"}"><b>Monthly · ${money(p.sub.m)}/mo</b><small>Cancel any time</small></button>
+      <button class="plan" data-plan="y" aria-pressed="${shop.plan==="y"}"><b>Yearly · ${money(p.sub.y)}/yr</b><small>2 months free</small></button>
+      <button class="plan" data-plan="n" aria-pressed="${shop.plan==="n"}"><b>Just the box</b><small>No refills</small></button></div>
+      <label class="qty">Boxes <input id="shop-qty" type="number" min="1" max="20" value="${shop.qty}"></label>`;
+    today=p.price*shop.qty; lines.push([`${p.name} × ${shop.qty}`,money(today)]);
+    if(shop.plan!=="n"){const s=shop.plan==="m"?p.sub.m:p.sub.y; rec=[`Shift Box ${shop.plan==="m"?"monthly":"yearly"} × ${shop.qty}`,`${money(s*shop.qty)}/${shop.plan==="m"?"mo":"yr"}`, "First refill ships next month."];}
+  } else {
+    const n=p.flat?1:Math.max(p.min,shop.people[p.id]||p.def);
+    opt=p.flat?`<p class="muted">One flat yearly price per school site, up to 60 students. Renews each school year.</p>`
+      :`<label class="qty">${p.id==="camp"?"Campers":"Participants"} <input id="shop-people" type="number" min="${p.min}" max="2000" value="${n}"> <small class="muted">Minimum ${p.min}</small></label>`;
+    if(p.flat){today=p.price;lines.push([p.name,money(p.price)]);rec=["Renews yearly",`${money(p.price)}/yr`,"Includes 2 refill shipments."];}
+    else{const kits=p.price*n;today=kits+p.fee.price;lines.push([`Kits: ${n} × ${money(p.price)}`,money(kits)],[p.fee.name,money(p.fee.price)]);
+      rec=["Renews",`${money(p.fee.price)} license + kits for new ${p.id==="camp"?"campers":"participants"}`,p.id==="camp"?"Each summer season.":"Each program year."];}
+  }
+  $("shop-options").innerHTML=opt;
+  $("shop-summary").innerHTML=`<h3 style="color:var(--night)">Your order</h3>${lines.map(l=>`<div class="line"><span>${l[0]}</span><b>${l[1]}</b></div>`).join("")}
+   <div class="line total"><span>Due today</span><span>${money(today)}</span></div>
+   ${rec?`<div class="line"><span>${rec[0]}</span><b>${rec[1]}</b></div><small>${rec[2]}</small>`:""}
+   <button class="btn" id="shop-place">${shop.placed?"Pre-order saved ✓":"Reserve my Hero Box"}</button>
+   <p class="demo">${shop.placed?"Thanks! This is a demo, so nothing was charged and nothing was sent. In the live version this button opens a secure checkout.":"Demo checkout: no payment is taken on this page."}</p>`;
+}
+document.addEventListener("click",e=>{
+  const mkt=e.target.closest("[data-mkt]"); if(mkt){e.preventDefault();const ov=mkt.closest(".ovl");if(ov)ov.remove();gate(()=>{shop.mode="market";shop.mk.cat=mkt.dataset.mkt;shop.mk.lvl="all";renderShop();$("shop").scrollIntoView({behavior:"smooth"});});return;}
+  const h=e.target.closest("[data-home]"); if(h){shop.mode="home";shop.hjob=h.dataset.home;shop.htier=+h.dataset.tier;renderShop();return;}
+  const k=e.target.closest("[data-kit]"); if(k){e.preventDefault();gate(()=>{shop.mode="order";shop.tab="home";shop.home=k.dataset.kit;shop.placed=false;renderShop();$("shop").scrollIntoView({behavior:"smooth"});});return;}
+  const b=e.target.closest("#shop button"); if(!b)return;
+  if(b.dataset.mode){if(b.dataset.mode==="market"&&shop.mode!=="market"){gate(()=>{shop.mode="market";renderShop();});return;}shop.mode=b.dataset.mode;}
+  else if(b.dataset.mlvl){shop.mk.lvl=b.dataset.mlvl;}
+  else if(b.dataset.madd!==undefined){const i=+b.dataset.madd,L=shop.mk.list,x=L.indexOf(i);x>-1?L.splice(x,1):L.push(i);shop.mk.sent=false;}
+  else if(b.id==="mk-go"){shop.mk.sent=true;renderShop();const r=$("mk-go").getBoundingClientRect();if(typeof boom==="function")boom(r.left+r.width/2,r.top,50);return;}
+  else if(b.dataset.tab){shop.tab=b.dataset.tab;shop.placed=false;}
+  else if(b.dataset.prod){shop[shop.tab]=b.dataset.prod;shop.placed=false;}
+  else if(b.dataset.plan){shop.plan=b.dataset.plan;shop.placed=false;}
+  else if(b.id==="shop-place"){gate(()=>{shop.placed=true;renderShop();const r=$("shop-place").getBoundingClientRect();if(typeof boom==="function")boom(r.left+r.width/2,r.top,60);});return;}
+  renderShop();
+});
+document.addEventListener("change",e=>{
+  if(e.target.id==="mk-cat"){shop.mk.cat=e.target.value;renderShop();}
+  if(e.target.id==="mk-job"){shop.mk.job=e.target.value;renderShop();}
+  if(e.target.id==="shop-hjob"){shop.hjob=e.target.value;renderShop();}
+  if(e.target.id==="shop-htier"){shop.htier=+e.target.value;renderShop();}
+  if(e.target.id==="shop-qty"){shop.qty=Math.min(20,Math.max(1,parseInt(e.target.value)||1));shop.placed=false;renderShop();}
+  if(e.target.id==="shop-people"){const p=ORG.find(x=>x.id===shop.org);shop.people[p.id]=Math.max(p.min,parseInt(e.target.value)||p.min);shop.placed=false;renderShop();}
+});
+
+
+renderShop();
+})();
+</script><script>
+(()=>{const r=document.documentElement;let v="blue";try{v=localStorage.getItem("lhh-bg")||"blue"}catch(e){}
+const t=document.createElement("div");t.className="bgtoggle";t.setAttribute("role","group");t.setAttribute("aria-label","Background");
+t.innerHTML='<button data-bg="blue">Blue</button><button data-bg="white">White</button>';document.body.appendChild(t);
+const set=x=>{r.setAttribute("data-bg",x);t.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.bg===x));try{localStorage.setItem("lhh-bg",x)}catch(e){}};
+t.addEventListener("click",e=>{const b=e.target.closest("button");if(b)set(b.dataset.bg)});set(v);
+const lib=document.getElementById("actlib");if(lib&&typeof SCEN!=="undefined")lib.innerHTML=TIERS.map((t,i)=>`<div><h3>${t.age} · ${t.name}</h3><ol>${SCEN.filter(s=>s.min===i).map(s=>`<li>${s.name}</li>`).join("")}</ol></div>`).join("");})();
+</script><script>
+function qrSVG(text,px){if(typeof qrcode==="undefined")return `<span class="qrph" style="display:inline-grid;place-items:center;width:${px}px;height:${px}px;border:1px dashed #8FA3B8;font-size:10px;color:#5A6B7E;background:#fff">QR</span>`;const q=qrcode(0,"M");q.addData(String(text));q.make();const n=q.getModuleCount(),m=2,s=n+m*2;let r="";for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(q.isDark(y,x))r+=`M${x+m} ${y+m}h1v1h-1z`;return `<svg viewBox="0 0 ${s} ${s}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="${s}" height="${s}" fill="#fff"/><path d="${r}" fill="#000"/></svg>`;}
+(()=>{const g=document.getElementById("gqr");if(g)g.innerHTML=qrSVG("LHH|GAME|Little Hero Health",34)+"<span>LHH-IRL</span>";})();
+</script>
+</body>
+</html>

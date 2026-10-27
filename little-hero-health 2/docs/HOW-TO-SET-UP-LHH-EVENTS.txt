@@ -1,0 +1,80 @@
+Little Hero Events · how to switch it on (about 30 minutes, with a parent)
+=========================================================================
+What you get: an Events page on your website (like Luma). Staff add events, families
+book tickets (free or paid with Square), tickets have QR codes, and staff check people
+in at the door. Only people with the LHH Official, Moderator, Admin or Owner role in
+your Discord, or a staff key, can add events.
+
+You need: your Cloudflare account, your Discord Developer Portal, and a Square account
+(a parent must own the Square account, because it takes real money).
+
+STEP 1 · Make the "LHH Official" badge in Discord
+  Server Settings → Roles → Create Role → name it  ✅ LHH Official  → Save.
+  Give it to official Little Hero helpers. (Moderator, Admin and Owner roles already work.)
+
+STEP 2 · Make the events worker in Cloudflare (dash.cloudflare.com)
+  a. Storage & Databases → KV → Create → name it  lhh-events  → Create.
+  b. Workers & Pages → Create → Create Worker (Hello World) → name it  lhh-events  → Deploy.
+  c. Edit code → delete everything → paste ALL of lhh-events-worker.js → Deploy.
+  d. Settings → Bindings → Add → KV namespace → Variable name:  LHH  → pick lhh-events → Save.
+  e. Settings → Variables and Secrets → Add each of these:
+       SITE_URL            Text     https://be-the-doc.netlify.app
+       DISCORD_GUILD_ID    Text     1560483599063711837
+       DISCORD_CLIENT_ID   Text     (your bot's Application ID, from Developer Portal → General Information)
+       SQUARE_ENV          Text     sandbox      (change to production when you go live)
+       SQUARE_LOCATION_ID  Text     (from Square, Step 4)
+       SESSION_SECRET      Secret   (from lhh-events-secrets.txt)
+       STAFF_KEYS          Secret   (from lhh-events-secrets.txt, the whole line)
+       DISCORD_TOKEN       Secret   (your bot token: Developer Portal → Bot → Reset Token)
+       DISCORD_CLIENT_SECRET Secret (Step 3)
+       SQUARE_ACCESS_TOKEN Secret   (from Square, Step 4)
+     Click Deploy.
+  f. Copy your worker's address, like  https://lhh-events.YOURNAME.workers.dev
+     Open it: it should say "Little Hero Health events are running."
+
+STEP 3 · Let staff sign in with Discord (discord.com/developers/applications)
+  Open your bot app → OAuth2:
+  - Click "Reset Secret" under Client Secret, copy it, and add it in Cloudflare as
+    DISCORD_CLIENT_SECRET (Secret). Deploy again.
+  - Under Redirects click "Add Redirect" and paste:
+       https://lhh-events.YOURNAME.workers.dev/auth/discord/callback
+    (use YOUR worker address) → Save Changes.
+  Little Hero Bot must be in your server (it reads the roles).
+
+STEP 4 · Square (a parent does this: developer.squareup.com)
+  a. Sign in with the Square account → Create an application → name it "Little Hero Events".
+  b. Start in SANDBOX (pretend money) to test:
+     - Credentials → Sandbox Access token → copy → Cloudflare SQUARE_ACCESS_TOKEN (Secret)
+     - Locations → copy the Sandbox Location ID → Cloudflare SQUARE_LOCATION_ID
+     - SQUARE_ENV = sandbox → Deploy.
+     Test-buy a ticket with the test card 4111 1111 1111 1111, any future date, any CVV,
+     ZIP 12345. Your ticket should say "Paid · You're going!"
+  c. To take REAL money: switch the app to Production in Square, then in Cloudflare set
+     SQUARE_ACCESS_TOKEN to the Production access token, SQUARE_LOCATION_ID to your real
+     location ID, and SQUARE_ENV = production → Deploy.
+  d. Optional but recommended: Webhooks → Subscriptions → Add subscription
+       URL:    https://lhh-events.YOURNAME.workers.dev/api/square/webhook
+       Event:  payment.updated
+     Copy the Signature key → Cloudflare SQUARE_WEBHOOK_KEY (Secret) → Deploy.
+     (This confirms payments even if a family closes the page before coming back.)
+
+STEP 5 · Connect it to your website
+  Send Claude your worker address (https://lhh-events.YOURNAME.workers.dev).
+  Claude puts it into the Events page and gives you a new zip for Netlify.
+
+STEP 6 · Make your first event
+  Go to be-the-doc.netlify.app/events.html → Staff sign in → Discord or your staff key
+  → + New event. Fill it in, tick "Only show the full address on tickets", → Create event.
+  Share the event link with families.
+
+At the event
+  Open the event → Check in. On an Android phone with Chrome you can scan QR codes with
+  the camera. On iPhone or computer, type the code under the QR code.
+
+Good to know
+  - Square takes a small fee from each paid ticket. Refunds are done in the Square
+    Dashboard (Transactions), then press Cancel on that guest in the guest list.
+  - A paid ticket holds the spot for 30 minutes while the family pays.
+  - The guest list has parents' names and emails. Only use it for that event, don't share it.
+  - For a big event with lots of kids, have enough grown-ups there, a sign-in desk, and a
+    plan for pick-up (only the parent or guardian on the ticket picks up their kids).
