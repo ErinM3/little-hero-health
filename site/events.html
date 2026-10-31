@@ -14,6 +14,9 @@
 <style>
 #lhbar{position:sticky;top:0;z-index:80;background:#0A2A6B;border-bottom:3px solid #FFD21F;font-family:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif;color:#fff}
 #lhbar *{box-sizing:border-box}
+#lhbar .pn a .i img{width:30px;height:30px;display:block}
+#lhbar .home img{width:38px;height:38px;flex:none}
+
 #lhbar .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px 14px;min-height:56px}
 #lhbar .home{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;margin-right:auto;border-radius:10px;padding:2px 6px 2px 0}
 #lhbar .home svg{width:38px;height:38px;flex:none}
@@ -64,25 +67,31 @@
   <div class="pn" id="lhp-play" data-t="Play" hidden>
    <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
    <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
-   <a href="workstation.html" data-p="workstation"><span class="i">🖥️</span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
+   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 25</span></a>
+   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for 13 and up</span></a>
+   <a href="workstation.html" data-p="workstation"><span class="i"><img src="brand/logos/lhh-hospital-workspace-icon.svg" alt=""></span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
    <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
   </div></div>
  <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
-   <a href="events.html" data-p="events"><span class="i">🎟️</span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
-   <a href="index.html#shop" data-p="shop"><span class="i">🎒</span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
-   <a href="camp.html" data-p="camp"><span class="i">⛺</span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
+   <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
+   <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
+   <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
    <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Little Hero</b><span>Ages, jobs, levels and safety rules</span></a>
   </div></div>
  <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-comm" data-t="Community" hidden>
-   <a href="community.html" data-p="community"><span class="i">💬</span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
-   <a href="roblox.html" data-p="roblox"><span class="i">🎮</span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
+   <a href="community.html" data-p="community"><span class="i"><img src="brand/logos/lhh-discord-icon.svg" alt=""></span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
+   <a href="roblox.html" data-p="roblox"><span class="i"><img src="brand/logos/lhh-roblox-servers-icon.svg" alt=""></span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
   </div></div>
  <a class="lock" href="admin.html" title="Admin sign-in" aria-label="Admin sign-in">🔒</a>
  <button class="gb menu" aria-expanded="false" aria-controls="lhbar">☰ Menu</button>
 </div></header>
 <script>
+(()=>{const SUB={workstation:["hospital-workspace","HOSPITAL WORKSPACE"],events:["events","EVENTS"],camp:["camps","CAMPS"],community:["discord","DISCORD"],roblox:["roblox-servers","ROBLOX SERVERS"]};
+const pg=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";const s=SUB[pg];const h=document.querySelector("#lhbar .home");if(!s||!h)return;
+const sv=h.querySelector("svg");if(sv){const i=document.createElement("img");i.src="brand/logos/lhh-"+s[0]+"-icon.svg";i.alt="";sv.replaceWith(i);}const sm=h.querySelector("small");if(sm)sm.textContent=s[1];})();
+
 (()=>{const bar=document.getElementById("lhbar");if(!bar)return;const page=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";
 bar.querySelectorAll(".pn a").forEach(a=>{if(a.dataset.p===page){a.setAttribute("aria-current","page");a.closest(".grp").classList.add("cur");}});
 const closeAll=ex=>bar.querySelectorAll(".grp").forEach(g=>{if(g===ex)return;g.querySelector(".gb").setAttribute("aria-expanded","false");g.querySelector(".pn").hidden=true;});
@@ -239,7 +248,7 @@ async function router(){
   if((m=path.match(/^\/staff\/guests\/([A-Z0-9]{6})$/)))return await guestsPage(m[1]);
   if((m=path.match(/^\/staff\/scan\/([A-Z0-9]{6})$/)))return await scanPage(m[1]);
   return problem("Little Hero Events","We couldn't find that page.");
- }catch(e){problem("Little Hero Events",e.message);}
+ }catch(e){if(e instanceof TypeError||/fetch|network|load/i.test(e.message))return comingSoon();problem("Little Hero Events",e.message);}
 }
 function comingSoon(){view(header("Little Hero Events")+`<div class="box"><h3>🎟️ Events are coming soon!</h3><p>Little Hero Health events, camps and test days will be listed here. You'll be able to get tickets right on this page.</p><p class="muted">Staff: the events system needs to be connected first. Follow HOW-TO-SET-UP-LHH-EVENTS.txt.</p></div>`);}
 
@@ -361,9 +370,10 @@ async function editPage(id){
  <p class="muted" style="font-size:.88rem">Paid tickets use Square. Square takes a small fee from each sale.</p></form>`);
  const pick=n=>(document.querySelector(`input[name="${n}"]:checked`)||{}).value;
  $("#ef").onsubmit=async ev=>{ev.preventDefault();const er=$("#eerr");er.hidden=true;
-  const s=$("#start").value?new Date($("#start").value).toISOString():"",en=$("#end").value?new Date($("#end").value).toISOString():"";
-  try{const r=await api("/api/events",{method:"POST",body:{id:id||undefined,title:$("#title").value,start:s,end:en,tz:Intl.DateTimeFormat().resolvedOptions().timeZone,online:$("#online").checked,place:$("#place").value,city:$("#city").value,hideAddress:$("#hide").checked,price:Math.round(parseFloat($("#price").value||"0")*100),capacity:+$("#cap").value,maxPerOrder:+$("#max").value,ages:$("#ages").value,about:$("#about").value,host:$("#host").value,emoji:pick("em"),color:pick("co"),published:$("#pub").checked,status:$("#cancel")&&$("#cancel").checked?"cancelled":"active"}});
-   toast(id?"Saved!":"Event created! 🎉");location.hash="#/e/"+r.event.id;}catch(x){er.textContent=x.message;er.hidden=false;}};
+  const btn=$("#ef button[type=submit]"),label=btn.textContent;btn.disabled=true;btn.textContent=id?"Saving…":"Creating…";
+  const when=v=>{if(!v)return"";const d=new Date(v);if(isNaN(d))throw new Error("Please pick the date and time with the calendar picker.");return d.toISOString();};
+  try{const s=when($("#start").value),en=when($("#end").value);if(!$("#title").value.trim())throw new Error("Give the event a name.");if(!s)throw new Error("Pick when the event starts (date and time).");const r=await api("/api/events",{method:"POST",body:{id:id||undefined,title:$("#title").value,start:s,end:en,tz:Intl.DateTimeFormat().resolvedOptions().timeZone,online:$("#online").checked,place:$("#place").value,city:$("#city").value,hideAddress:$("#hide").checked,price:Math.round(parseFloat($("#price").value||"0")*100),capacity:+$("#cap").value,maxPerOrder:+$("#max").value,ages:$("#ages").value,about:$("#about").value,host:$("#host").value,emoji:pick("em"),color:pick("co"),published:$("#pub").checked,status:$("#cancel")&&$("#cancel").checked?"cancelled":"active"}});
+   toast(id?"Saved!":"Event created! 🎉");location.hash="#/e/"+r.event.id;}catch(x){er.textContent=x.message;er.hidden=false;toast(x.message);er.scrollIntoView({block:"center",behavior:"smooth"});btn.disabled=false;btn.textContent=label;}};
  if(id)$("#del").onclick=async function(){if(this.dataset.sure!=="1"){this.dataset.sure="1";this.textContent="Tap again to delete forever";return;}try{await api("/api/events/"+id,{method:"DELETE"});toast("Event deleted.");location.hash="#/staff";}catch(x){toast(x.message)}};
 }
 async function guestsPage(id){

@@ -14,6 +14,9 @@
 <style>
 #lhbar{position:sticky;top:0;z-index:80;background:#0A2A6B;border-bottom:3px solid #FFD21F;font-family:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif;color:#fff}
 #lhbar *{box-sizing:border-box}
+#lhbar .pn a .i img{width:30px;height:30px;display:block}
+#lhbar .home img{width:38px;height:38px;flex:none}
+
 #lhbar .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px 14px;min-height:56px}
 #lhbar .home{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;margin-right:auto;border-radius:10px;padding:2px 6px 2px 0}
 #lhbar .home svg{width:38px;height:38px;flex:none}
@@ -64,25 +67,31 @@
   <div class="pn" id="lhp-play" data-t="Play" hidden>
    <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
    <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
-   <a href="workstation.html" data-p="workstation"><span class="i">🖥️</span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
+   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 25</span></a>
+   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for 13 and up</span></a>
+   <a href="workstation.html" data-p="workstation"><span class="i"><img src="brand/logos/lhh-hospital-workspace-icon.svg" alt=""></span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
    <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
   </div></div>
  <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
-   <a href="events.html" data-p="events"><span class="i">🎟️</span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
-   <a href="index.html#shop" data-p="shop"><span class="i">🎒</span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
-   <a href="camp.html" data-p="camp"><span class="i">⛺</span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
+   <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
+   <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
+   <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
    <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Little Hero</b><span>Ages, jobs, levels and safety rules</span></a>
   </div></div>
  <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-comm" data-t="Community" hidden>
-   <a href="community.html" data-p="community"><span class="i">💬</span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
-   <a href="roblox.html" data-p="roblox"><span class="i">🎮</span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
+   <a href="community.html" data-p="community"><span class="i"><img src="brand/logos/lhh-discord-icon.svg" alt=""></span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
+   <a href="roblox.html" data-p="roblox"><span class="i"><img src="brand/logos/lhh-roblox-servers-icon.svg" alt=""></span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
   </div></div>
  <a class="lock" href="admin.html" title="Admin sign-in" aria-label="Admin sign-in">🔒</a>
  <button class="gb menu" aria-expanded="false" aria-controls="lhbar">☰ Menu</button>
 </div></header>
 <script>
+(()=>{const SUB={workstation:["hospital-workspace","HOSPITAL WORKSPACE"],events:["events","EVENTS"],camp:["camps","CAMPS"],community:["discord","DISCORD"],roblox:["roblox-servers","ROBLOX SERVERS"]};
+const pg=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";const s=SUB[pg];const h=document.querySelector("#lhbar .home");if(!s||!h)return;
+const sv=h.querySelector("svg");if(sv){const i=document.createElement("img");i.src="brand/logos/lhh-"+s[0]+"-icon.svg";i.alt="";sv.replaceWith(i);}const sm=h.querySelector("small");if(sm)sm.textContent=s[1];})();
+
 (()=>{const bar=document.getElementById("lhbar");if(!bar)return;const page=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";
 bar.querySelectorAll(".pn a").forEach(a=>{if(a.dataset.p===page){a.setAttribute("aria-current","page");a.closest(".grp").classList.add("cur");}});
 const closeAll=ex=>bar.querySelectorAll(".grp").forEach(g=>{if(g===ex)return;g.querySelector(".gb").setAttribute("aria-expanded","false");g.querySelector(".pn").hidden=true;});
@@ -524,8 +533,8 @@ td.hi{color:var(--hl);font-weight:800}
 @media (max-width:900px){.hero.hv{grid-template-columns:1fr}}
 .vidcard{background:#061637;border:3px solid var(--sun);border-radius:22px;padding:12px;display:grid;gap:10px;box-shadow:0 8px 0 rgba(0,0,0,.25);min-width:0}
 .vidcard .vt{font-family:var(--display);font-weight:800;color:#FFD21F;font-size:1.05rem;display:flex;align-items:center;gap:8px}
-.vtabs{display:flex;gap:6px}
-.vtabs button{flex:1;min-width:0;border:2px solid #5AAEFF;background:transparent;color:#fff;border-radius:999px;padding:7px 10px;font-family:var(--display);font-weight:700;font-size:.95rem;cursor:pointer}
+.vtabs{display:flex;flex-wrap:wrap;gap:6px}
+.vtabs button{flex:1 1 auto;min-width:0;white-space:nowrap;border:2px solid #5AAEFF;background:transparent;color:#fff;border-radius:999px;padding:7px 10px;font-family:var(--display);font-weight:700;font-size:.95rem;cursor:pointer}
 .vtabs button[aria-pressed="true"]{background:#FFD21F;border-color:#FFD21F;color:#0A2A6B}
 .vtabs button:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .vidcard video{width:100%;aspect-ratio:16/9;border-radius:14px;background:#0A2A6B;display:block}
@@ -549,13 +558,13 @@ td.hi{color:var(--hl);font-weight:800}
  </div>
  <aside class="vidcard" id="videos" aria-label="How-to videos">
   <span class="vt">🎬 Watch and learn</span>
-  <div class="vtabs" role="group" aria-label="Pick a video"><button type="button" data-vid="play" aria-pressed="true">▶ How to play</button><button type="button" data-vid="site" aria-pressed="false">🧭 Using the website</button></div>
+  <div class="vtabs" role="group" aria-label="Pick a video"><button type="button" data-vid="play" aria-pressed="true">▶ How to play</button><button type="button" data-vid="site" aria-pressed="false">🧭 Using the website</button><button type="button" data-vid="both" aria-pressed="false">🎮 Real life + Roblox</button></div>
   <video id="hvid" controls playsinline preload="metadata" poster="videos/how-to-play.jpg" src="videos/how-to-play.mp4" aria-describedby="hvc"></video>
   <p class="vc" id="hvc">2 minutes · Build your squad, suit up, play a shift and heal your patient.</p>
  </aside>
 </header>
 <script>
-(()=>{const V={play:["videos/how-to-play.mp4","videos/how-to-play.jpg","2 minutes · Build your squad, suit up, play a shift and heal your patient."],site:["videos/how-to-use-the-website.mp4","videos/how-to-use-the-website.jpg","2 minutes · A tour of the game, Workstation, My Hospital keys, Camp HQ, Community and Roblox."]};
+(()=>{const V={play:["videos/how-to-play.mp4","videos/how-to-play.jpg","2 minutes · Build your squad, suit up, play a shift and heal your patient."],both:["videos/how-to-play-real-life-and-roblox.mp4","videos/how-to-play-real-life-and-roblox.jpg","2 minutes · Play in real life with the app, then online in Maple Hospital on Roblox."],site:["videos/how-to-use-the-website.mp4","videos/how-to-use-the-website.jpg","2 minutes · A tour of the game, Workstation, My Hospital keys, Camp HQ, Community and Roblox."]};
 const v=document.getElementById("hvid"),c=document.getElementById("hvc");document.querySelectorAll("[data-vid]").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.vid;if(v.getAttribute("src")===V[k][0])return;document.querySelectorAll("[data-vid]").forEach(x=>x.setAttribute("aria-pressed",x===b));v.pause();v.setAttribute("poster",V[k][1]);v.setAttribute("src",V[k][0]);c.textContent=V[k][2];v.load();}));})();
 </script>
 <section id="play" class="stack">
@@ -569,7 +578,7 @@ const v=document.getElementById("hvid"),c=document.getElementById("hvc");documen
 </section>
 <section id="shop" class="stack">
   <span class="eyebrow">Step 2 · Gear up</span>
-  <h2>Get the <em>real kit</em> delivered</h2>
+  <h2 style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><img src="brand/logos/lhh-hero-box-icon.svg" alt="Hero Box" style="width:64px;height:64px;flex:none"><span>Get the <em>real kit</em> delivered</span></h2>
   <p class="muted">Order a Little Hero kit, shop the marketplace for gear at every level, or build your kit from things already at home. Families buy once and add a monthly Shift Box with a new action, new missions and new gear. Schools, camps and training programs buy by the season or the year.</p>
   <div class="shop">
     <div class="modes"><button class="mode" data-mode="order" aria-pressed="true">🛒 Order a kit</button><button class="mode" data-mode="market" aria-pressed="false">🏪 Marketplace</button><button class="mode" data-mode="home" aria-pressed="false">🏠 Use what's at home</button></div>
