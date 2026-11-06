@@ -1,6 +1,0 @@
-# Be The Hero: always use the secure https address
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-# Show index.html for the home page
-DirectoryIndex index.html
