@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Little Hero Workstation</title>
-<meta name="description" content="Little Hero Health: the in-real-life hospital role-play game.">
+<title>Be The Hero Workstation</title>
+<meta name="description" content="Be The Hero: the in-real-life hospital role-play game.">
 <link rel="icon" type="image/png" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
 <meta property="og:image" content="brand/discord-banner-960x540.png">
@@ -52,8 +52,8 @@
  #lhbar .home b{font-size:1.1rem}
 }
 </style>
-<header id="lhbar" aria-label="Little Hero menu"><div class="in">
- <a class="home" href="index.html" aria-label="Little Hero Health home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+<header id="lhbar" aria-label="Be The Hero menu"><div class="in">
+ <a class="home" href="index.html" aria-label="Be The Hero home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
  <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
  <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
  <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
@@ -62,7 +62,7 @@
  <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
  <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
 </svg>
-<span><b>Little Hero</b><small>HEALTH</small></span></a>
+<span><b>Be The Hero</b><small>HOSPITAL GAME</small></span></a>
  <div class="grp" data-g="play"><button class="gb" aria-expanded="false" aria-controls="lhp-play">🎮 Play <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-play" data-t="Play" hidden>
    <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
@@ -77,7 +77,7 @@
    <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
    <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
    <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
-   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Little Hero</b><span>Ages, jobs, levels and safety rules</span></a>
+   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Be The Hero</b><span>Ages, jobs, levels and safety rules</span></a>
   </div></div>
  <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-comm" data-t="Community" hidden>
@@ -310,7 +310,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--m
 
 <div class="app">
  <header class="top">
-  <div class="brand"><span class="lg">+</span>Little Hero Workstation</div>
+  <div class="brand"><span class="lg">+</span>Be The Hero Workstation</div>
   <div class="modesw" role="group" aria-label="Mode"><button data-a="mode" data-m="kid">🔵 Kids</button><button data-a="mode" data-m="pro">⚪ Advanced</button></div>
   <label>Role <select id="role"><option>Nurse</option><option>Doctor</option><option>Surgeon</option><option>Administrator</option></select></label>
   <span class="sp"></span>
@@ -326,7 +326,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--m
   </aside>
   <main class="view" id="view"></main>
  </div>
- <footer class="foot"><span>Training simulation with fictional patients. Not for real patient care.</span><span>Data stays on this device · Little Hero Health</span></footer>
+ <footer class="foot"><span>Training simulation with fictional patients. Not for real patient care.</span><span>Data stays on this device · Be The Hero</span></footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
@@ -652,7 +652,7 @@ function vHospital(){const a=me();if(!a)return gateView();const own=a.own||[];
  <div class="grid2"><div class="panel"><div class="ph"><h2>🔑 Make a hospital key</h2></div><div class="pb"><div class="f">Pick the job<div class="rolegrid">${ROLES.map(([k,i,n,d])=>`<label><input type="radio" name="hk-r" value="${k}" ${k===HS.kRole?"checked":""}><span><b>${i} ${n}</b><small>${d}</small></span></label>`).join("")}</div></div>
  <div class="fr"><label class="f">Name on badge (optional)<input id="hk-l" maxlength="24" placeholder="e.g. Dr. Sunny"></label><label class="f">Key works for<select id="hk-x"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option><option value="0">Forever</option></select></label></div>
  <div class="row"><button class="btn" data-h="mkkey">✨ Make key</button></div></div></div>
- <div class="panel"><div class="ph"><h2>${lk?"🎉 Your new key":"How keys work"}</h2></div><div class="pb">${lk?keyCard(lk):`<p>Each key gives one job at <b>${esc(h.name)}</b>. Give it to a friend in person, or post it in the Little Hero Discord. They paste it into the <b>Join</b> tab.</p><p class="muted">Every key is signed with your hospital's secret, which never leaves this device. If anyone changes a key, it stops working, so nobody can fake a job at your hospital.</p>`}</div></div></div>
+ <div class="panel"><div class="ph"><h2>${lk?"🎉 Your new key":"How keys work"}</h2></div><div class="pb">${lk?keyCard(lk):`<p>Each key gives one job at <b>${esc(h.name)}</b>. Give it to a friend in person, or post it in the Be The Hero Discord. They paste it into the <b>Join</b> tab.</p><p class="muted">Every key is signed with your hospital's secret, which never leaves this device. If anyone changes a key, it stops working, so nobody can fake a job at your hospital.</p>`}</div></div></div>
  <div class="panel"><div class="ph"><h2>Keys you've made</h2></div>${h.keys.length?`<div class="tw"><table><thead><tr><th>Job</th><th>Name on badge</th><th>Made</th><th>Status</th><th></th></tr></thead><tbody>${h.keys.slice().reverse().map(k=>{const r=role(k.role),ex=k.exp&&Date.now()>k.exp;return `<tr><td>${r[1]} ${r[2]}</td><td>${esc(k.label||"—")}</td><td>${new Date(k.made).toLocaleDateString()}</td><td><span class="pill ${ex?"":"s-dis"}">${ex?"Expired":k.exp?"Until "+new Date(k.exp).toLocaleDateString():"Forever"}</span></td><td><button class="btn sec sm" data-h="showkey" data-c="${k.kid}">Show</button></td></tr>`}).join("")}</tbody></table></div>`:`<div class="pb muted">No keys yet. Make one above!</div>`}</div>
  <div class="panel"><div class="ph"><h2>🛡️ Owner backup</h2></div><div class="pb"><p>Only this device can make keys for <b>${esc(h.name)}</b>. Save an owner backup code somewhere safe, like with a parent. To own the hospital on another device, paste the code into the <b>Join</b> tab there.</p><p class="muted">Never share it. Anyone with this code can make keys for your hospital.</p><div class="row"><button class="btn sec sm" data-h="backup">Show owner backup</button><button class="btn sec sm" data-h="closeh">Close this hospital</button></div></div></div>`;}
 function memberCard(m,a){const r=role(m.role);return `<div class="badge">${sign(m,`${m.hid}${m.own?" · Your hospital":""}`)}<div class="pb"><div class="row"><span class="av" aria-hidden="true">${a.avatar}</span><div style="display:grid"><b class="hh">${esc(m.label||a.name)}</b><span>${r[1]} ${r[2]}</span><small class="muted">${m.shifts||0} shift${m.shifts===1?"":"s"} · ${Math.round(m.mins||0)} min on duty</small></div><span class="sp"></span>${qrSVG("LHH|STAFF|"+m.hid+"|"+m.role+"|"+m.kid,76)}</div>
