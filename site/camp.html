@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Little Hero Camp HQ</title>
-<meta name="description" content="Little Hero Health: the in-real-life hospital role-play game.">
+<title>Be The Hero Camp HQ</title>
+<meta name="description" content="Be The Hero: the in-real-life hospital role-play game.">
 <link rel="icon" type="image/png" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
 <meta property="og:image" content="brand/discord-banner-960x540.png">
@@ -52,8 +52,8 @@
  #lhbar .home b{font-size:1.1rem}
 }
 </style>
-<header id="lhbar" aria-label="Little Hero menu"><div class="in">
- <a class="home" href="index.html" aria-label="Little Hero Health home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+<header id="lhbar" aria-label="Be The Hero menu"><div class="in">
+ <a class="home" href="index.html" aria-label="Be The Hero home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
  <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
  <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
  <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
@@ -62,7 +62,7 @@
  <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
  <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
 </svg>
-<span><b>Little Hero</b><small>HEALTH</small></span></a>
+<span><b>Be The Hero</b><small>HOSPITAL GAME</small></span></a>
  <div class="grp" data-g="play"><button class="gb" aria-expanded="false" aria-controls="lhp-play">🎮 Play <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-play" data-t="Play" hidden>
    <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
@@ -77,7 +77,7 @@
    <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
    <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
    <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
-   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Little Hero</b><span>Ages, jobs, levels and safety rules</span></a>
+   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About Be The Hero</b><span>Ages, jobs, levels and safety rules</span></a>
   </div></div>
  <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-comm" data-t="Community" hidden>
@@ -373,7 +373,7 @@ function vDash(){const cs=S.camps,ks=S.people.filter(p=>p.role==="kid"),ts=S.peo
  <div class="grid">${cs.map(c=>{const s=campStats(c);return `<div class="card"><div class="row between"><div><h2>${cty(c)[0]} ${esc(c.name)}</h2><span class="muted">${esc(c.where)} · ${TIERS[c.tier]} · ${localTime(c)}</span></div><span class="pill">${CTYPES[c.type][0]}</span></div>
   <div class="row between"><span>Session <b>${c.cur+1}</b> of 20 · Week ${CURR[c.cur][1]}</span><span class="muted">${s.kids} heroes · ${s.att}% attendance</span></div><div class="bar"><span style="width:${(c.cur+1)/20*100}%"></span></div>${thermo(c)}
   <div class="row"><span class="muted">Teacher: ${c.teachers.map(t=>esc((P(t)||{}).name)).join(", ")||"none yet"}</span></div><div class="row"><button class="btn sm" data-a="open" data-c="${c.id}">Open camp →</button></div></div>`}).join("")||`<div class="card"><h2>No camps yet</h2><p class="muted">Create your first camp to get started.</p><button class="btn" data-a="tab" data-t="camps">Create a camp</button></div>`}</div>`;}
-function vCamps(){return `<div class="card hi"><h2>🏕️ Create a camp</h2>${can("createCamp")?`<div class="fr"><label class="f">Camp name<input id="nc-n" placeholder="e.g. Spring Break Heroes"></label><label class="f">Where<input id="nc-w" placeholder="School, library, college…"></label><label class="f">Type<select id="nc-t">${Object.entries(CTYPES).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join("")}</select></label><label class="f">Age group<select id="nc-a">${TIERS.map((t,i)=>`<option value="${i}"${i===1?" selected":""}>${t}</option>`).join("")}</select></label><label class="f">Country<select id="nc-co">${Object.entries(COUNTRIES).map(([k,v])=>`<option value="${k}">${v[0]} ${v[1]}</option>`).join("")}</select></label><label class="f">Time zone<select id="nc-tz">${TZS.map(z=>`<option${z==="America/Chicago"?" selected":""}>${z}</option>`).join("")}</select></label><label class="f">Family updates in<select id="nc-l">${Object.entries(LANGS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></label><label class="f">Start date<input id="nc-d" type="date"></label><label class="f">Capacity<input id="nc-c" type="number" min="1" value="24"></label><label class="f">Teacher<select id="nc-tc"><option value="">Assign later</option>${S.people.filter(p=>p.role==="teacher").map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join("")}</select></label></div><p class="muted" id="nc-m">Every camp gets the 4-week, 20-session Little Hero plan and its own check-in QR code.</p><div class="row"><button class="btn" data-a="mkcamp">Create camp</button></div>`:`<p class="muted">Only the owner and admins can create camps.</p>`}</div>
+function vCamps(){return `<div class="card hi"><h2>🏕️ Create a camp</h2>${can("createCamp")?`<div class="fr"><label class="f">Camp name<input id="nc-n" placeholder="e.g. Spring Break Heroes"></label><label class="f">Where<input id="nc-w" placeholder="School, library, college…"></label><label class="f">Type<select id="nc-t">${Object.entries(CTYPES).map(([k,v])=>`<option value="${k}">${v[0]}</option>`).join("")}</select></label><label class="f">Age group<select id="nc-a">${TIERS.map((t,i)=>`<option value="${i}"${i===1?" selected":""}>${t}</option>`).join("")}</select></label><label class="f">Country<select id="nc-co">${Object.entries(COUNTRIES).map(([k,v])=>`<option value="${k}">${v[0]} ${v[1]}</option>`).join("")}</select></label><label class="f">Time zone<select id="nc-tz">${TZS.map(z=>`<option${z==="America/Chicago"?" selected":""}>${z}</option>`).join("")}</select></label><label class="f">Family updates in<select id="nc-l">${Object.entries(LANGS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></label><label class="f">Start date<input id="nc-d" type="date"></label><label class="f">Capacity<input id="nc-c" type="number" min="1" value="24"></label><label class="f">Teacher<select id="nc-tc"><option value="">Assign later</option>${S.people.filter(p=>p.role==="teacher").map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join("")}</select></label></div><p class="muted" id="nc-m">Every camp gets the 4-week, 20-session Be The Hero plan and its own check-in QR code.</p><div class="row"><button class="btn" data-a="mkcamp">Create camp</button></div>`:`<p class="muted">Only the owner and admins can create camps.</p>`}</div>
  <div class="card"><h2>All camps</h2><div class="tw"><table><thead><tr><th>Camp</th><th>Country</th><th>Type</th><th>Ages</th><th>Heroes</th><th>Session</th><th>Code</th><th>License (est.)</th><th></th></tr></thead><tbody>${S.camps.map(c=>`<tr><td><b>${esc(c.name)}</b><br><span class="muted">${esc(c.where)} · starts ${fmtDate(c,c.start)}</span></td><td>${cty(c)[0]} ${cty(c)[1]}<br><span class="muted">${localTime(c)}</span></td><td>${CTYPES[c.type][0]}</td><td>${TIERS[c.tier].split(" · ")[0]}</td><td class="n">${kidsOf(c.id).length} / ${c.cap}</td><td class="n">${c.cur+1} / 20</td><td><code>${c.code}</code></td><td class="n">${money(lic(c))}<br><span class="muted" style="font-size:.75rem">${CTYPES[c.type][1]?"$"+CTYPES[c.type][1]+" ":""}${CTYPES[c.type][3]}</span></td><td><button class="btn sm" data-a="open" data-c="${c.id}">Open</button>${can("remove")?` <button class="btn sm s" data-a="rmcamp" data-c="${c.id}">Remove</button>`:""}</td></tr>`).join("")}</tbody></table></div></div>`;}
 function vPeople(){const t=UI.ptab,staff=S.people.filter(p=>p.role!=="kid"),kids=S.people.filter(p=>p.role==="kid");
  const tabs=`<div class="row"><button class="btn sm ${t==="staff"?"":"s"}" data-a="ptab" data-p="staff">Staff (${staff.length})</button><button class="btn sm ${t==="kids"?"":"s"}" data-a="ptab" data-p="kids">Heroes (${kids.length})</button></div>`;
@@ -416,7 +416,7 @@ function vWall(){const c=camp(UI.camp),ks=kidsOf(c.id);
  <div class="card"><h2>Camp wall</h2><div class="wall">${shoutsHTML(c)}</div></div>`;}
 function vCerts(){const c=camp(UI.camp),ks=kidsOf(c.id);if(!UI.sel||!ks.find(k=>k.id===UI.sel))UI.sel=ks[0]?ks[0].id:null;const k=P(UI.sel);
  return `<div class="card"><div class="row between"><h2>🎓 Certificates</h2><label class="f" style="min-width:220px">Hero<select id="ce-k">${ks.map(x=>`<option value="${x.id}"${x.id===UI.sel?" selected":""}>${esc(x.name)}</option>`).join("")}</select></label></div>
- ${k?`<div id="printme"><div class="cert"><span style="font-size:2.4rem">🏥</span><h2>Certificate of Heroism</h2><p>This certifies that</p><div class="nm">${esc(k.name)}</div><p>completed <b>${stats(k).done} of 20</b> missions at <b>${esc(c.name)}</b><br>and reached <b>Level ${lvlOf(k.xp)+1} · ${RANKS[lvlOf(k.xp)]}</b></p><div class="bl">${k.badges.map(b=>CBADGES[b][0]).join("")}</div><div class="qrbox">${qrSVG("LHH|CERT|"+c.code+"|"+k.name+"|L"+(lvlOf(k.xp)+1),90)}</div><small>Little Hero Health · ${esc(c.where)} · ${new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</small></div></div>
+ ${k?`<div id="printme"><div class="cert"><span style="font-size:2.4rem">🏥</span><h2>Certificate of Heroism</h2><p>This certifies that</p><div class="nm">${esc(k.name)}</div><p>completed <b>${stats(k).done} of 20</b> missions at <b>${esc(c.name)}</b><br>and reached <b>Level ${lvlOf(k.xp)+1} · ${RANKS[lvlOf(k.xp)]}</b></p><div class="bl">${k.badges.map(b=>CBADGES[b][0]).join("")}</div><div class="qrbox">${qrSVG("LHH|CERT|"+c.code+"|"+k.name+"|L"+(lvlOf(k.xp)+1),90)}</div><small>Be The Hero · ${esc(c.where)} · ${new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"})}</small></div></div>
  <div class="row" style="justify-content:center">${k.badges.includes("grad")?`<span class="pill y">🎓 Graduate</span>`:`<button class="btn" data-a="grad">Award Graduate badge 🎓</button>`}${window.self===window.top?`<button class="btn s" data-a="print">🖨 Print certificate</button>`:""}</div>`:`<p class="muted">Add heroes to make certificates.</p>`}</div>`;}
 /* ---------- Kid views ---------- */
 function vHero(){const k=me(),c=camp(k.camp),s=stats(k),cs=c?CURR[c.cur]:null;
