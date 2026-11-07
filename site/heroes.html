@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Hero Shift Groups</title>
-<meta name="description" content="Find your The Hero Shift group: ages 5 to 25.">
+<meta name="description" content="Find your The Hero Shift group: ages 5 to 18.">
 <link rel="icon" type="image/png" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
 <meta property="og:image" content="brand/discord-banner-960x540.png">
@@ -67,8 +67,10 @@
   <div class="pn" id="lhp-play" data-t="Play" hidden>
    <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
    <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
-   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 25</span></a>
-   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for 13 and up</span></a>
+   <a href="games.html" data-p="games"><span class="i">🧩</span><b>Puzzle Lab</b><span>Hospital problem-solving games for every age</span></a>
+   <a href="biscuit.html" data-p="biscuit"><span class="i">🧸</span><b>Talk to Biscuit</b><span>Biscuit the Bear tells you how he feels</span></a>
+   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 18</span></a>
+   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for ages 12 to 18</span></a>
    <a href="workstation.html" data-p="workstation"><span class="i"><img src="brand/logos/lhh-hospital-workspace-icon.svg" alt=""></span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
    <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
   </div></div>
@@ -129,7 +131,7 @@ h3{font:800 1.3rem/1.1 var(--display);margin:0}
 .top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between}
 </style>
 <main>
-<div class="top"><div><h1>Find your hero group</h1><p class="lead">The Hero Shift is for heroes aged 5 to 25. Each group plays a different way, so little kids get pretend play and teens and grown-ups get real hospital work.</p></div>
+<div class="top"><div><h1>Find your hero group</h1><p class="lead">The Hero Shift is for heroes aged 5 to 18. Each group plays a different way: little kids get pretend play, and older kids and teens get real hospital thinking.</p></div>
 <div class="bgt" role="group" aria-label="Background"><button data-b="blue" aria-pressed="true">Blue</button><button data-b="white" aria-pressed="false">White</button></div></div>
 
 <section class="box"><h2>How old are you?</h2>
@@ -137,39 +139,33 @@ h3{font:800 1.3rem/1.1 var(--display);margin:0}
 <p id="res" aria-live="polite"></p></section>
 
 <section class="groups">
-<article class="g" id="g-little"><div class="em">🧸</div><span class="age">Ages 5 to 12</span><h3>Little Heroes</h3>
+<article class="g" id="g-little"><div class="em">🧸</div><span class="age">Ages 5 to 11</span><h3>Little Heroes</h3>
 <p>Pretend hospital with teddy bear patients. Kids learn that doctors and hospitals are safe and fun.</p>
-<ul><li>Pretend check-ups: heartbeat, temperature, bandages</li><li>Picture patient cards</li><li>Hero badges and stickers</li><li>The Hero Box kit at home</li></ul>
+<ul><li>Pretend check-ups: heartbeat, temperature, bandages</li><li>Talk to Biscuit the Bear about how he feels</li><li>Picture puzzles in the Puzzle Lab</li><li>Hero badges, stickers and the Hero Box at home</li></ul>
 <p class="safe">No chat. A grown-up books every event.</p>
-<a class="btn" href="workstation.html">Play in the Workstation</a></article>
+<a class="btn" href="biscuit.html">Talk to Biscuit</a></article>
 
-<article class="g" id="g-teen"><div class="em">🩺</div><span class="age">Ages 13 to 17</span><h3>Teen Heroes</h3>
-<p>Real hospital shifts. Triage patients, read vital signs, hand off to the next shift and explore health careers.</p>
-<ul><li>Triage with the 5 levels real ERs use</li><li>Made-up patients with vitals and history</li><li>SBAR handoffs, like real nurses</li><li>Ranks from Volunteer to Attending</li></ul>
-<p class="safe">Practice only, never medical advice. Teens chat only with teens.</p>
+<article class="g" id="g-junior"><div class="em">🔎</div><span class="age">Ages 12 to 15</span><h3>Junior Heroes</h3>
+<p>Real hospital thinking. Spot vital signs that are off, decide who goes first and solve mystery patients.</p>
+<ul><li>Vital signs detective</li><li>Who goes first? Three-level triage</li><li>First aid steps in the right order</li><li>Mystery patients with clues</li></ul>
+<p class="safe">Practice only, never medical advice. Chat is for teens only, with a parent's OK.</p>
+<a class="btn" href="games.html#junior">Open the Puzzle Lab</a></article>
+
+<article class="g" id="g-senior"><div class="em">🩺</div><span class="age">Ages 16 to 18</span><h3>Senior Heroes</h3>
+<p>Real hospital shifts. Triage with the five levels real ERs use, hand off with SBAR and practice medicine math.</p>
+<ul><li>Five-level ER triage</li><li>SBAR handoffs, like real nurses</li><li>Medicine math practice</li><li>Helper roles at events, with a grown-up in charge</li></ul>
+<p class="safe">Practice only. Real care is always given by licensed staff.</p>
 <a class="btn" href="teen.html">Open Teen Heroes HQ</a></article>
-
-<article class="g" id="g-young"><div class="em">📋</div><span class="age">Ages 18 to 20</span><h3>Young Pros</h3>
-<p>Lead and teach. Run teams on shifts, help at camps and write practice cases for teens.</p>
-<ul><li>Team lead on Teen Heroes shifts</li><li>Camp counselor and event staff</li><li>Harder cases with surprises</li><li>Links to real CNA and EMT courses</li></ul>
-<p class="safe">Event staff need a background check and safety training.</p>
-<a class="btn ghost" href="community.html">Apply in Discord</a></article>
-
-<article class="g" id="g-pro"><div class="em">⭐</div><span class="age">Ages 21 to 25</span><h3>Pro Heroes</h3>
-<p>Run The Hero Shift with Harry: lead events, mentor younger heroes and work with hospital partners.</p>
-<ul><li>Grown-up Admin and event lead</li><li>Mentor teens in group settings</li><li>Invite real nurses and EMTs to speak</li><li>Check new cases for safety</li></ul>
-<p class="safe">Every in-person event has a Pro Hero or parent in charge.</p>
-<a class="btn ghost" href="camp.html">Go to Camp HQ</a></article>
 </section>
 
 <section class="box"><h2>Safety for every group</h2>
 <ul><li>Kids under 13 never chat, and a parent or guardian books their tickets.</li>
-<li>Teens and adults are kept in separate chat groups. No private messages between adults and kids.</li>
+<li>Players are 18 and under. Grown-ups join only as parents, guardians or event staff, and never send private messages to kids.</li>
 <li>All patients in the game are made up. The Hero Shift never gives real medical advice.</li>
 <li>If anything feels wrong, stop and tell a grown-up.</li></ul></section>
 </main>
 <script>
-(()=>{const G=[["5 to 12","g-little","Little Heroes"],["13 to 17","g-teen","Teen Heroes"],["18 to 20","g-young","Young Pros"],["21 to 25","g-pro","Pro Heroes"]];
+(()=>{const G=[["5 to 11","g-little","Little Heroes"],["12 to 15","g-junior","Junior Heroes"],["16 to 18","g-senior","Senior Heroes"]];
 const pick=document.getElementById("pick"),res=document.getElementById("res");
 G.forEach(([a,id,n])=>{const b=document.createElement("button");b.type="button";b.textContent=a;b.setAttribute("aria-pressed","false");b.onclick=()=>{pick.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));res.textContent="You're a "+n.replace(/s$/,"")+"! Your group is highlighted below.";document.querySelectorAll(".g").forEach(g=>g.style.borderColor=g.id===id?"var(--sun)":"");document.getElementById(id).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});};pick.appendChild(b);});
 const set=v=>{document.documentElement.dataset.bg=v;document.querySelectorAll(".bgt button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.b===v));try{localStorage.setItem("lhh-bg",v)}catch(e){}};

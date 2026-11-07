@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Talk to Biscuit</title>
+<meta name="description" content="Biscuit the Bear tells you how he feels. Pick kind words and help him feel brave.">
+<link rel="icon" type="image/png" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
+<meta property="og:image" content="brand/discord-banner-960x540.png">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+#lhbar{position:sticky;top:0;z-index:80;background:#0A2A6B;border-bottom:3px solid #FFD21F;font-family:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif;color:#fff}
+#lhbar *{box-sizing:border-box}
+#lhbar .pn a .i img{width:30px;height:30px;display:block}
+#lhbar .home img{width:38px;height:38px;flex:none}
+
+#lhbar .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px 14px;min-height:56px}
+#lhbar .home{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;margin-right:auto;border-radius:10px;padding:2px 6px 2px 0}
+#lhbar .home svg{width:38px;height:38px;flex:none}
+#lhbar .home b{font-weight:800;font-size:1.25rem;line-height:1;color:#FFD21F;white-space:nowrap}
+#lhbar .home small{display:block;font:700 .58rem "Atkinson Hyperlegible",system-ui;letter-spacing:.3em;color:#fff;margin-top:2px}
+#lhbar .grp{position:relative}
+#lhbar .gb{display:flex;align-items:center;gap:6px;background:none;border:2px solid transparent;color:#fff;font:700 1rem "Baloo 2",system-ui;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+#lhbar .gb:hover{background:#1756C2}
+#lhbar .gb[aria-expanded="true"],#lhbar .grp.cur>.gb{border-color:#FFD21F}
+#lhbar .gb[aria-expanded="true"]{background:#FFD21F;color:#0A2A6B}
+#lhbar .gb .car{font-size:.7em;opacity:.8}
+#lhbar .pn{position:absolute;right:0;top:calc(100% + 8px);background:#fff;color:#0A2A6B;border:3px solid #FFD21F;border-radius:18px;padding:8px;min-width:280px;box-shadow:0 18px 40px rgba(0,0,0,.35);display:grid;gap:2px}
+#lhbar .pn[hidden]{display:none}
+#lhbar .pn a{display:grid;grid-template-columns:34px 1fr;gap:0 10px;align-items:center;text-decoration:none;color:#0A2A6B;padding:8px 10px;border-radius:12px}
+#lhbar .pn a:hover,#lhbar .pn a:focus-visible{background:#E6F0FA;outline:none}
+#lhbar .pn a[aria-current="page"]{background:#FFF7D1}
+#lhbar .pn a .i{grid-row:span 2;font-size:1.5rem;text-align:center}
+#lhbar .pn a b{font:700 1rem "Baloo 2",system-ui;line-height:1.1}
+#lhbar .pn a span{font:400 .82rem "Atkinson Hyperlegible",system-ui;color:#3D5A80}
+#lhbar .lock{color:#CFE2FF;text-decoration:none;font-size:1.05rem;padding:6px 8px;border-radius:999px}
+#lhbar .lock:hover{background:#1756C2;color:#fff}
+#lhbar .menu{display:none}
+#lhbar a:focus-visible,#lhbar button:focus-visible{outline:3px solid #FFD21F;outline-offset:2px}
+@media (max-width:760px){
+ #lhbar .grp{display:none}
+ #lhbar .menu{display:flex}
+ #lhbar.open .grp{display:block;position:static;width:100%}
+ #lhbar.open .in{flex-wrap:wrap}
+ #lhbar.open .grp>.gb{display:none}
+ #lhbar .home{order:0}#lhbar .lock{order:1}#lhbar .menu{order:2}#lhbar .grp{order:3}
+ #lhbar.open .pn{position:static;display:grid!important;box-shadow:none;margin:4px 0;min-width:0}
+ #lhbar.open .pn::before{content:attr(data-t);font:800 .8rem "Baloo 2",system-ui;letter-spacing:.08em;text-transform:uppercase;color:#1F5FAD;padding:2px 10px}
+ #lhbar .home b{font-size:1.1rem}
+}
+</style>
+<header id="lhbar" aria-label="The Hero Shift menu"><div class="in">
+ <a class="home" href="index.html" aria-label="The Hero Shift home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+ <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
+ <path d="M60 18 L88 27.5 V54 C88 75 76 89 60 98" fill="none" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+ <path d="M51 34 H69 V49 H84 V67 H69 V82 H51 V67 H36 V49 H51 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="4.5" stroke-linejoin="round"/>
+ <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
+ <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>
+<span><b>The Hero Shift</b><small>HOSPITAL GAME</small></span></a>
+ <div class="grp" data-g="play"><button class="gb" aria-expanded="false" aria-controls="lhp-play">🎮 Play <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-play" data-t="Play" hidden>
+   <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
+   <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
+   <a href="games.html" data-p="games"><span class="i">🧩</span><b>Puzzle Lab</b><span>Hospital problem-solving games for every age</span></a>
+   <a href="biscuit.html" data-p="biscuit"><span class="i">🧸</span><b>Talk to Biscuit</b><span>Biscuit the Bear tells you how he feels</span></a>
+   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 18</span></a>
+   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for ages 12 to 18</span></a>
+   <a href="workstation.html" data-p="workstation"><span class="i"><img src="brand/logos/lhh-hospital-workspace-icon.svg" alt=""></span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
+   <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
+  </div></div>
+ <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
+   <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
+   <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
+   <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
+   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About The Hero Shift</b><span>Ages, jobs, levels and safety rules</span></a>
+  </div></div>
+ <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-comm" data-t="Community" hidden>
+   <a href="community.html" data-p="community"><span class="i"><img src="brand/logos/lhh-discord-icon.svg" alt=""></span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
+   <a href="roblox.html" data-p="roblox"><span class="i"><img src="brand/logos/lhh-roblox-servers-icon.svg" alt=""></span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
+  </div></div>
+ <a class="lock" href="admin.html" title="Admin sign-in" aria-label="Admin sign-in">🔒</a>
+ <button class="gb menu" aria-expanded="false" aria-controls="lhbar">☰ Menu</button>
+</div></header>
+<script>
+(()=>{const SUB={workstation:["hospital-workspace","HOSPITAL WORKSPACE"],events:["events","EVENTS"],camp:["camps","CAMPS"],community:["discord","DISCORD"],roblox:["roblox-servers","ROBLOX SERVERS"]};
+const pg=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";const s=SUB[pg];const h=document.querySelector("#lhbar .home");if(!s||!h)return;
+const sv=h.querySelector("svg");if(sv){const i=document.createElement("img");i.src="brand/logos/lhh-"+s[0]+"-icon.svg";i.alt="";sv.replaceWith(i);}const sm=h.querySelector("small");if(sm)sm.textContent=s[1];})();
+
+(()=>{const bar=document.getElementById("lhbar");if(!bar)return;const page=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";
+bar.querySelectorAll(".pn a").forEach(a=>{if(a.dataset.p===page){a.setAttribute("aria-current","page");a.closest(".grp").classList.add("cur");}});
+const closeAll=ex=>bar.querySelectorAll(".grp").forEach(g=>{if(g===ex)return;g.querySelector(".gb").setAttribute("aria-expanded","false");g.querySelector(".pn").hidden=true;});
+bar.querySelectorAll(".grp>.gb").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const g=b.parentElement,p=g.querySelector(".pn"),open=p.hidden;closeAll(g);p.hidden=!open;b.setAttribute("aria-expanded",open);if(open)p.querySelector("a").focus({preventScroll:true});}));
+const m=bar.querySelector(".menu");m.addEventListener("click",e=>{e.stopPropagation();const o=!bar.classList.contains("open");bar.classList.toggle("open",o);m.setAttribute("aria-expanded",o);m.textContent=o?"✕ Close":"☰ Menu";});
+bar.querySelectorAll(".pn a").forEach(a=>a.addEventListener("click",()=>{closeAll();bar.classList.remove("open");m.setAttribute("aria-expanded","false");m.textContent="☰ Menu";}));
+document.addEventListener("click",e=>{if(!bar.contains(e.target))closeAll();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){const o=bar.querySelector('.gb[aria-expanded="true"]');closeAll();if(o)o.focus();}});})();
+</script>
+<style>nav.toplinks,div.top>nav[aria-label="Pages"],header.top>a[href$=".html"]{display:none!important}.bgtoggle{top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important}</style><style>
+:root{--bg:#0B2C70;--card:#0F3C99;--card2:#0A2A6B;--ink:#FFFFFF;--muted:#BCD3F5;--line:#2F5DB8;--sun:#FFD21F;--navy:#0A2A6B;--sky:#5AAEFF;--h1:#FFD21F;--display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;--body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+:root[data-bg="white"]{color-scheme:light;--bg:#F3F7FD;--card:#FFFFFF;--card2:#E6F0FA;--ink:#0A2A6B;--muted:#3D5A80;--line:#C6D7EE;--sky:#1F5FAD;--h1:#0A2A6B}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.5 var(--body)}
+main{max-width:1100px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:28px}
+h1{font:800 clamp(2rem,5vw,3rem)/1 var(--display);color:var(--h1);margin:0;text-wrap:balance}
+h2{font:800 1.6rem/1.1 var(--display);margin:0}
+h3{font:800 1.3rem/1.1 var(--display);margin:0}
+.lead{color:var(--muted);max-width:62ch;margin:8px 0 0}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.g{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.g .age{display:inline-block;align-self:flex-start;background:var(--sun);color:var(--navy);font:800 .95rem var(--display);border-radius:999px;padding:4px 12px}
+.g ul{margin:0;padding-left:20px;color:var(--muted)}.g li{margin:4px 0}
+.g .em{font-size:2.4rem;line-height:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--sun);background:var(--sun);color:var(--navy);font:800 1rem var(--display);border-radius:999px;padding:9px 18px;text-decoration:none;margin-top:auto;align-self:flex-start}
+.btn.ghost{background:transparent;color:var(--ink)}
+:root[data-bg="white"] .btn.ghost{border-color:#1F5FAD}
+.btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.box{background:var(--card2);border:2px solid var(--line);border-radius:20px;padding:20px}
+.pick{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pick button{font:800 1rem var(--display);border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 16px;cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--sun);color:var(--navy);border-color:var(--sun)}
+#res{margin-top:12px;font-weight:700}
+.safe{color:var(--muted);font-size:.95rem}
+.bgt{display:inline-flex;border:2px solid var(--sun);border-radius:999px;overflow:hidden}.bgt button{border:0;background:transparent;color:var(--ink);font:800 .95rem var(--display);padding:6px 14px;cursor:pointer}.bgt button[aria-pressed="true"]{background:var(--sun);color:var(--navy)}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between}
+</style>
+<style>
+.stage{display:grid;grid-template-columns:minmax(240px,360px) 1fr;gap:20px;align-items:start}
+@media (max-width:760px){.stage{grid-template-columns:1fr}}
+.bearcard{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px;position:relative}
+#bear{width:100%;max-width:300px;height:auto;display:block}
+#bear .talk{display:none}#bear.speaking .talk{display:block}#bear.speaking .still{display:none}
+#bear .lid{transform-origin:center;transform-box:fill-box;animation:blink 5s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(0)}96%{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){#bear .lid{animation:none}#bear.bob{animation:none!important}}
+#bear.bob{animation:bob .5s ease-in-out}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.moodpill{background:var(--sun);color:var(--navy);font:800 1.05rem var(--display);border-radius:999px;padding:6px 16px}
+.meter{width:100%;display:grid;gap:6px}
+.meter .bar{height:14px;border-radius:999px;background:var(--card2);border:2px solid var(--line);overflow:hidden}
+.meter .fill{height:100%;background:linear-gradient(90deg,#FF8A8A,#FFD21F,#7BE07B);transition:width .5s}
+.meter .ends{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted)}
+.panel{display:flex;flex-direction:column;gap:14px;min-width:0}
+.bubble{background:#fff;color:#0A2A6B;border-radius:22px;padding:16px 18px;font:700 1.25rem/1.35 var(--display);position:relative;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.bubble:before{content:"";position:absolute;left:-12px;top:26px;border:12px solid transparent;border-right-color:#fff;border-left:0}
+@media (max-width:760px){.bubble:before{left:40px;top:-12px;border:12px solid transparent;border-bottom-color:#fff;border-top:0}}
+.bubble .who{display:block;font:800 .8rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:#1F5FAD;margin-bottom:4px}
+.again{align-self:flex-start;font:800 .95rem var(--display);background:transparent;border:2px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.q{font:800 1.35rem/1.2 var(--display);margin:0}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:10px;text-align:left;font:700 1.08rem/1.3 var(--body);background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:18px;padding:12px 14px;cursor:pointer;min-height:56px}
+.opt:hover{border-color:var(--sun)}.opt:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.opt[disabled]{opacity:.45;cursor:not-allowed}
+.opt.good{border-color:#7BE07B;background:rgba(123,224,123,.15)}
+.opt .ear{flex:none;font-size:1.1rem;border:0;background:var(--card2);border-radius:999px;width:36px;height:36px;cursor:pointer;color:var(--ink)}
+.why{background:var(--card2);border-left:0;border:2px dashed var(--line);border-radius:16px;padding:10px 14px;color:var(--muted)}
+.why b{color:var(--ink)}
+.tabs{display:flex;flex-wrap:wrap;gap:10px}
+.tab{font:800 1.05rem var(--display);border:2px solid var(--sun);background:transparent;color:var(--ink);border-radius:999px;padding:8px 18px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--sun);color:var(--navy)}
+.visits{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.visit{font:800 1rem var(--display);text-align:left;background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:18px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:4px}
+.visit small{font:600 .85rem var(--body);color:var(--muted)}
+.visit.done{border-color:var(--sun)}
+.feelgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.feel{font:800 1.05rem var(--display);background:var(--card);color:var(--ink);border:2px solid var(--line);border-radius:18px;padding:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.feel span{font-size:2rem;line-height:1}
+.feel.good{border-color:#7BE07B;background:rgba(123,224,123,.15)}
+.sticker{font:800 1.2rem var(--display);color:var(--sun)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.snd{font:800 .95rem var(--display);background:transparent;border:2px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+:root[data-bg="white"] .bubble{border:2px solid #C6D7EE}
+</style>
+<main>
+<div class="top"><div><h1>Talk to Biscuit</h1><p class="lead">Biscuit the Bear is a patient at The Hero Shift hospital. He tells you how he feels. Choose kind words, help him feel better, and earn a sticker for every visit.</p></div>
+<div class="bgt" role="group" aria-label="Background"><button data-b="blue" aria-pressed="true">Blue</button><button data-b="white" aria-pressed="false">White</button></div></div>
+
+<div class="stage">
+ <div class="bearcard">
+  <svg id="bear" viewBox="0 0 200 230" role="img" aria-label="Biscuit the Bear"></svg>
+  <span class="moodpill" id="moodpill">Biscuit feels happy</span>
+  <div class="meter" aria-hidden="true"><div class="bar"><div class="fill" id="fill" style="width:60%"></div></div><div class="ends"><span>Upset</span><span>Calm and happy</span></div></div>
+  <button class="snd" id="snd" aria-pressed="true">🔊 Sound on</button>
+ </div>
+ <div class="panel">
+  <div class="bubble" aria-live="polite"><span class="who">Biscuit says</span><span id="say"></span></div>
+  <button class="again" id="again">🔊 Hear Biscuit again</button>
+  <div class="tabs" role="tablist"><button class="tab" role="tab" data-m="visits" aria-selected="true">🏥 Visits</button><button class="tab" role="tab" data-m="guess" aria-selected="false">🤔 Guess my feeling</button></div>
+  <div id="play"></div>
+ </div>
+</div>
+<section class="box"><h2>For grown-ups</h2><p class="safe">Biscuit helps kids name feelings and practice kind, honest words about doctor visits. Every choice explains why it helps. Nothing is recorded or sent anywhere: Biscuit's voice is pre-recorded, and stickers are saved only on this device.</p></section>
+</main>
+<script>
+(()=>{
+const D={"hello": "Hi, hero! I'm Biscuit the Bear. Sometimes I have big feelings at the hospital. Will you help me?", "visits": [{"id": "shot", "title": "Shot day", "mood": "scared", "start": 2, "intro": "Today I have to get a shot, and my tummy feels all wobbly. I'm really scared.", "q": "What could you say to Biscuit?", "say": [{"t": "It's okay to feel scared. I'll stay right here with you.", "r": "You'll stay with me? That makes me feel a little braver.", "d": 2, "why": "Saying a feeling is okay, and staying close, helps a scared friend feel safe."}, {"t": "A shot is a quick pinch, and it helps keep you from getting sick.", "r": "Just a quick pinch? Okay. I can do quick.", "d": 1, "why": "Telling the truth in simple words helps, so there are no surprises."}, {"t": "Don't be a baby. It's nothing.", "r": "Oh. That makes me feel kind of sad. I really am scared.", "d": -1, "why": "Calling someone a baby makes them feel worse. Try a kinder way."}], "hq": "What could help Biscuit during the shot?", "help": [{"t": "Take slow belly breaths together", "ok": true}, {"t": "Look at a fun picture and count to three", "ok": true}, {"t": "Run away and hide", "ok": false}], "good": "Breathe in, and out. Hey, it's already done!", "bad": "Hmm, hiding won't make the shot go away. What else could help?", "end": "I did it! I feel so proud of myself.", "endmood": "proud"}, {"id": "tummy", "title": "Tummy ache", "mood": "hurting", "start": 2, "intro": "My tummy hurts right here, and I don't feel like playing.", "q": "What could you say to Biscuit?", "say": [{"t": "I'm sorry your tummy hurts. Can you show me where?", "r": "Right here, by my belly button. Thanks for asking.", "d": 2, "why": "Asking where it hurts shows you care, and it helps the doctor too."}, {"t": "Let's tell a grown-up so they can help.", "r": "Yes, a grown-up will know what to do.", "d": 2, "why": "When something hurts, the best step is to tell a grown-up."}, {"t": "Just keep playing. You'll be fine.", "r": "But it really hurts. I don't think I can play right now.", "d": -1, "why": "Pain is a message from your body. It's important to listen to it."}], "hq": "Who should Biscuit tell about his tummy?", "help": [{"t": "A grown-up or the doctor", "ok": true}, {"t": "Nobody, it's a secret", "ok": false}, {"t": "Just his toy car", "ok": false}], "good": "The doctor listened to my tummy and knew just what to do.", "bad": "Hmm, if I keep it a secret, nobody can help me. Who else could I tell?", "end": "My tummy feels much better now. Thank you!", "endmood": "happy"}, {"id": "night", "title": "A night at the hospital", "mood": "sad", "start": 1, "intro": "I have to stay at the hospital tonight. I miss my bed and my family, and I feel lonely.", "q": "What could you say to Biscuit?", "say": [{"t": "It makes sense to miss home. Let's draw a picture for your family.", "r": "A picture! I'll draw my whole family, and my honey jar too.", "d": 2, "why": "Saying that the feeling makes sense, then doing something together, helps sad feelings shrink."}, {"t": "Your family can visit, and you can hug your blanket tonight.", "r": "My blanket! Hugging it always makes me feel cozy.", "d": 2, "why": "Things from home help a hospital room feel safer."}, {"t": "Stop being sad.", "r": "I can't just stop. Sad feelings take a little time.", "d": -1, "why": "Feelings don't switch off when someone says stop. Kind words help more."}], "hq": "What can make a hospital room feel cozy?", "help": [{"t": "A favorite blanket or toy from home", "ok": true}, {"t": "Asking the nurse to call his family", "ok": true}, {"t": "Hiding under the bed all night", "ok": false}], "good": "That helps. The room feels a lot cozier now.", "bad": "Hmm, under the bed is dusty and dark. What else could help?", "end": "I slept all night, and in the morning my family came to see me!", "endmood": "happy"}, {"id": "xray", "title": "X-ray picture", "mood": "worried", "start": 2, "intro": "The doctor wants to take a picture of my arm with a big machine. I'm worried it will hurt.", "q": "What could you say to Biscuit?", "say": [{"t": "An X-ray doesn't hurt at all. You just hold still, like a statue.", "r": "It doesn't hurt? Phew! I can be a statue.", "d": 2, "why": "Knowing what will happen, in true and simple words, takes away the scary surprise."}, {"t": "You can ask the X-ray tech what will happen. Questions help.", "r": "Good idea. I'll ask her to tell me each step.", "d": 1, "why": "Asking questions is brave, and the hospital team loves to answer them."}, {"t": "I don't know. Maybe it hurts a lot.", "r": "A lot?! Now I'm even more worried.", "d": -1, "why": "Guessing scary things makes worries bigger. Find out the real answer instead."}], "hq": "How can Biscuit help the X-ray picture come out clear?", "help": [{"t": "Freeze like a statue", "ok": true}, {"t": "Wiggle and dance", "ok": false}, {"t": "Jump up and down", "ok": false}], "good": "Click! I held so still. And it didn't hurt one bit!", "bad": "Hmm, if I move, the picture comes out blurry. What should I do?", "end": "The doctor showed me my bones on the screen. So cool!", "endmood": "happy"}, {"id": "cast", "title": "A cast on his arm", "mood": "grumpy", "start": 1, "intro": "I have a cast on my arm, and I can't play catch. I feel grumpy and frustrated!", "q": "What could you say to Biscuit?", "say": [{"t": "Feeling frustrated is okay. Let's find a game you can play with one arm.", "r": "One-arm games? Okay, that sounds fun.", "d": 2, "why": "Naming the feeling and finding something you can still do helps grumpy feelings pass."}, {"t": "Your bone is healing inside the cast. It won't be forever.", "r": "Not forever? I can wait a few weeks.", "d": 1, "why": "Knowing a hard thing will end makes it easier to handle."}, {"t": "Grumpy bears don't get stickers.", "r": "Hmph. Now I feel even grumpier.", "d": -1, "why": "Threats don't help feelings. Kindness does."}], "hq": "What could Biscuit do instead of playing catch?", "help": [{"t": "Play a board game", "ok": true}, {"t": "Ask friends to sign his cast", "ok": true}, {"t": "Take the cast off himself", "ok": false}], "good": "Great idea! That's way more fun than being grumpy.", "bad": "No way! The cast keeps my bone safe while it heals. What else could I do?", "end": "All my friends signed my cast. Now it looks super cool!", "endmood": "happy"}, {"id": "home", "title": "Going home", "mood": "excited", "start": 3, "intro": "Guess what? The doctor says I can go home today! I feel so excited.", "q": "What could you say to Biscuit?", "say": [{"t": "I'm so proud of you, Biscuit. You were really brave.", "r": "Thank you! I was a little scared, but I was brave anyway.", "d": 1, "why": "Being brave doesn't mean not being scared. It means doing it anyway."}, {"t": "What was the bravest thing you did?", "r": "Hmm. I think holding still for my X-ray!", "d": 1, "why": "Asking about someone's day helps them feel proud of what they did."}, {"t": "Okay. Bye.", "r": "Oh. Bye. I wanted to tell you about my day.", "d": 0, "why": "Saying goodbye is fine, but asking a question shows you care."}], "hq": "What should Biscuit say to the hospital team?", "help": [{"t": "Thank you for helping me", "ok": true}, {"t": "See you never", "ok": false}, {"t": "Nothing at all", "ok": false}], "good": "Thank you, doctors and nurses! You took great care of me.", "bad": "Hmm, the team worked hard to help me. What would be kind to say?", "end": "Thank you, hero! You helped me feel brave the whole time.", "endmood": "proud"}], "guess": [{"mood": "scared", "t": "A loud noise just went boom in the hallway, and my heart is going thump, thump, thump!"}, {"mood": "happy", "t": "My nurse brought me a honey sandwich, and now I can't stop smiling!"}, {"mood": "sad", "t": "My best friend couldn't visit today. I feel a little teary."}, {"mood": "grumpy", "t": "I wanted the blue blanket, but they gave me the itchy one. Hmph!"}, {"mood": "worried", "t": "What if my test takes a long time? What if I miss my favorite show?"}, {"mood": "tired", "t": "I played so many games today. My eyes are getting heavy. Yawn."}, {"mood": "proud", "t": "I took my medicine all by myself, even the yucky one!"}, {"mood": "excited", "t": "My family is coming to visit in five minutes! I can't wait!"}, {"mood": "hurting", "t": "Ouch. I bumped my paw on the bed, and it really stings."}, {"mood": "calm", "t": "I'm taking slow breaths and listening to quiet music. My body feels nice and still."}], "guessq": "How do you think Biscuit feels?", "right": "Yes! That's exactly how I feel. Thanks for noticing.", "wrong": "Hmm, not quite. Listen again and look at my face.", "bye": "You're a real hero at helping with feelings. Come back and visit me anytime!"};
+const FEEL={scared:["😨","scared"],happy:["😊","happy"],sad:["😢","sad"],grumpy:["😠","grumpy"],worried:["😟","worried"],tired:["😴","tired"],proud:["🥳","proud"],excited:["🤩","excited"],hurting:["🤕","hurting"],calm:["😌","calm"]};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const N="#0A2A6B",FUR="#C98A4B",FUR2="#E9B87C",INNER="#F4D2A6";
+// face parts by mood: brows, eyes, mouth, extras
+const BROW={def:["M64 64 Q77 57 90 63","M110 63 Q123 57 136 64"],up:["M64 62 Q78 60 90 54","M110 54 Q122 60 136 62"],down:["M64 57 Q78 59 90 66","M110 66 Q122 59 136 57"],high:["M64 58 Q77 50 90 57","M110 57 Q123 50 136 58"]};
+const MOODS={
+ happy:{b:"def",e:"open",m:"M84 120 Q100 136 116 120",x:["blush"]},
+ proud:{b:"high",e:"smile",m:"M82 119 Q100 138 118 119 Z",fill:1,x:["blush","spark"]},
+ excited:{b:"high",e:"wide",m:"M82 118 Q100 142 118 118 Z",fill:1,x:["blush","spark"]},
+ calm:{b:"def",e:"smile",m:"M88 122 Q100 130 112 122",x:[]},
+ sad:{b:"up",e:"open",m:"M86 130 Q100 118 114 130",x:["tear"]},
+ scared:{b:"up",e:"wide",m:"M92 122 Q100 114 108 122 Q108 134 100 134 Q92 134 92 122 Z",fill:1,x:["sweat"]},
+ worried:{b:"up",e:"open",m:"M86 126 Q93 120 100 126 Q107 132 114 126",x:["sweat"]},
+ grumpy:{b:"down",e:"open",m:"M88 128 Q100 120 112 128",x:[]},
+ tired:{b:"def",e:"sleepy",m:"M95 124 Q100 120 105 124 Q105 131 100 131 Q95 131 95 124 Z",fill:1,x:["zzz"]},
+ hurting:{b:"up",e:"squeeze",m:"M86 125 L92 121 L100 126 L108 121 L114 125",x:["bandage2"]}
+};
+function eyes(t){const L=78,R=122,Y=86;
+ if(t==="smile")return `<path d="M${L-8} ${Y+2} Q${L} ${Y-7} ${L+8} ${Y+2}" fill="none" stroke="${N}" stroke-width="4" stroke-linecap="round"/><path d="M${R-8} ${Y+2} Q${R} ${Y-7} ${R+8} ${Y+2}" fill="none" stroke="${N}" stroke-width="4" stroke-linecap="round"/>`;
+ if(t==="sleepy")return `<path d="M${L-8} ${Y} Q${L} ${Y+5} ${L+8} ${Y}" fill="none" stroke="${N}" stroke-width="4" stroke-linecap="round"/><path d="M${R-8} ${Y} Q${R} ${Y+5} ${R+8} ${Y}" fill="none" stroke="${N}" stroke-width="4" stroke-linecap="round"/>`;
+ if(t==="squeeze")return `<path d="M${L-7} ${Y-6} L${L+6} ${Y} L${L-7} ${Y+6}" fill="none" stroke="${N}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M${R+7} ${Y-6} L${R-6} ${Y} L${R+7} ${Y+6}" fill="none" stroke="${N}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+ const r=t==="wide"?9:7;
+ const one=x=>`<g><circle cx="${x}" cy="${Y}" r="${r}" fill="${N}"/><circle cx="${x+2.5}" cy="${Y-2.5}" r="${r/3}" fill="#fff"/><rect class="lid" x="${x-r-1}" y="${Y-r-1}" width="${2*r+2}" height="${2*r+2}" rx="${r}" fill="${FUR}"/></g>`;
+ return one(L)+one(R);}
+function extras(list){return list.map(x=>({
+ blush:`<ellipse cx="64" cy="104" rx="9" ry="5" fill="#FF8A8A" opacity=".55"/><ellipse cx="136" cy="104" rx="9" ry="5" fill="#FF8A8A" opacity=".55"/>`,
+ tear:`<path d="M70 96 Q66 106 70 110 Q75 106 70 96 Z" fill="#5AAEFF" stroke="${N}" stroke-width="1.5"/>`,
+ sweat:`<path d="M150 58 Q144 70 150 75 Q156 70 150 58 Z" fill="#5AAEFF" stroke="${N}" stroke-width="1.5"/>`,
+ spark:`<path d="M168 30 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="${N}" stroke-width="2"/><path d="M28 40 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z" fill="#FFD21F" stroke="${N}" stroke-width="2"/>`,
+ zzz:`<text x="150" y="40" font-family="Baloo 2,system-ui" font-weight="800" font-size="20" fill="#FFD21F" stroke="${N}" stroke-width="1">z</text><text x="164" y="26" font-family="Baloo 2,system-ui" font-weight="800" font-size="15" fill="#FFD21F" stroke="${N}" stroke-width="1">z</text>`,
+ bandage2:`<g transform="rotate(-25 128 112)"><rect x="116" y="106" width="26" height="11" rx="5" fill="#FFE3B8" stroke="${N}" stroke-width="2"/><rect x="125" y="107.5" width="8" height="8" fill="#F4C27A"/></g>`
+}[x]||"")).join("");}
+function bear(mood){const m=MOODS[mood]||MOODS.happy,B=BROW[m.b];
+ return `<defs><clipPath id="hd"><circle cx="100" cy="92" r="62"/></clipPath></defs>
+ <ellipse cx="100" cy="196" rx="62" ry="40" fill="#5AAEFF" stroke="${N}" stroke-width="5"/>
+ <path d="M70 168 Q100 182 130 168 L126 186 Q100 196 74 186 Z" fill="#1F5FAD" stroke="${N}" stroke-width="3.5" stroke-linejoin="round"/>
+ <path d="M92 192 h16 v6 h6 v16 h-6 v6 h-16 v-6 h-6 v-16 h6 z" fill="#fff" stroke="${N}" stroke-width="2" transform="translate(0 -6) scale(1)"/>
+ <ellipse cx="46" cy="206" rx="16" ry="13" fill="${FUR}" stroke="${N}" stroke-width="4"/><ellipse cx="154" cy="206" rx="16" ry="13" fill="${FUR}" stroke="${N}" stroke-width="4"/>
+ <circle cx="50" cy="44" r="20" fill="${FUR}" stroke="${N}" stroke-width="5"/><circle cx="50" cy="44" r="10" fill="${INNER}"/>
+ <circle cx="150" cy="44" r="20" fill="${FUR}" stroke="${N}" stroke-width="5"/><circle cx="150" cy="44" r="10" fill="${INNER}"/>
+ <g transform="rotate(30 155 38)"><rect x="140" y="32" width="30" height="11" rx="5" fill="#FFE3B8" stroke="${N}" stroke-width="2"/><rect x="151" y="33.5" width="8" height="8" fill="#F4C27A"/></g>
+ <circle cx="100" cy="92" r="62" fill="${FUR}" stroke="${N}" stroke-width="5"/>
+ <path d="M64 46 Q100 30 136 46" fill="none" stroke="${FUR2}" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+ <ellipse cx="100" cy="117" rx="31" ry="23" fill="${INNER}" stroke="${N}" stroke-width="3"/>
+ <ellipse cx="100" cy="104" rx="11" ry="8" fill="${N}"/><ellipse cx="97" cy="101" rx="3.5" ry="2" fill="#fff" opacity=".7"/>
+ <path d="M100 112 V118" stroke="${N}" stroke-width="3" stroke-linecap="round"/>
+ <path d="${B[0]}" fill="none" stroke="${N}" stroke-width="4.5" stroke-linecap="round"/><path d="${B[1]}" fill="none" stroke="${N}" stroke-width="4.5" stroke-linecap="round"/>
+ ${eyes(m.e)}
+ <g class="still"><path d="${m.m}" fill="${m.fill?"#7A2E2E":"none"}" stroke="${N}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+ <g class="talk"><ellipse cx="100" cy="125" rx="9" ry="7" fill="#7A2E2E" stroke="${N}" stroke-width="3.5"/></g>
+ ${extras(m.x)}`;}
+let mood="happy",meter=3,sound=true,audio=null,talkT=null,lastKey="hello",lastText=D.hello;
+function setMood(md,mv){mood=md;$("bear").innerHTML=bear(md);$("moodpill").textContent="Biscuit feels "+FEEL[md][1]+" "+FEEL[md][0];if(mv!==undefined){meter=Math.max(0,Math.min(4,mv));$("fill").style.width=(meter/4*80+20)+"%";}}
+function stopTalk(){clearInterval(talkT);talkT=null;$("bear").classList.remove("speaking");}
+function play(key,text,biscuit=true){
+ try{if(audio){audio.pause();audio=null;}speechSynthesis&&speechSynthesis.cancel();}catch(e){}
+ stopTalk();if(!sound)return;
+ const b=$("bear");
+ if(biscuit){let on=false;talkT=setInterval(()=>{on=!on;b.classList.toggle("speaking",on);},150);}
+ const a=new Audio("audio/biscuit/"+key+".mp3");audio=a;
+ a.onended=()=>{if(audio===a)stopTalk();};
+ a.play().catch(()=>{try{const u=new SpeechSynthesisUtterance(text);u.rate=.95;u.pitch=biscuit?1.3:1;u.onend=stopTalk;speechSynthesis.speak(u);}catch(e){stopTalk();}});
+}
+function speak(key,text){lastKey=key;lastText=text;$("say").textContent=text;const b=$("bear");b.classList.remove("bob");void b.offsetWidth;b.classList.add("bob");play(key,text,true);}
+const store={get(){try{return JSON.parse(localStorage.getItem("lhh-biscuit")||"{}")}catch(e){return{}}},set(v){try{localStorage.setItem("lhh-biscuit",JSON.stringify(v))}catch(e){}}};
+let M="visits";
+function optBtn(label,key,attrs){return `<button class="opt" ${attrs}><span>${esc(label)}</span><span class="ear" role="button" tabindex="-1" aria-label="Hear this answer" data-ear="${key}" data-txt="${esc(label)}">🔊</span></button>`;}
+function menu(){const st=store.get();M="visits";
+ $("play").innerHTML=`<p class="q">Pick a visit with Biscuit</p><div class="visits">${D.visits.map((v,i)=>`<button class="visit${st[v.id]?" done":""}" data-v="${i}">${FEEL[v.mood][0]} ${esc(v.title)}<small>${st[v.id]?"⭐ Sticker earned":"Biscuit feels "+FEEL[v.mood][1]}</small></button>`).join("")}</div><p class="sticker">⭐ Stickers: ${D.visits.filter(v=>st[v.id]).length} of ${D.visits.length}</p>`;
+ $("play").onclick=e=>{const v=e.target.closest("[data-v]");if(v)visit(+v.dataset.v);};}
+function visit(i){const v=D.visits[i];setMood(v.mood,v.start);speak(v.id+"-intro",v.intro);
+ const tried=new Set();
+ const ask=()=>{$("play").innerHTML=`<p class="q">${esc(v.q)} <button class="again" data-hear="${v.id}-q" data-txt="${esc(v.q)}" aria-label="Hear the question">🔊</button></p><div class="opts">${v.say.map((s,n)=>optBtn(s.t,v.id+"-s"+n,`data-say="${n}"${tried.has(n)?" disabled":""}`)).join("")}</div><div id="why"></div>`;};
+ ask();
+ $("play").onclick=e=>{const ear=e.target.closest("[data-ear],[data-hear]");if(ear){e.stopPropagation();play(ear.dataset.ear||ear.dataset.hear,ear.dataset.txt,false);return;}
+  const b=e.target.closest("[data-say]");if(b&&!b.disabled){const s=v.say[+b.dataset.say];speak(v.id+"-r"+b.dataset.say,s.r);
+   if(s.d<0){tried.add(+b.dataset.say);setMood(v.mood,meter+s.d);ask();$("why").innerHTML=`<p class="why"><b>Hmm.</b> ${esc(s.why)}</p>`;return;}
+   setMood(s.d>=2?"calm":v.mood,meter+s.d);
+   $("play").innerHTML=`<p class="why"><b>Why it helps:</b> ${esc(s.why)}</p><p class="q">${esc(v.hq)} <button class="again" data-hear="${v.id}-hq" data-txt="${esc(v.hq)}" aria-label="Hear the question">🔊</button></p><div class="opts">${v.help.map((h,n)=>optBtn(h.t,v.id+"-h"+n,`data-help="${n}"`)).join("")}</div>`;return;}
+  const h=e.target.closest("[data-help]");if(h&&!h.disabled){const x=v.help[+h.dataset.help];
+   if(!x.ok){h.disabled=true;speak(v.id+"-bad",v.bad);return;}
+   h.classList.add("good");$("play").querySelectorAll("[data-help]").forEach(o=>o.disabled=true);speak(v.id+"-good",v.good);setMood("calm",4);
+   const st=store.get();st[v.id]=1;store.set(st);
+   setTimeout(()=>{setMood(v.endmood,4);speak(v.id+"-end",v.end);$("play").innerHTML=`<p class="sticker">⭐ You earned the ${esc(v.title)} sticker!</p><div class="row">${i+1<D.visits.length?`<button class="btn" data-next="${i+1}">Next visit</button>`:""}<button class="btn ghost" data-menu>All visits</button></div>`;},3600);return;}
+  const nx=e.target.closest("[data-next]");if(nx){visit(+nx.dataset.next);return;}
+  if(e.target.closest("[data-menu]")){menu();setMood("happy",3);speak("hello",D.hello);}
+ };}
+let gi=0,gorder=[];
+function guess(){M="guess";if(!gorder.length)gorder=[...D.guess.keys()].sort(()=>Math.random()-.5);
+ const n=gorder[gi%gorder.length],g=D.guess[n];setMood(g.mood,2);speak("g"+n,g.t);
+ const opts=[g.mood,...Object.keys(FEEL).filter(f=>f!==g.mood).sort(()=>Math.random()-.5).slice(0,3)].sort(()=>Math.random()-.5);
+ $("play").innerHTML=`<p class="q">${esc(D.guessq)} <button class="again" data-hear="guessq" data-txt="${esc(D.guessq)}" aria-label="Hear the question">🔊</button></p><div class="feelgrid">${opts.map(f=>`<button class="feel" data-f="${f}"><span>${FEEL[f][0]}</span>${FEEL[f][1]}</button>`).join("")}</div><p class="sticker" id="gs"></p>`;
+ $("play").onclick=e=>{const ear=e.target.closest("[data-hear]");if(ear){play(ear.dataset.hear,ear.dataset.txt,false);return;}
+  const b=e.target.closest("[data-f]");if(!b||b.disabled)return;
+  if(b.dataset.f!==g.mood){b.disabled=true;play("f-"+b.dataset.f,FEEL[b.dataset.f][1],false);setTimeout(()=>speak("wrong",D.wrong),900);return;}
+  b.classList.add("good");$("play").querySelectorAll("[data-f]").forEach(o=>o.disabled=true);speak("right",D.right);setMood("happy",4);
+  $("gs").innerHTML=`⭐ Great noticing! <button class="btn" data-gnext style="margin-left:8px">Next feeling</button>`;
+  $("play").querySelector("[data-gnext]").onclick=ev=>{ev.stopPropagation();gi++;guess();};};}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===t));if(t.dataset.m==="guess")guess();else{menu();setMood("happy",3);}});
+$("again").onclick=()=>play(lastKey,lastText,true);
+$("snd").onclick=()=>{sound=!sound;$("snd").setAttribute("aria-pressed",sound);$("snd").textContent=sound?"🔊 Sound on":"🔇 Sound off";if(!sound){try{audio&&audio.pause();speechSynthesis.cancel()}catch(e){}stopTalk();}};
+setMood("happy",3);$("say").textContent=D.hello;menu();
+
+const set=v=>{document.documentElement.dataset.bg=v;document.querySelectorAll(".bgt button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.b===v));try{localStorage.setItem("lhh-bg",v)}catch(e){}};
+document.querySelectorAll(".bgt button").forEach(b=>b.onclick=()=>set(b.dataset.b));try{const v=localStorage.getItem("lhh-bg");if(v)set(v)}catch(e){}
+})();
+
+</script>
+</body>
+</html>
