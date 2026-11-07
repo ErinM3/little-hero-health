@@ -76,6 +76,7 @@
   </div></div>
  <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
   <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
+   <a href="parent.html" data-p="parent"><span class="i">👪</span><b>Parent Portal</b><span>Play rules, and control play from your phone</span></a>
    <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
    <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
    <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
@@ -700,7 +701,7 @@ const WEEK=()=>Math.floor((Date.now()/864e5+4)/7);
 const weeklyOK=()=>{try{return +localStorage.getItem("lhh-weekly")!==WEEK()}catch(e){return true}};
 function squad(){
   const jobOpts=k=>Object.entries(JOBS).map(([id,j])=>`<option value="${id}"${id===k?" selected":""}>${j.ic} ${j.name}</option>`).join("");
-  const tierOpts=t=>TIERS.map((x,i)=>`<option value="${i}"${i===t?" selected":""}>${x.age} · ${x.name}</option>`).join("");
+  const tierOpts=t=>TIERS.map((x,i)=>i>famTier()?"":`<option value="${i}"${i===t?" selected":""}>${x.age} · ${x.name}</option>`).join("");
   const mt=minTier(),at=Math.min(S.atab??mt,mt);
   return `<div class="howto"><div><b>1 · Squad</b>Add up to 8 friends with names and ages.</div><div><b>2 · Suit up</b>Dress your hero, on screen and in real life.</div><div><b>3 · Play</b>Act out each mission together, then tap the steps.</div><div><b>4 · Heal</b>Make the patient feel better and earn badges.</div></div>
   ${weeklyOK()?`<div class="weekly"><div><b>🎁 Weekly Surprise is ready!</b><br><span class="muted">A free sticker and +20 XP for every hero in your squad. It waits for you all week.</span></div><button class="btn sun" id="weekly">Open it</button></div>`:""}
@@ -823,7 +824,12 @@ function endAwards(){const full=missionsDone()/missionsMax()>=0.83;S.players.for
 
 function ptBanner(){const c=SCEN[S.scen].c,al=/peanut/i.test(c)?"Peanuts":/bee sting/i.test(c)?"Bee stings":"";let h=0;for(const ch of (S.patient||"x"))h=(h*31+ch.charCodeAt(0))%9000;
   return `<div class="ptbanner" aria-label="Patient banner"><span class="ptav" aria-hidden="true">🧸</span><div><b>${esc(S.patient)}</b><small>MRN LHH-${1000+h} · Room ${101+S.scen%30}</small></div><div><small>Problem</small><b>${esc(c)}</b></div><div class="${al?"alg":""}"><small>Allergies</small><b>${al?"⚠ "+al:"No known allergies"}</b></div><div><small>Action</small><b>${SCEN[S.scen].name}</b></div></div>`;}
+function famTier(){try{const t=window.THSFamily&&THSFamily.lockedTier();return t==null?99:t}catch(e){return 99}}
+let famLast="";
+function famReport(){try{if(!window.THSFamily)return;const sc=S.scen!=null&&SCEN[S.scen]?SCEN[S.scen].name:"";const d=S.screen==="squad"?"Building a hero squad":S.screen==="dress"?"Suiting up for a shift":S.screen==="shift"?"On a hospital shift"+(sc?": "+sc:""):"Finished a shift"+(sc?": "+sc:"")+" ⭐";if(d!==famLast){famLast=d;THSFamily.status({detail:d})}}catch(e){}}
 function render(){
+  {const ft=famTier();if(ft<99)S.players.forEach(p=>{if(p.tier>ft)p.tier=ft});}
+  setTimeout(famReport,0);
   g.innerHTML=S.screen==="squad"?squad():S.screen==="dress"?dress():S.screen==="shift"?shift():end();
 }
 g.addEventListener("input",e=>{const t=e.target;
@@ -1068,5 +1074,6 @@ const lib=document.getElementById("actlib");if(lib&&typeof SCEN!=="undefined")li
 function qrSVG(text,px){if(typeof qrcode==="undefined")return `<span class="qrph" style="display:inline-grid;place-items:center;width:${px}px;height:${px}px;border:1px dashed #8FA3B8;font-size:10px;color:#5A6B7E;background:#fff">QR</span>`;const q=qrcode(0,"M");q.addData(String(text));q.make();const n=q.getModuleCount(),m=2,s=n+m*2;let r="";for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(q.isDark(y,x))r+=`M${x+m} ${y+m}h1v1h-1z`;return `<svg viewBox="0 0 ${s} ${s}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="${s}" height="${s}" fill="#fff"/><path d="${r}" fill="#000"/></svg>`;}
 (()=>{const g=document.getElementById("gqr");if(g)g.innerHTML=qrSVG("LHH|GAME|The Hero Shift",34)+"<span>LHH-IRL</span>";})();
 </script>
+<script src="js/family.js" data-area="game"></script>
 </body>
 </html>

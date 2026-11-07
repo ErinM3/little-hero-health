@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Hero Shift Parent Portal</title>
+<meta name="description" content="Set up The Hero Shift for your kid and control play from your own phone.">
+<link rel="icon" type="image/png" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
+<meta property="og:image" content="brand/discord-banner-960x540.png">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+#lhbar{position:sticky;top:0;z-index:80;background:#0A2A6B;border-bottom:3px solid #FFD21F;font-family:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif;color:#fff}
+#lhbar *{box-sizing:border-box}
+#lhbar .pn a .i img{width:30px;height:30px;display:block}
+#lhbar .home img{width:38px;height:38px;flex:none}
+
+#lhbar .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px 14px;min-height:56px}
+#lhbar .home{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;margin-right:auto;border-radius:10px;padding:2px 6px 2px 0}
+#lhbar .home svg{width:38px;height:38px;flex:none}
+#lhbar .home b{font-weight:800;font-size:1.25rem;line-height:1;color:#FFD21F;white-space:nowrap}
+#lhbar .home small{display:block;font:700 .58rem "Atkinson Hyperlegible",system-ui;letter-spacing:.3em;color:#fff;margin-top:2px}
+#lhbar .grp{position:relative}
+#lhbar .gb{display:flex;align-items:center;gap:6px;background:none;border:2px solid transparent;color:#fff;font:700 1rem "Baloo 2",system-ui;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+#lhbar .gb:hover{background:#1756C2}
+#lhbar .gb[aria-expanded="true"],#lhbar .grp.cur>.gb{border-color:#FFD21F}
+#lhbar .gb[aria-expanded="true"]{background:#FFD21F;color:#0A2A6B}
+#lhbar .gb .car{font-size:.7em;opacity:.8}
+#lhbar .pn{position:absolute;right:0;top:calc(100% + 8px);background:#fff;color:#0A2A6B;border:3px solid #FFD21F;border-radius:18px;padding:8px;min-width:280px;box-shadow:0 18px 40px rgba(0,0,0,.35);display:grid;gap:2px}
+#lhbar .pn[hidden]{display:none}
+#lhbar .pn a{display:grid;grid-template-columns:34px 1fr;gap:0 10px;align-items:center;text-decoration:none;color:#0A2A6B;padding:8px 10px;border-radius:12px}
+#lhbar .pn a:hover,#lhbar .pn a:focus-visible{background:#E6F0FA;outline:none}
+#lhbar .pn a[aria-current="page"]{background:#FFF7D1}
+#lhbar .pn a .i{grid-row:span 2;font-size:1.5rem;text-align:center}
+#lhbar .pn a b{font:700 1rem "Baloo 2",system-ui;line-height:1.1}
+#lhbar .pn a span{font:400 .82rem "Atkinson Hyperlegible",system-ui;color:#3D5A80}
+#lhbar .lock{color:#CFE2FF;text-decoration:none;font-size:1.05rem;padding:6px 8px;border-radius:999px}
+#lhbar .lock:hover{background:#1756C2;color:#fff}
+#lhbar .menu{display:none}
+#lhbar a:focus-visible,#lhbar button:focus-visible{outline:3px solid #FFD21F;outline-offset:2px}
+@media (max-width:760px){
+ #lhbar .grp{display:none}
+ #lhbar .menu{display:flex}
+ #lhbar.open .grp{display:block;position:static;width:100%}
+ #lhbar.open .in{flex-wrap:wrap}
+ #lhbar.open .grp>.gb{display:none}
+ #lhbar .home{order:0}#lhbar .lock{order:1}#lhbar .menu{order:2}#lhbar .grp{order:3}
+ #lhbar.open .pn{position:static;display:grid!important;box-shadow:none;margin:4px 0;min-width:0}
+ #lhbar.open .pn::before{content:attr(data-t);font:800 .8rem "Baloo 2",system-ui;letter-spacing:.08em;text-transform:uppercase;color:#1F5FAD;padding:2px 10px}
+ #lhbar .home b{font-size:1.1rem}
+}
+</style>
+<header id="lhbar" aria-label="The Hero Shift menu"><div class="in">
+ <a class="home" href="index.html" aria-label="The Hero Shift home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+ <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
+ <path d="M60 18 L88 27.5 V54 C88 75 76 89 60 98" fill="none" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+ <path d="M51 34 H69 V49 H84 V67 H69 V82 H51 V67 H36 V49 H51 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="4.5" stroke-linejoin="round"/>
+ <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
+ <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>
+<span><b>The Hero Shift</b><small>HOSPITAL GAME</small></span></a>
+ <div class="grp" data-g="play"><button class="gb" aria-expanded="false" aria-controls="lhp-play">🎮 Play <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-play" data-t="Play" hidden>
+   <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
+   <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
+   <a href="games.html" data-p="games"><span class="i">🧩</span><b>Puzzle Lab</b><span>Hospital problem-solving games for every age</span></a>
+   <a href="biscuit.html" data-p="biscuit"><span class="i">🧸</span><b>Talk to Biscuit</b><span>Biscuit the Bear tells you how he feels</span></a>
+   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 18</span></a>
+   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for ages 12 to 18</span></a>
+   <a href="workstation.html" data-p="workstation"><span class="i"><img src="brand/logos/lhh-hospital-workspace-icon.svg" alt=""></span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
+   <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
+  </div></div>
+ <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
+   <a href="parent.html" data-p="parent"><span class="i">👪</span><b>Parent Portal</b><span>Play rules, and control play from your phone</span></a>
+   <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
+   <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
+   <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
+   <a href="pitch.html" data-p="pitch"><span class="i">⭐</span><b>About The Hero Shift</b><span>Ages, jobs, levels and safety rules</span></a>
+  </div></div>
+ <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-comm" data-t="Community" hidden>
+   <a href="community.html" data-p="community"><span class="i"><img src="brand/logos/lhh-discord-icon.svg" alt=""></span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
+   <a href="roblox.html" data-p="roblox"><span class="i"><img src="brand/logos/lhh-roblox-servers-icon.svg" alt=""></span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
+  </div></div>
+ <a class="lock" href="admin.html" title="Admin sign-in" aria-label="Admin sign-in">🔒</a>
+ <button class="gb menu" aria-expanded="false" aria-controls="lhbar">☰ Menu</button>
+</div></header>
+<script>
+(()=>{const SUB={workstation:["hospital-workspace","HOSPITAL WORKSPACE"],events:["events","EVENTS"],camp:["camps","CAMPS"],community:["discord","DISCORD"],roblox:["roblox-servers","ROBLOX SERVERS"]};
+const pg=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";const s=SUB[pg];const h=document.querySelector("#lhbar .home");if(!s||!h)return;
+const sv=h.querySelector("svg");if(sv){const i=document.createElement("img");i.src="brand/logos/lhh-"+s[0]+"-icon.svg";i.alt="";sv.replaceWith(i);}const sm=h.querySelector("small");if(sm)sm.textContent=s[1];})();
+
+(()=>{const bar=document.getElementById("lhbar");if(!bar)return;const page=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";
+bar.querySelectorAll(".pn a").forEach(a=>{if(a.dataset.p===page){a.setAttribute("aria-current","page");a.closest(".grp").classList.add("cur");}});
+const closeAll=ex=>bar.querySelectorAll(".grp").forEach(g=>{if(g===ex)return;g.querySelector(".gb").setAttribute("aria-expanded","false");g.querySelector(".pn").hidden=true;});
+bar.querySelectorAll(".grp>.gb").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const g=b.parentElement,p=g.querySelector(".pn"),open=p.hidden;closeAll(g);p.hidden=!open;b.setAttribute("aria-expanded",open);if(open)p.querySelector("a").focus({preventScroll:true});}));
+const m=bar.querySelector(".menu");m.addEventListener("click",e=>{e.stopPropagation();const o=!bar.classList.contains("open");bar.classList.toggle("open",o);m.setAttribute("aria-expanded",o);m.textContent=o?"✕ Close":"☰ Menu";});
+bar.querySelectorAll(".pn a").forEach(a=>a.addEventListener("click",()=>{closeAll();bar.classList.remove("open");m.setAttribute("aria-expanded","false");m.textContent="☰ Menu";}));
+document.addEventListener("click",e=>{if(!bar.contains(e.target))closeAll();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){const o=bar.querySelector('.gb[aria-expanded="true"]');closeAll();if(o)o.focus();}});})();
+</script>
+<style>nav.toplinks,div.top>nav[aria-label="Pages"],header.top>a[href$=".html"]{display:none!important}.bgtoggle{top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important}</style><style>
+:root{--bg:#0B2C70;--card:#0F3C99;--card2:#0A2A6B;--ink:#FFFFFF;--muted:#BCD3F5;--line:#2F5DB8;--sun:#FFD21F;--navy:#0A2A6B;--sky:#5AAEFF;--h1:#FFD21F;--display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;--body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+:root[data-bg="white"]{color-scheme:light;--bg:#F3F7FD;--card:#FFFFFF;--card2:#E6F0FA;--ink:#0A2A6B;--muted:#3D5A80;--line:#C6D7EE;--sky:#1F5FAD;--h1:#0A2A6B}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.5 var(--body)}
+main{max-width:1100px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 80px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:28px}
+h1{font:800 clamp(2rem,5vw,3rem)/1 var(--display);color:var(--h1);margin:0;text-wrap:balance}
+h2{font:800 1.6rem/1.1 var(--display);margin:0}
+h3{font:800 1.3rem/1.1 var(--display);margin:0}
+.lead{color:var(--muted);max-width:62ch;margin:8px 0 0}
+.groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.g{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.g .age{display:inline-block;align-self:flex-start;background:var(--sun);color:var(--navy);font:800 .95rem var(--display);border-radius:999px;padding:4px 12px}
+.g ul{margin:0;padding-left:20px;color:var(--muted)}.g li{margin:4px 0}
+.g .em{font-size:2.4rem;line-height:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--sun);background:var(--sun);color:var(--navy);font:800 1rem var(--display);border-radius:999px;padding:9px 18px;text-decoration:none;margin-top:auto;align-self:flex-start}
+.btn.ghost{background:transparent;color:var(--ink)}
+:root[data-bg="white"] .btn.ghost{border-color:#1F5FAD}
+.btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.box{background:var(--card2);border:2px solid var(--line);border-radius:20px;padding:20px}
+.pick{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.pick button{font:800 1rem var(--display);border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 16px;cursor:pointer}
+.pick button[aria-pressed="true"]{background:var(--sun);color:var(--navy);border-color:var(--sun)}
+#res{margin-top:12px;font-weight:700}
+.safe{color:var(--muted);font-size:.95rem}
+.bgt{display:inline-flex;border:2px solid var(--sun);border-radius:999px;overflow:hidden}.bgt button{border:0;background:transparent;color:var(--ink);font:800 .95rem var(--display);padding:6px 14px;cursor:pointer}.bgt button[aria-pressed="true"]{background:var(--sun);color:var(--navy)}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between}
+</style>
+<style>
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.rolebtn{display:flex;gap:14px;align-items:center;text-align:left;background:var(--card);color:var(--ink);border:3px solid var(--line);border-radius:22px;padding:16px;cursor:pointer;font:inherit;min-height:84px}
+.rolebtn .e{font-size:2.4rem;line-height:1}.rolebtn b{display:block;font:800 1.2rem var(--display)}.rolebtn small{color:var(--muted)}
+.rolebtn[aria-pressed="true"]{border-color:var(--sun);box-shadow:0 0 0 3px rgba(255,210,31,.35)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:18px;display:grid;gap:14px;min-width:0}
+.card h2{font:800 1.45rem/1.1 var(--display)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px;align-items:start}
+.f{display:grid;gap:6px;font-weight:700}
+.f input:not([type=checkbox]):not([type=radio]),.f select,.f textarea{font:700 1.05rem var(--body);padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card2);color:var(--ink);width:100%;box-sizing:border-box;min-height:50px}
+.f input:not([type=checkbox]):not([type=radio]):focus,.f select:focus,.f textarea:focus{outline:3px solid var(--sun);outline-offset:1px}
+.f .hint{font-weight:400;font-size:.88rem;color:var(--muted)}
+.pinin{letter-spacing:.35em;text-align:center;font:800 1.4rem var(--display)!important}
+.avs{display:flex;flex-wrap:wrap;gap:8px}.avs label{cursor:pointer}.avs input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.avs span{display:grid;place-items:center;width:52px;height:52px;font-size:1.8rem;border:2px solid var(--line);border-radius:14px;background:var(--card2)}
+.avs input:checked+span{border-color:var(--sun);box-shadow:0 0 0 3px rgba(255,210,31,.4)}.avs input:focus-visible+span{outline:3px solid var(--sky)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.seg label{cursor:pointer}.seg input{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px}
+.seg span{display:grid;text-align:center;gap:2px;border:2px solid var(--line);border-radius:14px;padding:10px 6px;background:var(--card2);font:800 1rem var(--display);min-height:50px;align-content:center}
+.seg span small{font:600 .8rem var(--body);color:var(--muted)}
+.seg input:checked+span{border-color:var(--sun);background:var(--sun);color:var(--navy)}.seg input:checked+span small{color:var(--navy)}
+.seg input:focus-visible+span{outline:3px solid var(--sky)}
+.tog{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card2);border:2px solid var(--line);border-radius:14px;padding:10px 14px;min-height:54px;cursor:pointer;font-weight:700}
+.tog input{appearance:none;-webkit-appearance:none;width:54px;height:32px;border-radius:999px;background:#5B6E92;position:relative;flex:none;cursor:pointer;transition:background .2s;margin:0}
+.tog input::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;transition:left .2s}
+.tog input:checked{background:#2DB36A}.tog input:checked::after{left:26px}.tog input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.togs{display:grid;gap:8px}
+.times{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{cursor:pointer;min-height:50px;margin-top:0}
+.btn.big{font-size:1.15rem;padding:14px 22px;min-height:58px}
+.btn.warn{background:#FF8A8A;border-color:#FF8A8A;color:#3A0A0A}
+.btn.ok{background:#7BE07B;border-color:#7BE07B;color:#08310F}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{min-height:1.3em;font-weight:700;color:#FFB3B3;margin:0}:root[data-bg="white"] .msg{color:#B3261E}
+.code{font:800 clamp(1.3rem,6vw,2rem)/1.2 var(--display);letter-spacing:.06em;background:#fff;color:#0A2A6B;border-radius:16px;padding:12px;text-align:center;word-break:normal;overflow-wrap:normal}
+.qr{background:#fff;border-radius:16px;padding:10px;justify-self:center;line-height:0}.qr svg{width:220px;height:220px;max-width:70vw;max-height:70vw}
+.kid{display:grid;gap:14px}
+.khead{display:flex;align-items:center;gap:12px}.khead .av{font-size:2.6rem;line-height:1}.khead b{font:800 1.5rem var(--display);display:block}
+.dot{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:.95rem;color:var(--muted)}.dot::before{content:"";width:12px;height:12px;border-radius:50%;background:#8696B4}.dot.on::before{background:#2DE07A;box-shadow:0 0 0 4px rgba(45,224,122,.25)}.dot.on{color:var(--ink)}
+.now{background:var(--card2);border-radius:16px;padding:12px 14px;display:flex;gap:12px;align-items:center}.now .e{font-size:2rem}.now b{display:block}
+.bar{height:14px;border-radius:999px;background:var(--card2);border:2px solid var(--line);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7BE07B,#FFD21F,#FF8A8A)}
+.bigbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.bigbtns .btn{width:100%}
+.presets{display:flex;flex-wrap:wrap;gap:8px}.presets button{font:800 .95rem var(--display);border:2px solid var(--line);background:var(--card2);color:var(--ink);border-radius:999px;padding:10px 14px;cursor:pointer;min-height:46px}
+.reqs{display:grid;gap:8px}.req{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#FFF7D1;color:#0A2A6B;border-radius:16px;padding:12px 14px;font-weight:700}
+.req .row .btn{min-height:46px;padding:8px 16px}
+.log{list-style:none;margin:0;padding:0;display:grid;gap:4px;max-height:260px;overflow:auto}.log li{display:grid;grid-template-columns:52px 1fr;gap:8px;font-size:.95rem;padding:6px 0;border-bottom:1px solid var(--line)}.log time{color:var(--muted);font-weight:700}
+details.set{background:var(--card2);border:2px solid var(--line);border-radius:16px;padding:0 14px}details.set summary{cursor:pointer;font:800 1.1rem var(--display);padding:14px 0;min-height:24px}details.set[open]{padding-bottom:14px}details.set>div{display:grid;gap:12px}
+.pill{display:inline-block;border-radius:999px;padding:4px 12px;font:800 .85rem var(--display);background:var(--sun);color:var(--navy)}.pill.off{background:#FF8A8A;color:#3A0A0A}
+.note{color:var(--muted);font-size:.92rem;margin:0}
+.empty{color:var(--muted)}
+.toast2{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:90;background:var(--sun);color:var(--navy);font:800 1.05rem var(--display);border-radius:16px;padding:12px 18px;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:92vw;text-align:center}
+</style>
+<main>
+<div class="top"><div><h1>Parent Portal</h1><p class="lead">Set up The Hero Shift on your kid's device, then link your own phone to pause play, add time, send messages and say yes or no to requests.</p></div>
+<div class="bgt" role="group" aria-label="Background"><button data-b="blue" aria-pressed="true">Blue</button><button data-b="white" aria-pressed="false">White</button></div></div>
+<section aria-label="Which device is this?"><h2 style="margin-bottom:12px">Which device is this?</h2>
+<div class="roles"><button class="rolebtn" data-role="kid" aria-pressed="false"><span class="e" aria-hidden="true">🧒</span><span><b>This is my kid's device</b><small>Set up a PIN, play rules and the link code</small></span></button>
+<button class="rolebtn" data-role="parent" aria-pressed="false"><span class="e" aria-hidden="true">📱</span><span><b>This is my device (parent)</b><small>Control your kid's device from here</small></span></button></div></section>
+<div id="portal"></div>
+<section class="box"><h2>For grown-ups</h2><p class="safe">No accounts and no sign-up. Your kid's settings live only on their device, and only a nickname is used. When you link your phone, the two devices talk directly to each other. A free pairing server (PeerJS) only helps the two devices find each other, and nothing is stored on it. To cut a phone off, choose “Unlink all phones” on the kid's device and a new code is made.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="js/family.js" data-area="portal"></script>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const FAM=window.THSFamily,F=FAM._;
+const safe=f=>{try{return f()}catch(e){}};
+const jget=k=>safe(()=>JSON.parse(localStorage.getItem(k)||"null"));
+const jset=(k,v)=>safe(()=>localStorage.setItem(k,JSON.stringify(v)));
+const root=$("portal");
+const AV=["🦸","🧸","🦊","🐯","🐼","🦄","🐸","🐧","🚀","⭐","🦖","🐶"];
+const ALLOW=[["puzzles","🧩 Puzzle Lab"],["biscuit","🧸 Talk to Biscuit"],["workstation","🏥 Hospital Workstation"],["advanced","⚪ Advanced mode in the workstation"],["keys","🔑 Join hospitals with keys"],["community","💬 Discord links (Discord is 13 and up)"],["roblox","🎮 Roblox links"]];
+const LIMITS=[[0,"No daily limit"],[15,"15 minutes a day"],[30,"30 minutes a day"],[45,"45 minutes a day"],[60,"1 hour a day"],[90,"1½ hours a day"],[120,"2 hours a day"],[180,"3 hours a day"]];
+const PRESETS=["5 more minutes!","Dinner time! 🍽️","Great job, hero! ⭐","Time to clean up 🧹","Come find me, please","Bedtime soon 🌙"];
+const hm=t=>{const d=new Date(t);return String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")};
+function toast(t){const e=document.createElement("div");e.className="toast2";e.setAttribute("role","status");e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2800)}
+async function copy(t){try{await navigator.clipboard.writeText(t);return true}catch(e){return false}}
+function qr(text){try{const q=qrcode(0,"M");q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){return ""}}
+const pairLink=code=>location.href.split("#")[0].split("?")[0]+"#pair="+code;
+
+/* ---------- role ---------- */
+let role=safe(()=>localStorage.getItem("ths-portal-role"))||"";
+let hp=(location.hash.match(/pair=([A-Za-z0-9-]+)/)||[])[1];
+if(hp)role="parent";
+function setRole(r){role=r;safe(()=>localStorage.setItem("ths-portal-role",r));document.querySelectorAll(".rolebtn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.role===r));render()}
+document.querySelectorAll(".rolebtn").forEach(b=>b.onclick=()=>setRole(b.dataset.role));
+
+/* ---------- shared settings form ---------- */
+function settingsHTML(s,age,id){const p=id+"-";return `
+ <div class="f">Age group<div class="seg">${Object.entries(F.GROUPS).map(([k,g])=>`<label><input type="radio" name="${p}age" value="${k}" ${k===age?"checked":""}><span>${g[1]}<small>${g[2]}</small></span></label>`).join("")}</div></div>
+ <label class="tog">🔒 Lock the age group (they can't pick an older group)<input type="checkbox" data-s="lockAge" ${s.lockAge?"checked":""}></label>
+ <label class="f">Daily play time<select data-s="limit">${LIMITS.map(([v,l])=>`<option value="${v}" ${+s.limit===v?"selected":""}>${l}</option>`).join("")}</select></label>
+ <label class="tog">🌙 Bedtime (no play between these times)<input type="checkbox" data-s="bedon" ${s.bed.on?"checked":""}></label>
+ <div class="times"><label class="f">From<input type="time" data-s="bedfrom" value="${esc(s.bed.from)}"></label><label class="f">Until<input type="time" data-s="bedto" value="${esc(s.bed.to)}"></label></div>
+ <div class="f">What they can open<div class="togs">${ALLOW.map(([k,l])=>`<label class="tog">${l}<input type="checkbox" data-allow="${k}" ${s.allow[k]!==false?"checked":""}></label>`).join("")}</div></div>`}
+function readSettings(box,base){const s=JSON.parse(JSON.stringify(base));const q=sel=>box.querySelector(sel);
+ s.lockAge=q('[data-s="lockAge"]').checked;s.limit=+q('[data-s="limit"]').value;s.bed={on:q('[data-s="bedon"]').checked,from:q('[data-s="bedfrom"]').value||"20:00",to:q('[data-s="bedto"]').value||"07:00"};
+ box.querySelectorAll("[data-allow]").forEach(x=>s.allow[x.dataset.allow]=x.checked);
+ const a=box.querySelector('input[name$="-age"]:checked');return {s,age:a?a.value:null}}
+function syncSettings(box,s,age){if(!box)return;const act=document.activeElement;const set=(el,fn)=>{if(el&&el!==act)fn(el)};
+ set(box.querySelector('[data-s="lockAge"]'),e=>e.checked=!!s.lockAge);set(box.querySelector('[data-s="limit"]'),e=>e.value=String(s.limit));
+ set(box.querySelector('[data-s="bedon"]'),e=>e.checked=!!s.bed.on);set(box.querySelector('[data-s="bedfrom"]'),e=>e.value=s.bed.from);set(box.querySelector('[data-s="bedto"]'),e=>e.value=s.bed.to);
+ box.querySelectorAll("[data-allow]").forEach(x=>set(x,e=>e.checked=s.allow[e.dataset.allow]!==false));
+ box.querySelectorAll('input[name$="-age"]').forEach(x=>set(x,e=>e.checked=e.value===age))}
+function usageHTML(u,s){const mins=Math.round((u.sec||0)/60),lim=(+s.limit||0)+(u.bonus||0);const pct=lim?Math.min(100,Math.round(mins/lim*100)):0;
+ return `<div class="f"><span>Played today: <b>${mins} min</b>${lim?` of ${lim} min${u.bonus?` (includes +${u.bonus} extra)`:""}`:" · no limit"}</span>${lim?`<div class="bar" role="img" aria-label="${pct}% of today's time"><i style="width:${pct}%"></i></div>`:""}</div>`}
+function logHTML(log){log=(log||[]).slice().reverse();return log.length?`<ul class="log">${log.map(l=>`<li><time>${hm(l.t)}</time><span>${esc(l.x)}</span></li>`).join("")}</ul>`:`<p class="empty">Nothing yet today.</p>`}
+
+/* ---------- KID DEVICE ---------- */
+const UNL="ths-portal-unlock";
+const unlocked=()=>(+safe(()=>sessionStorage.getItem(UNL))||0)>Date.now();
+const unlock=()=>safe(()=>sessionStorage.setItem(UNL,String(Date.now()+15*60000)));
+function vSetup(){return `<div class="card"><h2>👪 Set up this device</h2><p class="note">Do this once on your kid's tablet or computer. Use a nickname, not their real name.</p>
+ <div class="cols"><div style="display:grid;gap:14px">
+ <label class="f">Kid's nickname<input id="su-n" maxlength="20" placeholder="e.g. Captain Bandage" autocomplete="off"></label>
+ <div class="f">Pick their hero<div class="avs">${AV.map((v,i)=>`<label><input type="radio" name="su-av" value="${v}" ${i?"":"checked"}><span>${v}</span></label>`).join("")}</div></div>
+ <label class="f">Grown-up PIN (4 to 6 numbers)<input id="su-p" class="pinin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"><span class="hint">Kids should not know this PIN.</span></label>
+ <label class="f">Type the PIN again<input id="su-p2" class="pinin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></label></div>
+ <div style="display:grid;gap:14px" id="su-set">${settingsHTML(F.merge({limit:60,bed:{on:true,from:"20:00",to:"07:00"}}),"little","su")}</div></div>
+ <p class="msg" id="su-m" role="alert"></p><div class="row"><button class="btn big" id="su-go">✅ Save and start playing</button></div></div>`}
+function vGate(){const f=F.load();return `<div class="card" style="max-width:460px"><h2>🔒 Grown-ups only</h2><p>This device is set up for <b>${esc(f.avatar)} ${esc(f.nick)}</b>. Type the grown-up PIN to change settings or link your phone.</p>
+ <label class="f">Grown-up PIN<input id="g-p" class="pinin" type="password" inputmode="numeric" maxlength="6" autocomplete="off"></label><p class="msg" id="g-m" role="alert"></p>
+ <div class="row"><button class="btn big" id="g-go">Unlock</button><a class="btn ghost" href="index.html">Back to the game</a></div></div>`}
+function vManage(){const f=F.load(),u=F.usage(),s=f.settings,code=F.codeOf(f),link=pairLink(code),on=F.conns();
+ return `<div class="cols">
+ <div class="card"><h2>📱 Link your phone</h2><p>On your phone, scan this QR code with the camera. Or open <b>${esc(location.host||"this site")}/parent.html</b>, choose <b>“This is my device”</b> and type the code.</p>
+ <div class="qr" aria-label="QR code to link your phone">${qr(link)}</div><div class="code" aria-label="Link code">${code.split("-").join("-<wbr>")}</div>
+ <div class="row"><button class="btn ghost" id="m-copy">🔗 Copy link</button></div>
+ <div class="f">Linked phones${f.parents.length?`<ul class="log">${f.parents.map(p=>`<li><time>${on.includes(p.name)?"🟢":"⚪"}</time><span>${esc(p.name)}${on.includes(p.name)?" · connected now":" · last seen "+new Date(p.last).toLocaleDateString()}</span></li>`).join("")}</ul>`:`<p class="empty">No phones linked yet.</p>`}</div>
+ <p class="note">Keep this page open while you link. The kid's device must be on and have The Hero Shift open for your phone to control it.</p>
+ <div class="row"><button class="btn ghost" id="m-unlink">✂️ Unlink all phones</button></div></div>
+ <div class="card"><h2>${esc(f.avatar)} ${esc(f.nick)} · today</h2>${usageHTML(u,s)}
+ <div class="row">${s.paused?`<span class="pill off">⏸️ Paused</span>`:`<span class="pill">▶️ Playing allowed</span>`}<button class="btn ${s.paused?"ok":"warn"}" id="m-pause">${s.paused?"▶️ Resume":"⏸️ Pause now"}</button><button class="btn ghost" id="m-add">➕ 15 min</button></div>
+ <h3>Today's activity</h3>${logHTML(u.log)}</div>
+ <div class="card"><h2>⚙️ Play rules</h2><div id="m-set" style="display:grid;gap:14px">${settingsHTML(s,f.age,"m")}</div><p class="note" id="m-saved" aria-live="polite">Changes save right away.</p></div>
+ <div class="card"><h2>🔐 PIN and device</h2>
+ <label class="f">New PIN (4 to 6 numbers)<input id="m-p" class="pinin" type="password" inputmode="numeric" maxlength="6" autocomplete="new-password"></label><p class="msg" id="m-pm" role="alert"></p>
+ <div class="row"><button class="btn ghost" id="m-pin">Change PIN</button></div>
+ <div class="row"><button class="btn" id="m-lock">🔒 Lock the portal</button><button class="btn warn" id="m-reset">Reset this device</button></div>
+ <p class="note">Reset removes the setup, play rules and linked phones from this device. Kids will need a grown-up to set it up again.</p></div></div>`}
+function bindKid(){const f=F.load();
+ if(!f){$("su-go").onclick=async()=>{const n=$("su-n").value.trim(),p=$("su-p").value.trim(),p2=$("su-p2").value.trim(),m=$("su-m");
+   if(n.length<2){m.textContent="Add a nickname (at least 2 letters).";return}if(!/^\d{4,6}$/.test(p)){m.textContent="The PIN must be 4 to 6 numbers.";return}if(p!==p2){m.textContent="The two PINs don't match.";return}
+   const r=readSettings($("su-set"),F.DEF);const salt=F.rnd(12);const fam=F.newFamily({nick:n,avatar:(document.querySelector('input[name="su-av"]:checked')||{}).value,age:r.age,pin:"",settings:r.s});
+   fam.pin=await F.hash(fam.salt,p);F.save(fam);F.logIt("👪 Parent Portal set up");unlock();F.restart();toast("All set! Now link your phone.");render();window.scrollTo({top:root.offsetTop-70,behavior:"smooth"})};return}
+ if(!unlocked()){const go=async()=>{if(await F.pinOK($("g-p").value)){unlock();render()}else $("g-m").textContent="That PIN isn't right."};$("g-go").onclick=go;$("g-p").onkeydown=e=>{if(e.key==="Enter")go()};setTimeout(()=>$("g-p").focus(),50);return}
+ unlock();
+ $("m-copy").onclick=async()=>toast(await copy(pairLink(F.codeOf(F.load())))?"Link copied. Open it on your phone.":"Couldn't copy. Type the code on your phone instead.");
+ $("m-unlink").onclick=e=>{const b=e.currentTarget;if(!b.dataset.sure){b.dataset.sure=1;b.textContent="Tap again to unlink every phone";return}const x=F.load();x.id=F.rnd(16);x.secret=F.rnd(8);x.parents=[];F.save(x);F.logIt("✂️ All phones unlinked");F.relay({t:"changed"});F.restart();toast("Phones unlinked. A new code was made.");render()};
+ const box=$("m-set");box.addEventListener("change",()=>{const x=F.load();const r=readSettings(box,x.settings);if(r.age)x.age=r.age;F.settingsChange(x,r.s);F.relay({t:"changed"});F.pushState();$("m-saved").textContent="✅ Saved at "+hm(Date.now())});
+ $("m-pause").onclick=()=>{const x=F.load();F.settingsChange(x,{paused:!x.settings.paused,pauseMsg:""});F.logIt(x.settings.paused?"⏸️ Paused on this device":"▶️ Resumed on this device");F.relay({t:"changed"});F.pushState();render()};
+ $("m-add").onclick=()=>{const u=F.usage();u.bonus=(u.bonus||0)+15;F.saveU(u);F.logIt("➕ 15 min added on this device");F.relay({t:"changed"});F.pushState();toast("Added 15 minutes.");render()};
+ $("m-pin").onclick=async()=>{const p=$("m-p").value.trim();if(!/^\d{4,6}$/.test(p)){$("m-pm").textContent="The PIN must be 4 to 6 numbers.";return}const x=F.load();x.pin=await F.hash(x.salt,p);F.save(x);$("m-p").value="";$("m-pm").textContent="";toast("PIN changed.")};
+ $("m-lock").onclick=()=>{safe(()=>sessionStorage.removeItem(UNL));render()};
+ $("m-reset").onclick=e=>{const b=e.currentTarget;if(!b.dataset.sure){b.dataset.sure=1;b.textContent="Tap again to reset forever";return}F.stopPeer();safe(()=>{localStorage.removeItem("ths-family");localStorage.removeItem("ths-family-usage");localStorage.removeItem("ths-family-status")});F.relay({t:"changed"});safe(()=>sessionStorage.removeItem(UNL));toast("This device was reset.");render()}}
+
+/* ---------- PARENT DEVICE ---------- */
+const PK="ths-parent";
+let P=jget(PK)||{};P.pid=P.pid||F.rnd(12);P.name=P.name||"";P.kids=Array.isArray(P.kids)?P.kids:[];
+const saveP=()=>jset(PK,{pid:P.pid,name:P.name,kids:P.kids.map(k=>({id:k.id,secret:k.secret,nick:k.nick,avatar:k.avatar,state:k.state,seen:k.seen,reqs:k.reqs||[],err:k.err||""}))});
+let peer=null,peerReady=null;const C={};
+function getPeer(){if(peerReady)return peerReady;peerReady=F.loadPeer().then(Peer=>new Promise((res,rej)=>{const p=new Peer("ths-p-"+F.rnd(16).toLowerCase(),F.peerOpts());let done=false;
+ p.on("open",()=>{done=true;peer=p;res(p)});p.on("error",e=>{const t=e&&e.type;if(t==="peer-unavailable"){const m=String(e.message||"").match(/ths-k-[a-z0-9]+/);if(m){const k=P.kids.find(x=>F.peerIdOf(x.id)===m[0]);if(k)offline(k)}return}if(!done){peerReady=null;rej(e)}else if(t==="network"||t==="server-error"||t==="socket-error"||t==="socket-closed"){safe(()=>p.destroy());peer=null;peerReady=null;P.kids.forEach(offline)}});
+ p.on("disconnected",()=>safe(()=>p.reconnect()))}));return peerReady}
+function offline(k){const c=C[k.id];if(c){c.open=false;c.conn=null;clearTimeout(c.t);c.t=setTimeout(()=>connect(k),c.wait=Math.min(30000,(c.wait||2000)*1.6))}upd(k)}
+async function connect(k){const c=C[k.id]=C[k.id]||{wait:2000};if(c.conn&&c.conn.open)return;let p;try{p=await getPeer()}catch(e){c.err="Can't reach the pairing server. Check your internet.";upd(k);clearTimeout(c.t);c.t=setTimeout(()=>connect(k),c.wait=Math.min(30000,c.wait*1.6));return}
+ c.err="";const conn=p.connect(F.peerIdOf(k.id),{reliable:true});c.conn=conn;
+ const to=setTimeout(()=>{if(!conn.open){safe(()=>conn.close());offline(k)}},12000);
+ conn.on("open",()=>{clearTimeout(to);c.open=true;c.wait=2000;conn.send({t:"hello",secret:k.secret,name:P.name||"Parent phone",pid:P.pid});upd(k)});
+ conn.on("data",d=>onData(k,d));conn.on("close",()=>{if(c.conn===conn)offline(k)});conn.on("error",()=>{if(c.conn===conn)offline(k)})}
+function send(k,m){const c=C[k.id];if(c&&c.conn&&c.conn.open){c.conn.send(m);return true}toast("Not connected. Is "+(k.nick||"the kid")+"'s device on?");return false}
+const isOn=k=>{const c=C[k.id];return !!(c&&c.open&&k.seen&&Date.now()-k.seen<50000)};
+function onData(k,d){if(!d||typeof d!=="object")return;
+ if(d.t==="denied"){k.err="This code doesn't work any more. On the kid's device, open the Parent Portal for a new code.";const c=C[k.id];if(c){clearTimeout(c.t);c.conn=null;c.open=false;c.dead=true}saveP();upd(k);return}
+ if(d.t==="state"){const first=!k.nick;k.state=d;k.nick=d.nick||k.nick;k.avatar=d.avatar||k.avatar;k.seen=Date.now();k.err="";saveP();if(first)render();else upd(k);return}
+ if(d.t==="req"){k.reqs=(k.reqs||[]).filter(r=>r.id!==d.id);k.reqs.push({id:d.id,what:String(d.what||"").slice(0,80),at:d.at||Date.now()});saveP();upd(k);toast("🙋 "+(k.nick||"Your kid")+" is asking: "+d.what);safe(()=>navigator.vibrate&&navigator.vibrate([120,60,120]));return}
+ if(d.t==="answered"){k.reqs=(k.reqs||[]).filter(r=>r.id!==d.id);saveP();upd(k)}}
+function kidLive(k){const st=k.state||{},s=st.settings?F.merge(st.settings):F.merge({}),u=st.usage||{sec:0,bonus:0,log:[]},on=isOn(k),now=st.status;
+ const fresh=now&&Date.now()-now.t<10*60000;
+ return `<div class="row" style="justify-content:space-between"><span class="dot ${on?"on":""}">${on?"Online now":C[k.id]&&C[k.id].dead?"Unlinked":"Offline"}</span>${s.paused?`<span class="pill off">⏸️ Paused</span>`:""}</div>
+ ${k.err||(C[k.id]||{}).err?`<p class="msg">${esc(k.err||C[k.id].err)}</p>`:""}
+ <div class="now"><span class="e" aria-hidden="true">${on&&fresh?esc(now.icon):"💤"}</span><div><b>${on&&fresh?esc(now.detail||"In "+now.where):on?"Not playing right now":"Not connected"}</b><span class="note">${on&&fresh?esc(now.where)+" · since "+hm(now.t):k.seen?"Last seen "+hm(k.seen)+(new Date(k.seen).toDateString()!==new Date().toDateString()?" on "+new Date(k.seen).toLocaleDateString():""):"Turn on the kid's device and open The Hero Shift."}</span></div></div>
+ ${usageHTML(u,s)}
+ ${(k.reqs||[]).length?`<div class="reqs" aria-live="polite">${k.reqs.map(r=>`<div class="req"><span>🙋 ${esc(r.what)} <small>· ${hm(r.at)}</small></span><div class="row"><button class="btn ok" data-ans="${esc(r.id)}" data-ok="1">✅ Yes</button><button class="btn warn" data-ans="${esc(r.id)}" data-ok="0">✋ Not now</button></div></div>`).join("")}</div>`:""}`}
+function kidCard(k){const st=k.state||{},s=F.merge(st.settings||{});
+ return `<div class="card kid" data-kid="${k.id}"><div class="khead"><span class="av" aria-hidden="true">${esc(k.avatar||"🧒")}</span><div><b>${esc(k.nick||"Linking…")}</b><span class="note">${st.age?F.GROUPS[st.age][1]+" · ages "+F.GROUPS[st.age][2]:"Waiting for the kid's device"}</span></div></div>
+ <div class="k-live">${kidLive(k)}</div>
+ <div class="bigbtns"><button class="btn big ${s.paused?"ok":"warn"}" data-k="pause">${s.paused?"▶️ Resume":"⏸️ Pause"}</button><button class="btn big" data-k="add">➕ 15 min</button></div>
+ <label class="f">Pause message (optional)<input data-k="pmsg" maxlength="140" placeholder="e.g. Dinner time! Come to the kitchen."></label>
+ <div class="f">Send a message<div class="presets">${PRESETS.map(t=>`<button data-k="preset" data-t="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+ <div class="row"><input data-k="mtext" maxlength="140" placeholder="Type your own message" style="flex:1 1 200px;font:700 1.05rem var(--body);padding:12px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card2);color:var(--ink);min-height:50px"><button class="btn" data-k="send">Send</button></div></div>
+ <details class="set"><summary>⚙️ Play rules</summary><div class="k-set">${settingsHTML(s,st.age||"little","k"+k.id)}<p class="note">Changes go to ${esc(k.nick||"the kid")}'s device right away.</p></div></details>
+ <details class="set"><summary>📋 Today's activity</summary><div class="k-log">${logHTML((st.usage||{}).log)}</div></details>
+ <div class="row"><button class="btn ghost" data-k="remove">Remove from this phone</button></div></div>`}
+function upd(k){const card=document.querySelector(`.kid[data-kid="${k.id}"]`);if(!card)return;const st=k.state||{},s=F.merge(st.settings||{});
+ card.querySelector(".k-live").innerHTML=kidLive(k);const pb=card.querySelector('[data-k="pause"]');pb.className="btn big "+(s.paused?"ok":"warn");pb.textContent=s.paused?"▶️ Resume":"⏸️ Pause";
+ syncSettings(card.querySelector(".k-set"),s,st.age);const lg=card.querySelector(".k-log");if(lg)lg.innerHTML=logHTML((st.usage||{}).log);
+ const h=card.querySelector(".khead b");if(h)h.textContent=k.nick||"Linking…";bindLive(k,card)}
+function bindLive(k,card){card.querySelectorAll("[data-ans]").forEach(b=>b.onclick=()=>{if(send(k,{t:"answer",id:b.dataset.ans,ok:b.dataset.ok==="1"})){k.reqs=k.reqs.filter(r=>r.id!==b.dataset.ans);saveP();upd(k);toast(b.dataset.ok==="1"?"Said yes ✅":"Said not now ✋")}})}
+function pushSettings(k,patch,age){const st=k.state;if(!st||!st.settings){toast("Wait until the kid's device is connected.");return}const s=Object.assign(F.merge(st.settings),patch);const v=Math.max(Date.now(),(+st.settings.v||0)+1);s.v=v;
+ if(send(k,{t:"settings",s,v,age:age||undefined})){st.settings=s;if(age)st.age=age;saveP();upd(k)}}
+function vParent(){return `<div class="card"><h2>➕ Link a kid's device</h2><p class="note">On the kid's device, open the Parent Portal, choose “This is my kid's device”, and scan the QR code or type the code here.</p>
+ <div class="cols"><label class="f">Link code<input id="p-code" autocomplete="off" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" value="${esc(hp||"")}"></label><label class="f">Name for this phone<input id="p-name" maxlength="30" placeholder="e.g. Mom's phone" value="${esc(P.name)}"></label></div>
+ <p class="msg" id="p-m" role="alert"></p><div class="row"><button class="btn big" id="p-link">🔗 Link</button></div></div>
+ ${P.kids.length?`<div class="cols">${P.kids.map(kidCard).join("")}</div>`:`<p class="empty">No kids linked yet.</p>`}`}
+function bindParent(){$("p-link").onclick=()=>{const c=F.parseCode($("p-code").value);P.name=$("p-name").value.trim().slice(0,30)||P.name;if(!c){$("p-m").textContent="That code doesn't look right. It has 24 letters and numbers.";return}
+  if(P.kids.some(k=>k.id===c.id)){$("p-m").textContent="That kid is already linked.";return}const k={id:c.id,secret:c.secret,nick:"",avatar:"",state:null,seen:0,reqs:[]};P.kids.push(k);saveP();if(hp){history.replaceState(null,"",location.pathname+location.search);hp=""}render();connect(k);toast("Linking…")};
+ $("p-name").onchange=()=>{P.name=$("p-name").value.trim().slice(0,30);saveP()};
+ P.kids.forEach(k=>{const card=document.querySelector(`.kid[data-kid="${k.id}"]`);if(!card)return;bindLive(k,card);
+  card.querySelector('[data-k="pause"]').onclick=()=>{const s=F.merge((k.state||{}).settings||{});pushSettings(k,{paused:!s.paused,pauseMsg:s.paused?"":card.querySelector('[data-k="pmsg"]').value.trim()})};
+  card.querySelector('[data-k="add"]').onclick=()=>{if(send(k,{t:"addtime",min:15}))toast("Added 15 minutes ⏰")};
+  card.querySelectorAll('[data-k="preset"]').forEach(b=>b.onclick=()=>{if(send(k,{t:"msg",text:b.dataset.t}))toast("Message sent 💌")});
+  const mt=card.querySelector('[data-k="mtext"]'),sendM=()=>{const t=mt.value.trim();if(t&&send(k,{t:"msg",text:t})){mt.value="";toast("Message sent 💌")}};card.querySelector('[data-k="send"]').onclick=sendM;mt.onkeydown=e=>{if(e.key==="Enter")sendM()};
+  const box=card.querySelector(".k-set");box.addEventListener("change",()=>{const r=readSettings(box,F.merge((k.state||{}).settings||{}));pushSettings(k,{lockAge:r.s.lockAge,limit:r.s.limit,bed:r.s.bed,allow:r.s.allow},r.age)});
+  card.querySelector('[data-k="remove"]').onclick=e=>{const b=e.currentTarget;if(!b.dataset.sure){b.dataset.sure=1;b.textContent="Tap again to remove";return}const c=C[k.id];if(c){clearTimeout(c.t);safe(()=>c.conn&&c.conn.close());delete C[k.id]}P.kids=P.kids.filter(x=>x!==k);saveP();render()};
+  if(!C[k.id]||(!C[k.id].conn&&!C[k.id].dead&&!C[k.id].t))connect(k)})}
+setInterval(()=>{if(role!=="parent")return;P.kids.forEach(k=>{const c=C[k.id];if(c&&c.open&&c.conn)safe(()=>c.conn.send({t:"ping"}));upd(k)})},15000);
+
+/* ---------- render ---------- */
+function render(){document.querySelectorAll(".rolebtn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.role===role));
+ if(!role){root.innerHTML="";return}
+ if(role==="kid"){const f=F.load();root.innerHTML=!f?vSetup():!unlocked()?vGate():vManage();bindKid();return}
+ root.innerHTML=vParent();bindParent()}
+FAM.onChange(()=>{if(role==="kid"&&F.load()&&unlocked()&&!root.contains(document.activeElement))render()});
+addEventListener("storage",e=>{if(role==="kid"&&(e.key==="ths-family"||e.key==="ths-family-usage")&&!root.contains(document.activeElement))render()});
+setInterval(()=>{if(role==="kid"&&F.load()&&unlocked()&&!root.contains(document.activeElement))render()},20000);
+render();
+const set=v=>{document.documentElement.dataset.bg=v;document.querySelectorAll(".bgt button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.b===v));try{localStorage.setItem("lhh-bg",v)}catch(e){}};
+document.querySelectorAll(".bgt button").forEach(b=>b.onclick=()=>set(b.dataset.b));try{const v=localStorage.getItem("lhh-bg");if(v)set(v)}catch(e){}
+})();
+
+</script>
+</body>
+</html>
