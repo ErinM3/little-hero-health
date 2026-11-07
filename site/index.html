@@ -67,8 +67,10 @@
   <div class="pn" id="lhp-play" data-t="Play" hidden>
    <a href="index.html#play" data-p="index"><span class="i">🩹</span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
    <a href="index.html#videos" data-p="videos"><span class="i">🎬</span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
-   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 25</span></a>
-   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for 13 and up</span></a>
+   <a href="games.html" data-p="games"><span class="i">🧩</span><b>Puzzle Lab</b><span>Hospital problem-solving games for every age</span></a>
+   <a href="biscuit.html" data-p="biscuit"><span class="i">🧸</span><b>Talk to Biscuit</b><span>Biscuit the Bear tells you how he feels</span></a>
+   <a href="heroes.html" data-p="heroes"><span class="i">🦸</span><b>Hero groups</b><span>Find your group, ages 5 to 18</span></a>
+   <a href="teen.html" data-p="teen"><span class="i">🩺</span><b>Teen Heroes HQ</b><span>Real hospital shifts for ages 12 to 18</span></a>
    <a href="workstation.html" data-p="workstation"><span class="i"><img src="brand/logos/lhh-hospital-workspace-icon.svg" alt=""></span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
    <a href="workstation.html#hospital" data-p="hospital"><span class="i">🏥</span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
   </div></div>
@@ -553,8 +555,8 @@ td.hi{color:var(--hl);font-weight:800}
   <span class="eyebrow">The Hero Shift · Demo V2.4</span>
   <h1>Run the hospital with your friends</h1>
   <span class="band">🩹 Pick your heroes, suit up, and play a whole hospital shift together</span>
-  <div class="ctas"><a class="cta1" href="#play">▶ Play now</a><a class="cta2" href="#shop">🎒 Get the Hero Box</a></div>
-  <p class="hnote">Free to play · Ages 0 to 21+ · Nothing you type leaves this device</p>
+  <div class="ctas"><a class="cta1" href="#play">▶ Play now</a><a class="cta2" href="#shop">🎒 Get the Hero Box</a><a class="cta2" href="games.html">🧩 Puzzle Lab</a><a class="cta2" href="biscuit.html">🧸 Talk to Biscuit</a></div>
+  <p class="hnote">Free to play · Ages 5 to 18 · Nothing you type leaves this device</p>
  </div>
  <aside class="vidcard" id="videos" aria-label="How-to videos">
   <span class="vt">🎬 Watch and learn</span>
@@ -598,18 +600,15 @@ const v=document.getElementById("hvid"),c=document.getElementById("hvc");documen
 </div>
 <script>
 const TIERS=[
- {age:"0–5",name:"Teddy Clinic",mode:"kid"},{age:"5–9",name:"Junior Hero",mode:"kid"},
- {age:"9–13",name:"Hero Academy",mode:"pro"},{age:"13–16",name:"Hero Explorer",mode:"pro"},
- {age:"16–18",name:"Hero Volunteer",mode:"pro"},{age:"18–21",name:"Hero Trainee",mode:"pro"},
- {age:"21+",name:"Real World",mode:"pro"}];
+ {age:"5–11",name:"Little Heroes",mode:"kid"},{age:"12–15",name:"Junior Heroes",mode:"pro"},{age:"16–18",name:"Senior Heroes",mode:"pro"}];
 const SCEN=[
  [0,"Bumpy Bike Fall","a sore arm after falling off a bike"],[0,"Sniffle Season","a runny nose and a little cough"],[0,"Tummy Rumble","a tummy ache"],[0,"Scraped Knee","a scraped knee from the playground"],[0,"Wobbly Tooth","a wobbly tooth"],[0,"Check-up Day","a yearly check-up to see how much they've grown"],[0,"Splinter Surprise","a tiny splinter in one paw"],[0,"Itchy Bug Bite","an itchy bug bite"],[0,"Sleepy Teddy","trouble falling asleep"],[0,"Hiccup Hurricane","hiccups that won't stop"],
- [1,"Broken Arm Cast","a broken arm that needs an X-ray and a cast"],[1,"Fever Day","a fever and a sore throat"],[1,"Allergy Sneezes","sneezes and itchy eyes from pollen"],[1,"Soccer Ankle","a twisted ankle from soccer practice"],[1,"Ear Ache","an ear ache"],[1,"Ambulance Call","a bumped head after a playground tumble"],[1,"Vaccine Day","a check-up and a quick vaccine pinch"],[1,"Sunburn Ouch","a sunburn from a day at the beach"],[1,"Chickenpox Spots","itchy chickenpox spots"],[1,"Toothache Trouble","a cavity in a back tooth"],
- [2,"Allergy Alert","an itchy rash after eating peanuts"],[2,"Asthma Flare","wheezing and trouble catching their breath at recess"],[2,"Appendix Ache","pain low on the right side of the tummy"],[2,"Fire Drill Day","a twisted ankle during the fire drill"],[2,"Head Bump Check","a bump to the head during a game"],[2,"Hot Field Day","dizziness after a hot field day"],[2,"Stitches Needed","a cut on the chin that needs stitches"],[2,"Sugar Check","high blood sugar and feeling very thirsty"],[2,"Tonsil Surgery","sore tonsils that need to come out"],[2,"Germ Detective","a stomach bug that is spreading through class"],
- [3,"Concussion Protocol","a hit to the head at football practice"],[3,"Broken Leg Surgery","a broken leg that needs surgery to set it"],[3,"Bee Sting Emergency","a severe allergic reaction to a bee sting"],[3,"Asthma Attack","a bad asthma attack"],[3,"Flu Outbreak","the flu that is spreading through school"],[3,"Skateboard Fall","a broken wrist after a skateboard fall"],[3,"New Diagnosis","new type 1 diabetes"],[3,"Sports Physicals","a preseason sports physical"],[3,"Burn Care","a burn from a kitchen accident"],[3,"Busy ER Night","a high fever on a busy ER night"],
- [4,"CPR Drill","collapsed and is not breathing (practice manikin)"],[4,"Stop the Bleed","a deep cut on the arm that is bleeding a lot"],[4,"Choking Rescue","food stuck in their throat at lunch"],[4,"Heat Stroke","heat stroke at summer practice"],[4,"Seizure First Aid","a seizure in the cafeteria"],[4,"Flu Clinic Rush","flu symptoms on a packed clinic day"],[4,"Kids' Ward Buddy","a scary first night in the hospital"],[4,"Blood Drive","dizziness after giving blood"],[4,"Game Day Taping","a sprained wrist before the big game"],[4,"Storm Drill","injuries from a pretend storm drill"],
- [5,"Stroke Alert","a drooping face and slurred speech"],[5,"Chest Pain Workup","chest pain and sweating"],[5,"Crash Scene Sim","injuries from a car crash (simulation)"],[5,"Low Sugar Rescue","low blood sugar and confusion"],[5,"Naloxone Training","slow breathing after taking too much pain medicine (simulation)"],[5,"Sepsis Watch","a fever, a fast heart rate and confusion"],[5,"Baby on the Way","contractions and is about to have a baby"],[5,"Fall Risk Ward","weak legs and keeps trying to get up alone"],[5,"Handoff Challenge","pneumonia and needs a careful shift handoff"],[5,"Mock Code","a heart that stopped on the ward (mock code)"],
- [6,"Code Blue Sim","a cardiac arrest in the simulation lab"],[6,"Mass Casualty Drill","injuries from a bus crash drill"],[6,"Trauma Bay Sim","injuries from a motorcycle crash (simulation)"],[6,"ICU Sepsis Sim","septic shock in the ICU (simulation)"],[6,"Catch the Error","an order with the wrong dose that needs catching"],[6,"Rapid Response","breathing that is getting worse on the ward"],[6,"Discharge Day","new medicines to learn before going home"],[6,"Family Questions","a worried family with lots of questions"],[6,"Team Rounds","kidney and heart problems that need the whole team"],[6,"Volunteer Shift","a long wait and needs a friendly volunteer"]
+ [0,"Broken Arm Cast","a broken arm that needs an X-ray and a cast"],[0,"Fever Day","a fever and a sore throat"],[0,"Allergy Sneezes","sneezes and itchy eyes from pollen"],[0,"Soccer Ankle","a twisted ankle from soccer practice"],[0,"Ear Ache","an ear ache"],[0,"Ambulance Call","a bumped head after a playground tumble"],[0,"Vaccine Day","a check-up and a quick vaccine pinch"],[0,"Sunburn Ouch","a sunburn from a day at the beach"],[0,"Chickenpox Spots","itchy chickenpox spots"],[0,"Toothache Trouble","a cavity in a back tooth"],
+ [1,"Allergy Alert","an itchy rash after eating peanuts"],[1,"Asthma Flare","wheezing and trouble catching their breath at recess"],[1,"Appendix Ache","pain low on the right side of the tummy"],[1,"Fire Drill Day","a twisted ankle during the fire drill"],[1,"Head Bump Check","a bump to the head during a game"],[1,"Hot Field Day","dizziness after a hot field day"],[1,"Stitches Needed","a cut on the chin that needs stitches"],[1,"Sugar Check","high blood sugar and feeling very thirsty"],[1,"Tonsil Surgery","sore tonsils that need to come out"],[1,"Germ Detective","a stomach bug that is spreading through class"],
+ [1,"Concussion Protocol","a hit to the head at football practice"],[1,"Broken Leg Surgery","a broken leg that needs surgery to set it"],[1,"Bee Sting Emergency","a severe allergic reaction to a bee sting"],[1,"Asthma Attack","a bad asthma attack"],[1,"Flu Outbreak","the flu that is spreading through school"],[1,"Skateboard Fall","a broken wrist after a skateboard fall"],[1,"New Diagnosis","new type 1 diabetes"],[1,"Sports Physicals","a preseason sports physical"],[1,"Burn Care","a burn from a kitchen accident"],[1,"Busy ER Night","a high fever on a busy ER night"],
+ [2,"CPR Drill","collapsed and is not breathing (practice manikin)"],[2,"Stop the Bleed","a deep cut on the arm that is bleeding a lot"],[2,"Choking Rescue","food stuck in their throat at lunch"],[2,"Heat Stroke","heat stroke at summer practice"],[2,"Seizure First Aid","a seizure in the cafeteria"],[2,"Flu Clinic Rush","flu symptoms on a packed clinic day"],[2,"Kids' Ward Buddy","a scary first night in the hospital"],[2,"Blood Drive","dizziness after giving blood"],[2,"Game Day Taping","a sprained wrist before the big game"],[2,"Storm Drill","injuries from a pretend storm drill"],
+ [2,"Stroke Alert","a drooping face and slurred speech"],[2,"Chest Pain Workup","chest pain and sweating"],[2,"Crash Scene Sim","injuries from a car crash (simulation)"],[2,"Low Sugar Rescue","low blood sugar and confusion"],[2,"Naloxone Training","slow breathing after taking too much pain medicine (simulation)"],[2,"Sepsis Watch","a fever, a fast heart rate and confusion"],[2,"Baby on the Way","contractions and is about to have a baby"],[2,"Fall Risk Ward","weak legs and keeps trying to get up alone"],[2,"Handoff Challenge","pneumonia and needs a careful shift handoff"],[2,"Mock Code","a heart that stopped on the ward (mock code)"],
+ [2,"Code Blue Sim","a cardiac arrest in the simulation lab"],[2,"Mass Casualty Drill","injuries from a bus crash drill"],[2,"Trauma Bay Sim","injuries from a motorcycle crash (simulation)"],[2,"ICU Sepsis Sim","septic shock in the ICU (simulation)"],[2,"Catch the Error","an order with the wrong dose that needs catching"],[2,"Rapid Response","breathing that is getting worse on the ward"],[2,"Discharge Day","new medicines to learn before going home"],[2,"Family Questions","a worried family with lots of questions"],[2,"Team Rounds","kidney and heart problems that need the whole team"],[2,"Volunteer Shift","a long wait and needs a friendly volunteer"]
 ].map(([min,name,c])=>({min,name,c}));
 const BEATS=["Start of shift","Morning rounds","The big moment","End of shift"];
 const ITEMS={leadapron:["🦺","Lead apron"],bubbles:["🫧","Bubble wand"],book:["📖","Story book"],coat:["🥼","White coat"],steth:["🩺","Stethoscope"],badge:["🪪","ID badge"],gloves:["🧤","Gloves"],mask:["😷","Mask"],watch:["⌚","Watch"],scrubs:["👕","Scrubs"],cap:["🧢","Surgical cap"],radio:["📻","Radio"],bag:["🎒","Jump bag"],pills:["💊","Pill tray"],headset:["🎧","Headset"],printer:["🖨️","Band printer"],goggles:["🥽","Goggles"]};
@@ -741,13 +740,13 @@ function card(p,i){
   let extra="";
   if(p.tier===0) extra+=`<p class="irl">🧸 With your teddy patient. A grown-up can read this out loud.</p>`;
   else extra+=`<p class="irl">In real life: act it out with your squad and props.</p>`;
-  if(p.tier>=1) extra+=`<p class="fact">Fun fact: ${esc(m.fact)}</p>`;
+  extra+=`<p class="fact">Fun fact: ${esc(m.fact)}</p>`;
   if(S.beat===2) extra+=p.mini?`<p class="stars">🎮 Bonus game done!</p>`:`<button class="btn sun mgbtn" data-mg="${i}">🎮 Play the bonus game</button>`;
-  if(S.beat===3&&p.tier===3) extra+=`<p class="real">Career path: ${esc(j.path)}</p>`;
-  if(S.beat===3&&(p.tier===3||p.tier===4)) extra+=`<p class="fact">Questions about this career? Ask a school nurse, counselor or HOSA advisor.</p>`;
-  if(S.beat===3&&p.tier>=4) extra+=`<p class="real"><b>Your real-world step:</b> ${esc(j.r[p.tier-4])}${p.tier===6?" Only licensed staff give real patient care.":""}</p>`;
+  if(S.beat===3&&p.tier>=1) extra+=`<p class="real">Career path: ${esc(j.path)}</p>`;
+  if(S.beat===3&&p.tier>=1) extra+=`<p class="fact">Questions about this career? Ask a school nurse, counselor or HOSA advisor.</p>`;
+  if(S.beat===3&&p.tier>=2) extra+=`<p class="real"><b>Your real-world step:</b> ${esc(j.r[0])}</p>`;
   return `<div class="card${complete?" done":""}"><div class="card-h"><span class="ic">${j.ic}</span><div><b>${esc(p.name)} · ${j.name}</b><br><span class="tag">${t.age} · ${t.name}</span> ${lvChip(p)}</div></div>
-  <p><b>${fill(t.mode==="kid"?m.kid:m.pro)}</b></p>${p.tier<=1?`<button class="say" data-say="${i}">🔊 Read it to me</button>`:""}${extra}
+  <p><b>${fill(t.mode==="kid"?m.kid:m.pro)}</b></p>${p.tier===0?`<button class="say" data-say="${i}">🔊 Read it to me</button>`:""}${extra}
   <div class="steps">${m.steps.map((s,k)=>`<button class="step${d.includes(k)?" ok":""}" data-p="${i}" data-s="${k}" aria-pressed="${d.includes(k)}"><span class="bx">${d.includes(k)?"✓":""}</span>${fill(s)}</button>`).join("")}</div>
   ${complete?`<span class="stars" aria-label="Star earned">★ Mission done</span>`:""}</div>`;
 }
@@ -765,7 +764,7 @@ function end(){
   return `<h3 class="win">Shift complete! ${esc(S.patient)} is feeling much better.</h3>
   <p class="irl" style="text-align:center">Hero break! Stretch, drink some water, and tell a grown-up your favorite part.</p>
   <div class="cards">${S.players.map(p=>{const j=JOBS[p.job];const st=Object.entries(p.done).filter(([b,d])=>d.length===j.m[b].steps.length).length;
-   return `<div class="cert"><span style="font-size:2.4rem">${j.ic}</span><b style="font-family:var(--display);font-size:1.3rem">${esc(p.name)}</b><span>Hero ${j.name} · ${TIERS[p.tier].name}</span><span class="stars">${"★".repeat(st)}${"☆".repeat(4-st)}</span><div>${lvChip(p)}</div><b class="stars">+${p.xpGain||0} XP</b><div>${(p.newBadges||[]).map(id=>{const b=BADGES.find(x=>x[0]===id);return `<span class="nb">${b[1]} ${b[2]}</span>`}).join("")}</div><button class="btn ghost" data-book="${S.players.indexOf(p)}">📖 Badge Book</button><small><a href="roblox.html">🏥 Play The Hero Shift on Roblox</a></small>${p.tier>=4?`<small>Next real step: ${esc(j.r[p.tier-4])}</small>`:""}</div>`}).join("")}</div>
+   return `<div class="cert"><span style="font-size:2.4rem">${j.ic}</span><b style="font-family:var(--display);font-size:1.3rem">${esc(p.name)}</b><span>Hero ${j.name} · ${TIERS[p.tier].name}</span><span class="stars">${"★".repeat(st)}${"☆".repeat(4-st)}</span><div>${lvChip(p)}</div><b class="stars">+${p.xpGain||0} XP</b><div>${(p.newBadges||[]).map(id=>{const b=BADGES.find(x=>x[0]===id);return `<span class="nb">${b[1]} ${b[2]}</span>`}).join("")}</div><button class="btn ghost" data-book="${S.players.indexOf(p)}">📖 Badge Book</button><small><a href="roblox.html">🏥 Play The Hero Shift on Roblox</a></small>${p.tier>=2?`<small>Next real step: ${esc(j.r[0])}</small>`:""}</div>`}).join("")}</div>
   ${S.chest?`<p class="stars" style="text-align:center">🎁 Chest opened! Check your Badge Books.</p>`:`<div style="text-align:center"><button class="btn sun big-chest" id="chest">🎁 Open the Hero Chest</button></div>`}
   <div class="row"><button class="btn" id="again">Play another day</button><button class="btn ghost" id="swap">Swap jobs</button></div>`;
 }
@@ -779,7 +778,7 @@ const LVL=[0,100,250,450,700,1000,1400];
 const lvlOf=xp=>{let l=0;LVL.forEach((t,i)=>{if(xp>=t)l=i});return l;};
 const BADGES=[["first","🎉","First Shift","Finish your first shift"],
  ...Object.keys(JOBS).map(k=>["job-"+k,JOBS[k].ic,JOBS[k].name+" Badge","Finish a shift as a "+JOBS[k].name.toLowerCase()]),
- ["alljobs","🏥","Every Job","Play all 9 jobs"],["teddy","🧸","Teddy Healer","Finish a Teddy Clinic shift"],
+ ["alljobs","🏥","Every Job","Play all 9 jobs"],["teddy","🧸","Teddy Healer","Finish a Little Heroes shift"],
  ["hands","🧼","Clean Hands","Finish the hand-washing race"],["freeze","🧊","Freeze Pro","Finish the surgery freeze"],
  ["fullheal","🤩","Full Heal","Make a patient feel AMAZING"],["squad","🤝","Squad Goals","Play with 4 or more heroes"],
  ["explorer","🗺️","Action Explorer","Play 5 different actions"],["mini","🎮","Bonus Star","Finish a bonus game"],["super","🦸","Super Hero","Reach level 5"]];
@@ -797,7 +796,7 @@ function showLevelUps(){const x=LQ.shift();if(!x)return;const[p,l]=x;const o=ove
 function lvChip(p){const h=hero(p),l=lvlOf(h.xp),nx=LVL[l+1],pct=nx?Math.round((h.xp-LVL[l])/(nx-LVL[l])*100):100;return `<span class="lv lv${l}">Lv ${l+1} · ${RANKS[l]}</span><span class="xpbar" aria-label="${pct}% to next level"><span style="width:${pct}%"></span></span>`;}
 function banner(t,sub){const o=overlay(`<div class="bn"><b>${t}</b>${sub?`<span>${esc(sub)}</span>`:""}</div>`,"pass");setTimeout(()=>o.remove(),1500);}
 const GAMEOF={xray:"bone",lab:"germ",childlife:"breathe",doctor:"heart",nurse:"heart",medic:"germ",desk:"germ",surgeon:"count",pharm:"count"};
-function miniGame(i){const p=S.players[i],kind=GAMEOF[p.job],lv=lvlOf(hero(p).xp),little=p.tier<=1;let o,fin=false;
+function miniGame(i){const p=S.players[i],kind=GAMEOF[p.job],lv=lvlOf(hero(p).xp),little=p.tier===0;let o,fin=false;
  const done=xp=>{if(fin)return;fin=true;p.mini=true;o.remove();giveXP(p,xp,"bonus game");giveBadge(p,"mini");render();boom(innerWidth/2,innerHeight/2,60);showLevelUps();};
  if(kind==="heart"){const need=6+Math.min(lv,4)*2;let n=0;o=overlay(`<div class="mg"><span class="eyebrow">Bonus game · Heartbeat</span><h2>Tap the heart to listen!</h2><button class="heart" id="mg-h" aria-label="Heart">🫀</button><p class="mgc"><b id="mg-n">0</b> of ${need} beats heard</p></div>`);
   o.querySelector("#mg-h").onclick=e=>{n++;o.querySelector("#mg-n").textContent=n;const h=e.currentTarget;h.classList.remove("thump");void h.offsetWidth;h.classList.add("thump");if(n>=need)setTimeout(()=>done(30),250);};}
@@ -884,12 +883,12 @@ const HOMEIDEAS={
 const HOMEPATIENT=["Your favorite teddy, doll or stuffed animal","A teddy, or a friend playing the patient","A friend role-playing, or a CPR practice manikin"];
 const HOMEBONUS={xray:["A flashlight behind your hand to see a shadow X-ray"],lab:["A magnifying glass"],childlife:["Crayons for a feelings drawing"],doctor:["A flashlight to check ears and throats"],nurse:["A clipboard for the chart"],surgeon:["A muffin tin as the tool tray"],medic:["A wagon or big cardboard box as the ambulance"],pharm:["Sticky labels and markers"],desk:["A clipboard and a bell for the front desk"]};
 const LADDER=[
- {name:"Play Gear",ages:"0–9",tiers:[0,1],price:"$29–49",items:"Soft fabric outfits, chunky plastic tools, plush patient, stickers"},
- {name:"Hero Gear",ages:"9–13",tiers:[2],price:"$59–99",items:"Kid-size coat or scrubs, working toy BP cuff, light-up toy otoscope, real bandages"},
- {name:"Pro Gear",ages:"13–18",tiers:[3,4],price:"$129–249",items:"Real stethoscope, real scrubs, stocked first aid kit, CPR practice kit"},
- {name:"Clinical Training Gear",ages:"18+",tiers:[5,6],price:"$399–1,500+",items:"CPR and AED training manikin, manual BP cuff, simulation-lab scenario packs, embroidered scrubs"}
+ {name:"Play Gear",ages:"5–11",tiers:[0,1],price:"$29–49",items:"Soft fabric outfits, chunky plastic tools, plush patient, stickers"},
+ {name:"Hero Gear",ages:"12–15",tiers:[2,3],price:"$59–99",items:"Kid-size coat or scrubs, working toy BP cuff, light-up toy otoscope, real bandages"},
+ {name:"Pro Gear",ages:"16–18",tiers:[4],price:"$129–249",items:"Real stethoscope, real scrubs, stocked first aid kit, CPR practice kit"},
+ {name:"Clinical Training Gear",ages:"Event staff",tiers:[5,6],price:"$399–1,500+",items:"CPR and AED training manikin, manual BP cuff, simulation-lab scenario packs, embroidered scrubs"}
 ];
-const band=t=>t<=1?0:t<=3?1:2;
+const band=t=>Math.min(2,Math.max(0,t));
 function ladderHTML(tier){return LADDER.map(r=>`<div class="rung${r.tiers.includes(tier)?" now":""}"><span class="pill">${r.ages}</span><b>${r.name}</b><div class="price">${r.price}</div><span class="muted">${r.items}</span>${r.tiers.includes(tier)?`<small><b>Your level</b></small>`:""}</div>`).join("");}
 function homeHTML(job,tier){
   const j=JOBS[job],b=band(tier);
@@ -920,7 +919,7 @@ const ORG=[
   fee:{name:"Facilitator license",price:299,per:"per site, per season"},
   items:["4-week, 20-session camp plan","Outfits campers keep","Station kits: ER, OR, ambulance, pharmacy, front desk","Badges and certificates","Facilitator guide and training video"]},
  {id:"school",name:"School Year License",tag:"Up to 60 students",unit:"per site, per year",price:1499,flat:true,
-  items:["Class set for 30 at a time","2 refill shipments a year","Health and careers lesson plans","All 7 age tiers unlocked","Teacher progress view (V2)"]},
+  items:["Class set for 30 at a time","2 refill shipments a year","Health and careers lesson plans","All 3 age groups unlocked","Teacher progress view (V2)"]},
  {id:"train",name:"College & Training Program",tag:"Ages 16+",unit:"per participant",price:49,min:10,def:30,
   fee:{name:"Program license",price:2500,per:"per site, per year"},
   items:["Hero Volunteer, Trainee and Real World tiers","Career ladder modules for every role","Links to CPR, EMT and CNA programs","Simulation-lab scenario cards","Completion certificates"]}
@@ -1002,7 +1001,7 @@ function marketHTML(){
 function renderHome(){$("shop-home").innerHTML=homeHTML(shop.hjob,shop.htier);}
 function renderShop(){
   document.querySelectorAll(".mode").forEach(m=>m.setAttribute("aria-pressed",m.dataset.mode===shop.mode));
-  $("ladder").innerHTML=ladderHTML(shop.mode==="market"?({all:-1,play:0,hero:2,pro:3,clin:5})[shop.mk.lvl]:shop.mode==="home"?shop.htier:({solo:0,squad4:0,squad8:0,camp:1,school:2,train:5})[shop[shop.tab]]);
+  $("ladder").innerHTML=ladderHTML(shop.mode==="market"?({all:-1,play:0,hero:2,pro:4,clin:5})[shop.mk.lvl]:shop.mode==="home"?[1,3,4][shop.htier]:({solo:0,squad4:0,squad8:0,camp:1,school:2,train:5})[shop[shop.tab]]);
   const hm=shop.mode==="home",mm=shop.mode==="market";["shop-tabs","shop-products","shop-options","shop-summary"].forEach(id=>$(id).hidden=hm||mm);$("shop-home").hidden=!hm;$("shop-market").hidden=!mm;if(hm){renderHome();return;}if(mm){$("shop-market").innerHTML=marketHTML();return;}
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===shop.tab));
   const list=shop.tab==="home"?HOME:ORG, selId=shop[shop.tab], p=list.find(x=>x.id===selId);
