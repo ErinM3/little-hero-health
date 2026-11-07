@@ -440,6 +440,16 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--m
 .wlcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
 .wlcard{background:#fff;border-radius:14px;padding:14px;display:grid;gap:6px;border:2px solid transparent}
 .wlcard .e{font-size:2rem;line-height:1}
+
+/* ---- document editing ---- */
+.edbar{display:flex;flex-wrap:wrap;gap:4px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px;margin-bottom:10px;position:sticky;top:0;z-index:2}
+.edbar button{min-width:34px;height:32px;border:1px solid var(--line);background:#F6F8FB;border-radius:6px;cursor:pointer;font-weight:700;padding:0 8px}
+.edbar button:hover{background:var(--blue-l)}
+.edbar .sep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.paper[contenteditable="true"]{outline:3px dashed #E0B800;outline-offset:6px;cursor:text}
+.paper[contenteditable="true"]:focus{outline-color:var(--blue)}
+.edtag{background:var(--sun-l);border:1px solid #E0B800;color:var(--sun-d);border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700}
+.ednote{background:var(--sun-l);border:1px solid #E0B800;border-radius:6px;padding:6px 10px;font-size:.84rem;margin-bottom:8px}
 @media print{body *{visibility:hidden!important}#printarea,#printarea *{visibility:visible!important}#printarea{position:absolute;left:0;top:0;width:100%}.label{break-inside:avoid}}
 </style>
 
@@ -519,7 +529,7 @@ function mkPt(o){const id="p"+(uid++);const p=Object.assign({id,mrn:"LHH-"+(4200
 function wtOf(a){return a<1?8:a<=12?Math.round(a*3+7):a<18?Math.round(45+(a-13)*4):78;}
 const ST={mode:"kid",done:new Set(),act:"board",sub:"summary",sel:null,role:"Nurse",q:"",
  beds:[...["ER 1","ER 2","ER 3","ER 4","ER 5","ER 6"].map(id=>({id,unit:"Emergency"})),...["2W-201","2W-202","2W-203","2W-204","2W-205","2W-206","2W-207","2W-208"].map(id=>({id,unit:"2 West (Pediatrics)"}))].map(b=>Object.assign(b,{pt:null,st:"emp"})),
- pts:[],cases:[],appts:[],selCase:null,mob:"phone",doc:"dc",rx:null,rxsub:"wl",mys:null,docf:{},mobPt:null,scan:{band:null,med:null},msg:"",open:[],inbox:[],ibf:"Results",ibsel:null,tdone:new Set(),kc:{},bpaSeen:new Set(),hosp:null};
+ pts:[],cases:[],appts:[],selCase:null,mob:"phone",doc:"dc",dedit:null,dsaved:{},rx:null,rxsub:"wl",mys:null,docf:{},mobPt:null,scan:{band:null,med:null},msg:"",open:[],inbox:[],ibf:"Results",ibsel:null,tdone:new Set(),kc:{},bpaSeen:new Set(),hosp:null};
 const DEFBEDS=ST.beds.map(b=>({id:b.id,unit:b.unit}));
 function seed(){
  const P=[
@@ -810,7 +820,7 @@ function vDocs(){const p=cur(),list=DOCS.filter(d=>!K()||d[4]);if(!list.some(d=>
  const canPrint=window.self===window.top;
  return `<div class="docs"><div style="display:grid;gap:12px"><div class="panel"><div class="ph"><h2>${K()?"Pick a paper":"Documents"}</h2></div><div class="doclist">${list.map(([k,i,n,dsc])=>`<button data-a="doc" data-k="${k}" aria-current="${k===ST.doc}"><span class="di" aria-hidden="true">${i}</span><span>${K()&&k==="dc"?"Going home sheet":n}<small>${dsc}</small></span></button>`).join("")}</div></div>
  <div class="panel"><div class="ph"><h3>Patient</h3></div><div class="pb"><select id="docpt" aria-label="Patient">${pts.map(x=>`<option value="${x.id}" ${p&&x.id===p.id?"selected":""}>${esc(x.name)}${x.state==="discharged"?" (went home)":x.bed?" · "+esc(x.bed):" · waiting"}</option>`).join("")}</select>${p?docForm(ST.doc,p):""}</div></div></div>
- <div class="panel"><div class="ph"><h2>${d[1]} ${K()&&d[0]==="dc"?"Going home sheet":d[2]}</h2><div class="row">${canPrint?`<button class="btn" data-a="printdoc">🖨️ Print</button>`:`<span class="muted">Open the workstation in its own tab to print.</span>`}</div></div><div class="pb" id="printarea">${p?`<div class="paperwrap" style="--hc:${ST.hosp?ST.hosp.color:"#1F5FAD"}">${docBody(ST.doc,p)}</div>`:`<p class="muted">Pick a patient on the left.</p>`}</div></div></div>`;}
+ <div class="panel"><div class="ph"><h2>${d[1]} ${K()&&d[0]==="dc"?"Going home sheet":d[2]}</h2><div class="row">${p&&ST.dsaved[dKey(p)]?`<span class="edtag">✏️ Edited</span>`:""}${p?(ST.dedit===dKey(p)?`<button class="btn" data-a="dedone">✅ Done editing</button>`:`<button class="btn sec" data-a="dedit">✏️ ${K()?"Change words":"Edit"}</button>`):""}${canPrint?`<button class="btn" data-a="printdoc">🖨️ Print</button>`:`<span class="muted">Open the workstation in its own tab to print.</span>`}</div></div>${p&&ST.dedit===dKey(p)?edBar():p&&ST.dsaved[dKey(p)]?`<div class="pb" style="padding-bottom:0"><div class="ednote">You changed this paper by hand, so changes to the options on the left won't show. <button class="btn sm sec" data-a="dereset">↩️ Go back to the original</button></div></div>`:""}<div class="pb" id="printarea">${p?`<div class="paperwrap" style="--hc:${ST.hosp?ST.hosp.color:"#1F5FAD"}">${paperHTML(p)}</div>`:`<p class="muted">Pick a patient on the left.</p>`}</div></div></div>`;}
 addEventListener("beforeprint",()=>{const pa=document.getElementById("printarea");if(!pa)return;document.getElementById("printroot")?.remove();const r=document.createElement("div");r.id="printroot";r.style.setProperty("--hc",ST.hosp?ST.hosp.color:"#1F5FAD");r.innerHTML=pa.innerHTML;document.body.appendChild(r);document.body.classList.add("printing");});
 addEventListener("afterprint",()=>{document.body.classList.remove("printing");document.getElementById("printroot")?.remove();});
 
@@ -911,6 +921,15 @@ const MYS=[["chest","coin","Right","Leo, 4, swallowed something shiny and his mo
 function vMystery(){const m=ST.mys||(ST.mys={i:0,ans:null,score:0,seen:0,b:100,c:100,inv:false,z:1});const c=MYS[m.i%MYS.length],o={truth:{k:c[0],f:c[1],side:c[2]},meta:"Case "+(m.i%MYS.length+1)+" · Mystery X-ray",alt:"Mystery X-ray"};
  const opts=m.order||(m.order=c[5].slice().sort(()=>Math.random()-.5));
  return `<div class="rxgrid"><div style="display:grid;gap:8px">${xTools(m)}${xView(o,{},m)}</div><div class="panel"><div class="ph"><h3>🔎 Case ${m.i%MYS.length+1} of ${MYS.length}</h3><span class="muted">⭐ ${m.score}/${m.seen}</span></div><div class="pb"><p><b>${esc(c[3])}</b></p><p>What does the X-ray show?</p><div class="opts" style="display:grid;gap:8px">${opts.map(x=>`<button class="btn ${m.ans?(x===c[4]?"":"sec"):"sec"}" data-a="mysans" data-v="${esc(x)}" ${m.ans?"disabled":""} style="justify-content:flex-start;text-align:left;${m.ans&&x===c[4]?"background:#2E7D32;border-color:#2E7D32;color:#fff":m.ans===x?"background:#FDECEA;color:#8E1B1B":""}">${esc(x)}</button>`).join("")}</div>${m.ans?`<div class="rxfb ${m.ans===c[4]?"ok":"no"}"><b>${m.ans===c[4]?"✅ You got it!":"❌ It's: "+esc(c[4])}</b><br>${esc(c[6])}</div><button class="btn" data-a="mysnext">Next case ➜</button>`:`<p class="muted">Tip: try Zoom and ${K()?"Flip colors":"Invert"}.</p>`}</div></div></div>`;}
+
+const dKey=p=>p.id+":"+ST.doc;
+function paperHTML(p){const k=dKey(p),ed=ST.dedit===k;let h=ST.dsaved[k]||docBody(ST.doc,p);
+ if(ed)h=h.replace(/<div class="paper([^"]*)"/,'<div class="paper$1" contenteditable="true" spellcheck="true" data-dk="'+k+'" aria-label="Edit the document"');return h;}
+function edBar(){const b=(c,l,t,v)=>`<button type="button" data-a="dfmt" data-c="${c}"${v?` data-v="${esc(v)}"`:""} title="${t}" aria-label="${t}">${l}</button>`;
+ return `<div class="pb" style="padding-bottom:0"><div class="edbar" role="toolbar" aria-label="Editing tools">${b("bold","<b>B</b>","Bold")}${b("italic","<i>I</i>","Italic")}${b("underline","<u>U</u>","Underline")}<span class="sep"></span>${b("formatBlock","H","Heading","h2")}${b("formatBlock","¶","Normal text","p")}${b("insertUnorderedList","• List","Bullet list")}${b("insertOrderedList","1. List","Numbered list")}<span class="sep"></span>${b("hiliteColor","🖍️","Highlight","#FFF176")}${b("foreColor","🔴","Red text","#C62828")}${b("foreColor","⚫","Black text","#111111")}<span class="sep"></span>${["⭐","❤️","🎉","🦸","🩹","🏅"].map(x=>b("insertText",x,"Add "+x,x)).join("")}${b("insertText","📅","Insert today's date",new Date().toLocaleDateString("en-US",{dateStyle:"long"}))}<span class="sep"></span>${b("undo","↶","Undo")}${b("redo","↷","Redo")}</div><p class="muted" style="margin:0 0 6px">Click anywhere on the paper and type. Select words, then use the buttons.</p></div>`;}
+function edSave(){const el=document.querySelector('.paper[contenteditable="true"]');if(!el)return;const c=el.cloneNode(true);c.removeAttribute("contenteditable");c.removeAttribute("spellcheck");c.removeAttribute("aria-label");const k=c.dataset.dk;c.removeAttribute("data-dk");ST.dsaved[k]=c.outerHTML;}
+document.addEventListener("mousedown",e=>{if(e.target.closest('[data-a="dfmt"]'))e.preventDefault();});
+document.addEventListener("input",e=>{if(e.target.closest&&e.target.closest('.paper[contenteditable="true"]'))edSave();});
 /* ---------- Shell ---------- */
 function plist(){const q=ST.q.toLowerCase();const L=ST.pts.filter(p=>p.state!=="discharged"&&(!q||p.name.toLowerCase().includes(q)||p.mrn.toLowerCase().includes(q))).sort((a,b)=>(a.bed||"zz").localeCompare(b.bed||"zz"));
  $("plist").innerHTML=L.map(p=>`<button class="pt" data-a="open" data-p="${p.id}" aria-current="${p.id===ST.sel}"><b>${esc(p.name)}</b><span class="pill ${p.state==="waiting"?"s-tri":p.state==="discharging"?"s-dis":"s-occ"}">${p.bed||"Waiting"}</span><small>${p.mrn} · ${esc(p.reason)}</small></button>`).join("")||`<p class="pb muted">No patients match.</p>`;}
@@ -931,7 +950,7 @@ function gate(cb){if(gateOK){cb();return;}const a=6+Math.floor(Math.random()*4),
  document.getElementById("g-ok").onclick=()=>{if(+document.getElementById("g-a").value===a*b){gateOK=true;closeModal();cb();}else document.getElementById("g-m").textContent="Not quite. Ask a grown-up.";};}
 function typeOut(el,text){let i=0;const t=setInterval(()=>{el.value=text.slice(0,i+=3);if(i>=text.length)clearInterval(t);},30);}
 const SOAP="S: \nO: \nA: \nP: ";
-document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,p=cur();
+document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest('.paper[contenteditable="true"]'))return;const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,p=cur();
  if(a==="act"){ST.act=b.dataset.k;ST.msg="";}
  else if(a==="open"){ST.sel=b.dataset.p;if(!ST.open.includes(ST.sel)){ST.open.push(ST.sel);if(ST.open.length>6)ST.open.shift();}bpaOpen(pt(ST.sel));if(ST.act==="census"||ST.act==="inbox"||ST.act==="shift")ST.act="chart";closeModal();if(ST.act==="board"||ST.act==="schedule"||ST.act==="surgery"||ST.act==="mobile")ST.act="chart";ST.scan={band:null,med:null};}
  else if(a==="close"){closeModal();return;}
@@ -956,8 +975,12 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b
  }
  else if(a==="mysans"){ST.mys.ans=b.dataset.v;ST.mys.seen++;if(b.dataset.v===MYS[ST.mys.i%MYS.length][4]){ST.mys.score++;if(ST.mys.score===5)toast("🏅 X-ray detective!");}}
  else if(a==="mysnext"){ST.mys.i++;ST.mys.ans=null;ST.mys.order=null;}
- else if(a==="doc"){ST.doc=b.dataset.k;}
- else if(a==="printdoc"){const q=cur(),d=DOCS.find(x=>x[0]===ST.doc);if(q){q.notes.push({t:new Date().toISOString(),by:ST.role,text:"Printed: "+d[2]});if(ST.doc==="dc")mission("print");}window.print();toast("📄 "+d[2]+" sent to the printer.");return;}
+ else if(a==="dfmt"){const el=document.querySelector('.paper[contenteditable="true"]');if(!el)return;if(!el.contains(document.getSelection().anchorNode))el.focus();try{document.execCommand("styleWithCSS",false,true)}catch(_){}document.execCommand(b.dataset.c,false,b.dataset.v||null);edSave();return;}
+ else if(a==="dedit"){const q=cur();if(q){ST.dedit=dKey(q);render();const el=document.querySelector('.paper[contenteditable="true"]');if(el){el.focus();}toast(K()?"✏️ Tap the paper and change the words!":"✏️ Editing on. Click the paper to type.");}return;}
+ else if(a==="dedone"){edSave();ST.dedit=null;toast("✅ Changes saved. Ready to print!");}
+ else if(a==="dereset"){const q=cur();if(q){delete ST.dsaved[dKey(q)];ST.dedit=null;toast("Back to the original paper.");}}
+ else if(a==="doc"){edSave();ST.dedit=null;ST.doc=b.dataset.k;}
+ else if(a==="printdoc"){if(ST.dedit){edSave();ST.dedit=null;render();}const q=cur(),d=DOCS.find(x=>x[0]===ST.doc);if(q){q.notes.push({t:new Date().toISOString(),by:ST.role,text:"Printed: "+d[2]});if(ST.doc==="dc")mission("print");}window.print();toast("📄 "+d[2]+" sent to the printer.");return;}
  else if(a==="dcprint"){ST.act="docs";ST.doc="dc";ST.sel=b.dataset.p;closeModal();}
  else if(a==="closetab"){ST.open=ST.open.filter(x=>x!==b.dataset.p);if(ST.sel===b.dataset.p)ST.sel=ST.open[ST.open.length-1]||null;}
  else if(a==="ibf"){ST.ibf=b.dataset.f;ST.ibsel=null;}
@@ -1020,7 +1043,7 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b
  render();});
 document.addEventListener("change",e=>{const t=e.target;
  if(t.id==="rx-f"){const q=ST.rx&&pt(ST.rx.pid),o=q&&q.orders.find(x=>x.id==ST.rx.oid);if(o&&o.rx){o.rx.finding=t.value;if(!o.rx.imp||Object.values(FIND).some(v=>o.rx.imp.startsWith(v))){o.rx.imp=t.value?FIND[t.value]+(LIMB.includes(o.rx.truth.k)?", "+o.rx.truth.side.toLowerCase()+" "+o.item.replace("X-ray ",""):"")+".":"";}render();}return;}
- if(t.id==="docpt"){ST.sel=t.value;render();return;}
+ if(t.id==="docpt"){edSave();ST.dedit=null;ST.sel=t.value;render();return;}
  if(t.dataset&&t.dataset.df){const q=cur();if(q){docF(q)[t.dataset.df]=t.value;render();}return;}
  if(t.id==="role"){ST.role=t.value;ST.act=ROLEHOME[t.value];render();}
  if(t.dataset.ins){const[k,f]=t.dataset.ins.split("|");const cs=ST.cases.find(x=>x.id===ST.selCase);cs.inst[+k][f]=t.value;if(cs.inst.every(i=>i.pre!==""&&i.post!==""&&+i.pre===+i.post))mission("count");const nx=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.ins:null;render();if(nx){const el=document.querySelector(`[data-ins="${nx}"]`);if(el)el.focus();}}
