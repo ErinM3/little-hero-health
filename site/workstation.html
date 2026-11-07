@@ -414,6 +414,32 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--m
 .docf{display:grid;gap:8px}
 @media print{@page{margin:.4in}body.printing>*:not(#printroot){display:none!important}body.printing #printroot,body.printing #printroot *{visibility:visible!important}#printroot .paperwrap{background:none;padding:0}#printroot .paper{box-shadow:none;max-width:none;padding:0;margin:0}#printroot .paper.cert{min-height:9in;padding:.5in}}
 #printroot{display:none}@media print{body.printing #printroot{display:block}}
+
+/* ---- radiology ---- */
+.rxsteps{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.rxsteps span{border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 12px;font-size:.82rem;font-weight:600;color:var(--muted)}
+.rxsteps span.on{background:var(--blue);border-color:var(--blue);color:#fff}.rxsteps span.ok{background:#E8F5E9;border-color:#81C784;color:#1B5E20}
+.rxgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px;align-items:start}@media(max-width:980px){.rxgrid{grid-template-columns:1fr}}
+.xview{background:#000;border-radius:8px;overflow:auto;max-height:640px;position:relative}
+.xview svg{display:block;width:100%;max-width:520px;margin:0 auto;height:auto;cursor:crosshair}
+.xview.z2 svg{width:200%;max-width:1040px}
+.xtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.xtools label{display:flex;gap:6px;align-items:center;font-size:.82rem}
+.xtools input[type=range]{width:110px}
+.xflash{animation:xfl .5s ease-out}@keyframes xfl{0%{filter:brightness(6)}100%{filter:none}}
+@media (prefers-reduced-motion:reduce){.xflash{animation:none}}
+.rxcheck{display:grid;gap:8px}
+.rxcheck label{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;cursor:pointer}
+.rxcheck input{width:auto}
+.bigch{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bigch button{font:700 1rem var(--font);border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px;cursor:pointer;display:grid;gap:4px;justify-items:center}
+.bigch button .e{font-size:2rem;line-height:1}
+.bigch button.ok{border-color:#5CB85C;background:#DFF5DF}.bigch button.no{border-color:#E57373;background:#FDECEA}
+.count{font:800 4rem/1 var(--font);text-align:center;color:#fff;background:#000;border-radius:8px;padding:60px 0}
+.rxfb{border-radius:8px;padding:10px 12px;border:2px dashed var(--line);background:#fff}.rxfb.ok{border-color:#5CB85C}.rxfb.no{border-color:#E57373}
+.wlcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.wlcard{background:#fff;border-radius:14px;padding:14px;display:grid;gap:6px;border:2px solid transparent}
+.wlcard .e{font-size:2rem;line-height:1}
 @media print{body *{visibility:hidden!important}#printarea,#printarea *{visibility:visible!important}#printarea{position:absolute;left:0;top:0;width:100%}.label{break-inside:avoid}}
 </style>
 
@@ -421,7 +447,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--m
  <header class="top">
   <div class="brand" id="wsbrand"><span class="lg">+</span>The Hero Shift Workstation</div>
   <div class="modesw" role="group" aria-label="Mode"><button data-a="mode" data-m="kid">🔵 Kids</button><button data-a="mode" data-m="pro">⚪ Advanced</button></div>
-  <label>Role <select id="role"><option>Nurse</option><option>Doctor</option><option>Surgeon</option><option>Administrator</option></select></label>
+  <label>Role <select id="role"><option>Nurse</option><option>Doctor</option><option>Surgeon</option><option>Radiographer</option><option>Administrator</option></select></label>
   <span class="sp"></span>
   <button class="acct" id="acctBtn" data-h="acctbtn">👤 Sign in</button>
   <span class="clk" id="clk"></span>
@@ -449,7 +475,7 @@ const hm=d=>pad(d.getHours())+":"+pad(d.getMinutes());
 const ago=(m)=>{const d=new Date();d.setMinutes(d.getMinutes()-m);return d.toISOString();};
 const tOf=iso=>hm(new Date(iso));
 const mins=iso=>Math.max(0,Math.round((Date.now()-new Date(iso))/60000));
-const KIDACTS={board:"🛏️ Beds",chart:"📋 Check-up",orders:"🧪 Orders",mar:"💊 Medicine",surgery:"🩺 Surgery",schedule:"📅 Clinic",mobile:"📱 Phone",docs:"🖨️ Print",hospital:"🏥 My Hospital",join:"🔑 Join"};
+const KIDACTS={board:"🛏️ Beds",chart:"📋 Check-up",orders:"🧪 Orders",mar:"💊 Medicine",surgery:"🩺 Surgery",schedule:"📅 Clinic",mobile:"📱 Phone",docs:"🖨️ Print",radiology:"🩻 X-ray",hospital:"🏥 My Hospital",join:"🔑 Join"};
 const URG=["","Right now!","Very urgent","Urgent","Can wait a bit","Can wait"];
 const K=()=>ST.mode==="kid";const L=(pro,kid)=>K()?kid:pro;const URGL=e=>K()?URG[e]:"ESI "+e;
 const TIPS={board:["🛏️","Run the hospital beds","Patients in yellow are waiting. Tap “Give a bed”, then tap a bed to see the patient or send them home."],
@@ -460,15 +486,16 @@ const TIPS={board:["🛏️","Run the hospital beds","Patients in yellow are wai
  schedule:["📅","Run the clinic","Check in visitors as they arrive, then book new visits on the calendar."],
  mobile:["📱","Doctors on the go","Tap a patient to see their info on a phone or tablet, then save a quick note."],
  hospital:["🏥","Build your own hospital","Name it, pick a logo and wards, then make keys so friends can join as doctors, nurses and more."],
+ radiology:["🩻","Take an X-ray","Pick a patient who needs a picture. Check their wristband, keep them safe, snap the X-ray, then find what's wrong!"],
  docs:["🖨️","Print papers","Pick a patient, pick a paper, then tap Print. Try a bravery certificate or the going-home sheet!"],
  join:["🔑","Join a hospital","Paste a key from a hospital owner. You get a staff badge, and you can clock in for shifts to earn XP."]};
-const MISS=[["checkin","Check in a new patient"],["bed","Give someone a bed"],["vitals","Do a check-up"],["med","Give a medicine safely"],["count","Count the surgery tools"],["home","Send a patient home"],["print","Print going-home papers"]];
+const MISS=[["checkin","Check in a new patient"],["bed","Give someone a bed"],["vitals","Do a check-up"],["med","Give a medicine safely"],["count","Count the surgery tools"],["home","Send a patient home"],["print","Print going-home papers"],["xray","Take an X-ray"]];
 function mission(k){const m=MISS.find(x=>x[0]===k);if(!m||ST.done.has(k))return;ST.done.add(k);setTimeout(()=>toast(ST.done.size===MISS.length?"🏆 All missions done! You ran the hospital!":"⭐ Mission done: "+m[1]),300);}
 function missionsHTML(){return `<div class="missions-panel"><b>⭐ Your missions · ${ST.done.size} of ${MISS.length}</b><div class="missions">${MISS.map(([k,l])=>`<span class="mis ${ST.done.has(k)?"done":""}">${ST.done.has(k)?"⭐":"☆"} ${l}</span>`).join("")}</div></div>`;}
 function setMode(m){ST.mode=m;document.documentElement.setAttribute("data-mode",m);document.querySelectorAll(".modesw button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===m));try{localStorage.setItem("lhh-ws-mode",m)}catch(e){}}
 const KIDHIDE=["census","inbox","shift","orders","schedule","mobile"];
-const ACTS=[["census","Patient List"],["inbox","In Basket"],["shift","My Shift"],["board","Status Board"],["chart","Chart"],["orders","Orders"],["mar","Med Admin"],["surgery","Surgery"],["schedule","Schedule"],["mobile","Mobile"],["docs","Print Documents"],["hospital","Hospital Admin"],["join","Join Hospital"]];
-const ROLEHOME={Nurse:"board",Doctor:"chart",Surgeon:"surgery",Administrator:"schedule"};
+const ACTS=[["census","Patient List"],["inbox","In Basket"],["shift","My Shift"],["board","Status Board"],["chart","Chart"],["orders","Orders"],["mar","Med Admin"],["surgery","Surgery"],["radiology","Radiology"],["schedule","Schedule"],["mobile","Mobile"],["docs","Print Documents"],["hospital","Hospital Admin"],["join","Join Hospital"]];
+const ROLEHOME={Nurse:"board",Doctor:"chart",Surgeon:"surgery",Radiographer:"radiology",Administrator:"schedule"};
 const MEDS={
  acet:{name:"Acetaminophen",dose:"15 mg/kg",route:"PO",cls:"analgesic"},
  ibu:{name:"Ibuprofen",dose:"10 mg/kg",route:"PO",cls:"nsaid"},
@@ -485,14 +512,14 @@ const RULES=[
  [["ibu"],["asa"],"Two NSAIDs together: stomach bleeding risk, and ibuprofen can block aspirin's effect."],
  [["asa"],["__child"],"Aspirin is generally avoided in children and teens (Reye's syndrome risk)."]];
 const ALLERGYCLS={Penicillin:["penicillin"],Cephalosporins:["cephalosporin"],NSAIDs:["nsaid","nsaid-asa"],Aspirin:["nsaid-asa"]};
-const CATALOG={Labs:["CBC","Basic metabolic panel","Blood culture","Rapid strep test","Urinalysis","Blood glucose"],Imaging:["X-ray chest","X-ray arm","X-ray ankle","CT head","MRI brain","Ultrasound abdomen"],Therapy:["Physical therapy evaluation","Occupational therapy evaluation","Respiratory therapy"],Blood:["Type and screen","Transfuse 1 unit red blood cells"]};
+const CATALOG={Labs:["CBC","Basic metabolic panel","Blood culture","Rapid strep test","Urinalysis","Blood glucose"],Imaging:["X-ray chest","X-ray arm","X-ray hand","X-ray ankle","X-ray leg","CT head","MRI brain","Ultrasound abdomen"],Therapy:["Physical therapy evaluation","Occupational therapy evaluation","Respiratory therapy"],Blood:["Type and screen","Transfuse 1 unit red blood cells"]};
 const SPECS=[["Pediatrics","sp1"],["Cardiology","sp3"],["Orthopedics","sp2"],["Physical Therapy","sp5"],["Dental","sp4"]];
 let uid=100;
 function mkPt(o){const id="p"+(uid++);const p=Object.assign({id,mrn:"LHH-"+(4200+uid),allergies:[],problems:[],vitals:[],notes:[],orders:[],mar:[],exam:{},photos:[],results:[],state:"waiting",bed:null,arrived:ago(10),sex:"",code:"Full code",iso:"None",att:"Dr. Training"},o,{id});if(!p.wt)p.wt=wtOf(age(p.dob));return p;}
 function wtOf(a){return a<1?8:a<=12?Math.round(a*3+7):a<18?Math.round(45+(a-13)*4):78;}
 const ST={mode:"kid",done:new Set(),act:"board",sub:"summary",sel:null,role:"Nurse",q:"",
  beds:[...["ER 1","ER 2","ER 3","ER 4","ER 5","ER 6"].map(id=>({id,unit:"Emergency"})),...["2W-201","2W-202","2W-203","2W-204","2W-205","2W-206","2W-207","2W-208"].map(id=>({id,unit:"2 West (Pediatrics)"}))].map(b=>Object.assign(b,{pt:null,st:"emp"})),
- pts:[],cases:[],appts:[],selCase:null,mob:"phone",doc:"dc",docf:{},mobPt:null,scan:{band:null,med:null},msg:"",open:[],inbox:[],ibf:"Results",ibsel:null,tdone:new Set(),kc:{},bpaSeen:new Set(),hosp:null};
+ pts:[],cases:[],appts:[],selCase:null,mob:"phone",doc:"dc",rx:null,rxsub:"wl",mys:null,docf:{},mobPt:null,scan:{band:null,med:null},msg:"",open:[],inbox:[],ibf:"Results",ibsel:null,tdone:new Set(),kc:{},bpaSeen:new Set(),hosp:null};
 const DEFBEDS=ST.beds.map(b=>({id:b.id,unit:b.unit}));
 function seed(){
  const P=[
@@ -514,6 +541,7 @@ function seed(){
  const n=ST.pts.find(p=>p.name==="Noah Patel");n.orders.push({id:1,t:ago(40),kind:"Lab",item:"CBC",st:"Resulted"},{id:2,t:ago(35),kind:"Imaging",item:"Ultrasound abdomen",st:"In progress"},{id:3,t:ago(20),kind:"Lab",item:"Basic metabolic panel",st:"Ordered"});addResult(n,n.orders[0],ago(25));
  const a=ST.pts.find(p=>p.name==="Avery Hart");addMed(a,"acet",ago(20));
  const j=ST.pts.find(p=>p.name==="Jordan Lee");addMed(j,"alb",ago(5));
+ [["Avery Hart","X-ray arm",22],["Jordan Lee","X-ray chest",14],["Zoe Kim","X-ray ankle",9],["Eli Carter","CT head",30]].forEach(([nm,it,m],i)=>{const q=ST.pts.find(x=>x.name===nm);if(q)q.orders.push({id:"img"+i,t:ago(m),kind:"Imaging",item:it,st:"Ordered"});});
  {const c5=seedBed("ER 5"),b5=c5&&ST.beds.find(b=>b.id===c5);if(b5&&!b5.pt)b5.st="cln";}
  seedInbox();
  ST.cases=[{id:1,or:"OR 1",start:8,dur:1.5,pt:n.id,proc:"Laparoscopic appendectomy",surgeon:"Dr. Training",st:"Scheduled",inst:defInst(),anes:[],postop:""},
@@ -642,6 +670,7 @@ function resultFor(p,item){const r=(p.reason+" "+p.problems.join(" ")).toLowerCa
  const T={"Rapid strep test":/throat|strep|pharyng/.test(r)?["Positive for group A strep","A"]:["Negative",""],
   "Urinalysis":["No signs of infection",""],"Blood culture":["No growth at 24 hours (preliminary)",""],"Type and screen":["O positive, antibody screen negative",""],
   "X-ray arm":/arm|forearm|fractur/.test(r)?["Fracture of the left forearm bones. No other injury.","A"]:["No fracture.",""],
+  "X-ray hand":/hand|finger|punch/.test(r)?["Fracture of the 5th metacarpal (boxer's fracture).","A"]:["No fracture.",""],"X-ray leg":/leg|shin|tibia/.test(r)?["Fracture of the middle of the tibia (shin bone).","A"]:["No fracture.",""],
   "X-ray ankle":/ankle/.test(r)?["No fracture. Soft tissue swelling over the outer ankle (sprain).","A"]:["No fracture.",""],
   "X-ray chest":/asthma|wheez/.test(r)?["Lungs slightly over-inflated, as seen in asthma. No pneumonia.","A"]:["Normal chest X-ray.",""],
   "CT head":["No bleeding, swelling or fracture.",""],"MRI brain":["Normal brain MRI.",""],
@@ -713,7 +742,7 @@ function vKid(p){const c=ST.kc[p.id]||(ST.kc[p.id]={read:null,ans:{},pain:null,s
  <div class="row" style="margin-top:12px"><button class="btn" data-a="ksave" ${Object.keys(c.ans).length===4?"":"disabled"}>💾 Save check-up to chart</button><span class="muted" style="color:#fff">${c.saved?"Saved! ⭐":"Use all 4 tools, then save."}</span></div>`;}
 
 /* ---------- Print documents ---------- */
-const DOCS=[["dc","📄","Discharge instructions","After Visit Summary to take home",1],["meds","💊","Medication list","Medicines, doses and when given",0],["res","🧪","Lab and imaging report","All results with normal ranges",0],["face","🗂️","Patient face sheet","Patient details for the chart",0],["note","🏫","School note","Excuse note with activity limits",1],["appt","📅","Follow-up card","Next appointment reminder",0],["band","🏷️","Wristband and labels","QR wristband and specimen labels",1],["cert","🏅","Bravery certificate","A reward for a brave patient",1]];
+const DOCS=[["dc","📄","Discharge instructions","After Visit Summary to take home",1],["meds","💊","Medication list","Medicines, doses and when given",0],["res","🧪","Lab and imaging report","All results with normal ranges",0],["face","🗂️","Patient face sheet","Patient details for the chart",0],["note","🏫","School note","Excuse note with activity limits",1],["appt","📅","Follow-up card","Next appointment reminder",0],["band","🏷️","Wristband and labels","QR wristband and specimen labels",1],["xfilm","🩻","X-ray picture","Print the X-ray with its report",1],["cert","🏅","Bravery certificate","A reward for a brave patient",1]];
 const FOLLOW=["Primary care in 1 week","Primary care in 2 to 3 days","Orthopedics (bone doctor) in 1 week","Orthopedics in 2 weeks","Allergy clinic in 2 weeks","Only if not getting better"];
 const ACTIV=["Normal activity","Rest at home for 1 day, then normal activity","No sports or PE until cleared by a doctor","No gym, rough play or heavy lifting for 2 weeks"];
 const DIET=["Regular diet","Clear liquids today, then regular foods","Soft foods for 2 days","Avoid foods with peanuts"];
@@ -765,6 +794,7 @@ function docBody(k,p){const f=docF(p),K0=K();
  if(k==="appt")return `<div class="paper">${hospHdr(p,"Follow-up appointment")}<div class="card"><b style="font-size:1.1rem">${esc(p.name)}</b><p style="margin:6px 0">📅 <b>${new Date(f.appt+"T12:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric"})}</b> at <b>${esc(f.time)}</b></p><p style="margin:6px 0">🩺 ${esc(f.follow)}</p><p style="margin:6px 0">📍 ${esc(ST.hosp?ST.hosp.name:"The Hero Shift Hospital")} clinic desk</p><p style="font-size:11px;color:#555;margin:8px 0 0">Bring this card, your medicine list and any questions. Arrive 15 minutes early.</p></div>${docFoot(p)}</div>`;
  if(k==="band")return `<div class="paper">${hospHdr(p,"Wristband and labels")}<div class="band">${qrSVG("LHH|PT|"+p.mrn+"|"+p.name+"|"+p.dob,76)}<div class="bt"><b>${esc(p.name)}</b><br>MRN ${p.mrn} · DOB ${esc(p.dob)}${p.allergies.length?`<br><b>ALLERGY: ${esc(p.allergies.join(", "))}</b>`:""}</div></div>
   <h2>Specimen labels</h2><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">${["Blood","Urine","Swab","Spare"].map(t=>`<div class="label">${qrSVG("LHH|SPEC|"+p.mrn+"|"+t,54)}<div><b>${esc(p.name)}</b><br>${p.mrn} · ${esc(p.dob)}<br>${t} · ${hm(new Date())}</div></div>`).join("")}</div>${docFoot(p)}</div>`;
+ if(k==="xfilm"){const im=p.orders.filter(o=>o.kind==="Imaging"&&o.rx&&o.rx.taken);return `<div class="paper">${hospHdr(p,K0?"My X-ray":"Imaging film and report")}${ptMeta(p)}${im.length?im.map(o=>{const r=o.rx,res=p.results.find(x=>x.test===o.item);return `<h2>${esc(o.item)}${res?" · "+tOf(res.t):""}</h2><div class="two"><div style="background:#000;border-radius:6px;overflow:hidden">${xView(r,{},{})}</div><div><p><b>Findings:</b> ${esc(res?res.text:"Not read yet")}</p>${r.imp?`<p><b>Impression:</b> ${esc(r.imp)}</p>`:""}<p style="font-size:11px;color:#555">Taken by ${esc(res&&res.by||ST.role)}</p></div></div>`}).join(""):`<p>No X-rays taken yet. Take one in the ${K0?"🩻 X-ray":"Radiology"} tab first.</p>`}${docFoot(p)}</div>`;}
  if(k==="cert"){const h=ST.hosp;return `<div class="paper cert"><span class="big" aria-hidden="true">${h?(h.cfg||{}).mascot||"🏅":"🏅"}</span><h1>Certificate of Bravery</h1><p style="font-size:1.1rem">This award goes to</p><div><span class="nm">${esc(p.name)}</span></div><p style="font-size:1.1rem">for being a real hero at <b>${esc(h?h.name:"The Hero Shift Hospital")}</b><br>and getting through <b>${esc(p.reason.toLowerCase())}</b> with courage!</p><p style="font-size:2rem;margin:0">⭐ ⭐ ⭐</p><div class="sig" style="text-align:left"><div>${esc(f.by)}, Hero Team</div><div>${new Date().toLocaleDateString("en-US",{dateStyle:"long"})}</div></div></div>`;}
  return "";}
 function docForm(k,p){const f=docF(p),sel=(n,list)=>`<select data-df="${n}">${list.map(x=>`<option ${x===f[n]?"selected":""}>${esc(x)}</option>`).join("")}</select>`;
@@ -783,6 +813,104 @@ function vDocs(){const p=cur(),list=DOCS.filter(d=>!K()||d[4]);if(!list.some(d=>
  <div class="panel"><div class="ph"><h2>${d[1]} ${K()&&d[0]==="dc"?"Going home sheet":d[2]}</h2><div class="row">${canPrint?`<button class="btn" data-a="printdoc">🖨️ Print</button>`:`<span class="muted">Open the workstation in its own tab to print.</span>`}</div></div><div class="pb" id="printarea">${p?`<div class="paperwrap" style="--hc:${ST.hosp?ST.hosp.color:"#1F5FAD"}">${docBody(ST.doc,p)}</div>`:`<p class="muted">Pick a patient on the left.</p>`}</div></div></div>`;}
 addEventListener("beforeprint",()=>{const pa=document.getElementById("printarea");if(!pa)return;document.getElementById("printroot")?.remove();const r=document.createElement("div");r.id="printroot";r.style.setProperty("--hc",ST.hosp?ST.hosp.color:"#1F5FAD");r.innerHTML=pa.innerHTML;document.body.appendChild(r);document.body.classList.add("printing");});
 addEventListener("afterprint",()=>{document.body.classList.remove("printing");document.getElementById("printroot")?.remove();});
+
+/* ---------- Radiology ---------- */
+const IMG={"X-ray arm":["X-ray","X-ray room 1","arm","🦴","arm"],"X-ray hand":["X-ray","X-ray room 1","hand","✋","hand"],"X-ray ankle":["X-ray","X-ray room 2","ankle","🦶","ankle"],"X-ray leg":["X-ray","X-ray room 2","leg","🦵","leg"],"X-ray chest":["X-ray","X-ray room 1","chest","🫁","chest"],"CT head":["CT","CT scanner","ct","🧠","head"],"MRI brain":["MRI","MRI magnet","mri","🧲","head"],"Ultrasound abdomen":["Ultrasound","Ultrasound room","us","🔊","tummy"]};
+const LIMB=["arm","hand","ankle","leg"];
+const FIND={normal:"No acute findings",fracture:"Fracture (broken bone)",swelling:"Soft tissue swelling (sprain)",hyper:"Hyperinflation (asthma)",pneu:"Pneumonia (lung infection)",coin:"Foreign body (swallowed object)",appy:"Inflamed appendix (appendicitis)"};
+const KFIND={normal:"Nothing broken!",fracture:"A broken bone",swelling:"Swelling from a sprain",hyper:"Puffed-up lungs from asthma",pneu:"A lung infection",coin:"Something swallowed",appy:"A sore appendix"};
+function imgTruth(p,item){const r=(p.reason+" "+p.problems.join(" ")).toLowerCase(),k=IMG[item][2];let f="normal";
+ if(k==="arm"&&/arm|forearm|fractur|wrist/.test(r))f="fracture";if(k==="hand"&&/hand|finger|punch/.test(r))f="fracture";if(k==="leg"&&/leg|shin|tibia/.test(r))f="fracture";
+ if(k==="ankle"&&/ankle/.test(r))f="swelling";if(k==="chest"){if(/asthma|wheez/.test(r))f="hyper";else if(/cough|pneumon/.test(r))f="pneu";else if(/swallow|coin/.test(r))f="coin";}
+ if(k==="us"&&/appendic|abdomen/.test(r))f="appy";
+ return {k,f,side:/\bleft\b/.test(r)?"Left":"Right"};}
+const BONE='fill="url(#xb)" filter="url(#xs)"';
+function xsvg(k,f,side,meta){let g="",hit=null;const fl=LIMB.includes(k)&&side==="Left";
+ const soft=(d)=>`<path d="${d}" fill="#2c2c2c" filter="url(#xs2)"/>`;
+ if(k==="arm"){g+=soft("M115 0 H285 V400 H115 Z")+`<path d="M135 0 H265 V22 Q200 52 135 22 Z" ${BONE}/><rect x="216" y="34" width="28" height="340" rx="13" ${BONE}/>`;
+  if(f==="fracture"){g+=`<rect x="150" y="44" width="34" height="202" rx="14" ${BONE}/><g transform="rotate(5 172 258)"><rect x="156" y="254" width="34" height="122" rx="14" ${BONE}/></g><polyline points="146,248 158,254 170,245 182,255 194,248" fill="none" stroke="#050505" stroke-width="5"/>`;hit={x:172,y:250,r:36};}
+  else g+=`<rect x="150" y="44" width="34" height="332" rx="14" ${BONE}/>`;
+  g+=[[168,388],[198,384],[228,388]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="13" ${BONE}/>`).join("");}
+ if(k==="leg"){g+=soft("M110 0 H290 V400 H110 Z")+`<rect x="238" y="0" width="20" height="400" rx="9" ${BONE}/>`;
+  if(f==="fracture"){g+=`<rect x="150" y="0" width="50" height="196" rx="18" ${BONE}/><g transform="translate(9 0) rotate(-3 175 210)"><rect x="150" y="206" width="50" height="194" rx="18" ${BONE}/></g><polyline points="144,198 158,206 172,196 186,207 204,199" fill="none" stroke="#050505" stroke-width="5"/>`;hit={x:177,y:202,r:38};}
+  else g+=`<rect x="150" y="0" width="50" height="400" rx="18" ${BONE}/>`;}
+ if(k==="ankle"){g+=soft("M105 0 H300 V250 Q330 330 330 400 H70 Q80 330 105 250 Z")+`<path d="M150 0 H230 V225 Q232 270 252 300 H128 Q146 270 150 225 Z" ${BONE}/><rect x="254" y="0" width="22" height="292" rx="10" ${BONE}/><ellipse cx="265" cy="300" rx="16" ry="22" ${BONE}/><ellipse cx="195" cy="328" rx="70" ry="28" ${BONE}/><ellipse cx="172" cy="376" rx="88" ry="26" ${BONE}/>`;
+  if(f==="swelling"){g+=`<ellipse cx="305" cy="300" rx="50" ry="64" fill="#4a4a4a" opacity=".85" filter="url(#xs3)"/>`;hit={x:305,y:300,r:60};}}
+ if(k==="hand"){g+=soft("M100 400 V250 Q100 210 130 200 L118 120 Q122 100 140 104 L160 200 L158 70 Q166 52 182 66 L190 196 L198 40 Q208 22 222 40 L224 196 L238 62 Q250 46 260 64 L256 204 L286 116 Q300 100 310 120 L292 250 Q300 330 290 400 Z");
+  const F=[[176,62,1],[210,36,1],[248,60,1],[292,118,1]];
+  F.forEach(([x,top],i)=>{const mx=x-(i===3?6:0);if(i===3&&f==="fracture"){g+=`<rect x="${mx-9}" y="262" width="18" height="76" rx="8" ${BONE}/><g transform="rotate(-14 ${mx} 258)"><rect x="${mx-9}" y="218" width="18" height="38" rx="8" ${BONE}/></g><polyline points="${mx-13},258 ${mx-4},263 ${mx+4},255 ${mx+13},261" fill="none" stroke="#050505" stroke-width="4"/>`;hit={x:mx,y:258,r:30};}
+   else g+=`<rect x="${mx-9}" y="218" width="18" height="120" rx="8" ${BONE}/>`;
+   const len=(212-top)/3;[0,1,2].forEach(j=>{const y=top+j*len+4;g+=`<rect x="${x-8}" y="${y}" width="16" height="${len-6}" rx="7" ${BONE}/>`;});});
+  g+=`<g transform="rotate(-32 150 320)"><rect x="141" y="250" width="18" height="72" rx="8" ${BONE}/><rect x="142" y="196" width="16" height="48" rx="7" ${BONE}/><rect x="143" y="160" width="14" height="32" rx="6" ${BONE}/></g>`;
+  g+=[[160,352],[188,346],[216,346],[244,350],[268,356],[176,378],[208,378],[240,380]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="12" ${BONE}/>`).join("");}
+ if(k==="chest"){const hy=f==="hyper";g+=`<rect x="36" y="36" width="328" height="350" rx="60" fill="#3a3a3a" filter="url(#xs2)"/><ellipse cx="132" cy="${hy?222:208}" rx="${hy?92:84}" ry="${hy?162:140}" fill="#0c0c0c" filter="url(#xs3)"/><ellipse cx="268" cy="${hy?224:212}" rx="${hy?92:84}" ry="${hy?162:140}" fill="#0c0c0c" filter="url(#xs3)"/><rect x="193" y="36" width="14" height="96" fill="#111"/><rect x="188" y="40" width="24" height="346" fill="#6a6a6a" opacity=".8"/>`;
+  for(let i=0;i<8;i++){const y=84+i*32;g+=`<path d="M194 ${y} Q110 ${y-14} 52 ${y+34}" fill="none" stroke="#cfcfcf" stroke-width="6" opacity=".45"/><path d="M206 ${y} Q290 ${y-14} 348 ${y+34}" fill="none" stroke="#cfcfcf" stroke-width="6" opacity=".45"/>`;}
+  g+=`<path d="M196 70 L74 54" stroke="#e2e2e2" stroke-width="10" stroke-linecap="round"/><path d="M204 70 L326 54" stroke="#e2e2e2" stroke-width="10" stroke-linecap="round"/><path d="M182 196 Q150 250 172 318 Q230 340 290 310 Q300 250 246 200 Z" fill="#9a9a9a" opacity=".8" filter="url(#xs3)"/>`;
+  g+=hy?`<path d="M36 386 L36 350 Q120 342 196 356 Q280 342 364 350 L364 386 Z" fill="#3a3a3a"/>`:`<path d="M36 386 L36 330 Q118 262 196 330 Q282 280 364 330 L364 386 Z" fill="#3a3a3a"/>`;
+  if(hy)hit={x:200,y:348,r:120};
+  if(f==="pneu"){g+=`<g filter="url(#xs4)" fill="#d8d8d8" opacity=".6"><circle cx="118" cy="282" r="34"/><circle cx="146" cy="300" r="28"/><circle cx="100" cy="306" r="24"/><circle cx="134" cy="262" r="22"/></g>`;hit={x:124,y:288,r:55};}
+  if(f==="coin"){g+=`<circle cx="200" cy="108" r="17" fill="#f6f6f6" stroke="#fff" stroke-width="2"/>`;hit={x:200,y:108,r:32};}}
+ if(k==="ct"){g+=`<circle cx="200" cy="200" r="156" fill="#1a1a1a"/><circle cx="200" cy="200" r="150" fill="none" stroke="#efefef" stroke-width="14"/><circle cx="200" cy="200" r="140" fill="#7a7a7a"/><path d="M200 70 V330" stroke="#5a5a5a" stroke-width="3"/><ellipse cx="182" cy="192" rx="13" ry="40" fill="#222" transform="rotate(-12 182 192)"/><ellipse cx="218" cy="192" rx="13" ry="40" fill="#222" transform="rotate(12 218 192)"/><circle cx="200" cy="250" r="8" fill="#333"/>`;}
+ if(k==="mri"){g+=`<ellipse cx="200" cy="205" rx="158" ry="176" fill="#3d3d3d"/><ellipse cx="206" cy="172" rx="126" ry="112" fill="#9b9b9b"/><path d="M128 178 Q200 122 276 176" fill="none" stroke="#eaeaea" stroke-width="10"/><circle cx="262" cy="286" r="42" fill="#858585"/><rect x="200" y="250" width="26" height="120" rx="12" fill="#7a7a7a"/><ellipse cx="120" cy="260" rx="30" ry="20" fill="#222"/>`;}
+ if(k==="us"){g+=`<clipPath id="xfan"><path d="M200 20 L54 320 A210 210 0 0 0 346 320 Z"/></clipPath><path d="M200 20 L54 320 A210 210 0 0 0 346 320 Z" fill="#3a3a3a"/><rect width="400" height="400" filter="url(#xgr)" clip-path="url(#xfan)" opacity=".75"/><path d="M110 150 Q200 110 300 160 Q290 200 200 205 Q130 200 110 150 Z" fill="#5c5c5c" clip-path="url(#xfan)"/>`;
+  if(f==="appy"){g+=`<path d="M232 252 Q270 268 300 300" stroke="#cfcfcf" stroke-width="22" fill="none" stroke-linecap="round"/><path d="M232 252 Q270 268 300 300" stroke="#141414" stroke-width="10" fill="none" stroke-linecap="round"/><circle cx="230" cy="250" r="28" fill="#141414" stroke="#d8d8d8" stroke-width="7"/><circle cx="230" cy="250" r="10" fill="#666"/>`;hit={x:244,y:262,r:46};}
+  else g+=`<ellipse cx="220" cy="270" rx="40" ry="22" fill="#1a1a1a"/>`;}
+ if(fl){g=`<g transform="translate(400 0) scale(-1 1)">${g}</g>`;if(hit)hit={x:400-hit.x,y:hit.y,r:hit.r};}
+ const mk=LIMB.includes(k)||k==="chest"?`<rect x="${side==="Left"&&LIMB.includes(k)?344:14}" y="14" width="34" height="34" fill="#fff"/><text x="${side==="Left"&&LIMB.includes(k)?361:31}" y="40" font-size="26" font-weight="800" text-anchor="middle" fill="#000">${LIMB.includes(k)?side[0]:"R"}</text>`:"";
+ const svg=`<defs><linearGradient id="xb" x1="0" x2="1"><stop offset="0" stop-color="#8e8e8e"/><stop offset=".5" stop-color="#ececec"/><stop offset="1" stop-color="#8e8e8e"/></linearGradient><filter id="xs"><feGaussianBlur stdDeviation="0.9"/></filter><filter id="xs2"><feGaussianBlur stdDeviation="6"/></filter><filter id="xs3"><feGaussianBlur stdDeviation="10"/></filter><filter id="xs4"><feGaussianBlur stdDeviation="9"/></filter><filter id="xgr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="4"/><feColorMatrix type="saturate" values="0"/></filter></defs><rect width="400" height="400" fill="#050505"/>${g}${mk}${meta?`<text x="12" y="388" font-size="11" fill="#bdbdbd" font-family="monospace">${esc(meta)}</text>`:""}`;
+ return {svg,hit};}
+function xView(o,{marks=[],hint=null}={},st){const t=o.truth,x=xsvg(t.k,t.f,t.side,o.meta);st=st||{};
+ const mk=marks.map(m=>`<circle cx="${m.x}" cy="${m.y}" r="16" fill="none" stroke="${m.ok?"#5CE65C":"#FFD21F"}" stroke-width="4"/>`).join("")+(hint&&x.hit?`<circle cx="${x.hit.x}" cy="${x.hit.y}" r="${x.hit.r}" fill="none" stroke="#5AAEFF" stroke-width="3" stroke-dasharray="8 6"><animate attributeName="r" values="${x.hit.r};${x.hit.r+8};${x.hit.r}" dur="1.4s" repeatCount="indefinite"/></circle>`:"");
+ return `<div class="xview ${st.z===2?"z2":""} ${st.flash?"xflash":""}"><svg viewBox="0 0 400 400" data-a="xmark" role="img" aria-label="${esc(o.alt||"X-ray image")}" style="filter:brightness(${st.b||100}%) contrast(${st.c||100}%) ${st.inv?"invert(1)":""}">${x.svg}${mk}</svg></div>`;}
+function xTools(st){return `<div class="xtools"><button class="btn sm sec" data-a="xz">${st.z===2?"🔍 Zoom out":"🔍 Zoom in"}</button><button class="btn sm sec" data-a="xinv">🌗 ${K()?"Flip colors":"Invert"}</button>${K()?"":`<label>Brightness<input type="range" min="50" max="160" value="${st.b||100}" data-xr="b"></label><label>Contrast<input type="range" min="50" max="200" value="${st.c||100}" data-xr="c"></label>`}<button class="btn sm sec" data-a="xreset">Reset</button></div>`;}
+const imgOrders=()=>ST.pts.flatMap(p=>p.orders.filter(o=>o.kind==="Imaging"&&IMG[o.item]&&o.st!=="Discontinued").map(o=>({p,o})));
+function safetyFor(mod){return {"X-ray":[["metal","Remove metal: jewelry, watches, zippers and hair clips","🧷 Take off shiny metal things"],["apron","Lead apron for anyone who stays in the room","🦺 Put the special apron on your helper"],["still","Explain: hold very still, and hold your breath when asked","🗿 Ask them to hold still like a statue"]],
+ "CT":[["metal","Remove metal from the head and neck (glasses, earrings, hair clips)","🧷 Take off glasses and earrings"],["contrast","Ask about allergies to contrast dye","❓ Ask about allergies"],["still","Explain: the table slides through a big ring. Hold still","🍩 Tell them about the big donut machine"]],
+ "MRI":[["screen","Metal screening: no pacemaker, implants or metal pieces in the body","🧲 Check: no metal inside the body"],["magnet","Phones, keys and anything metal stay outside. The magnet is always on!","📵 Leave phones and keys outside"],["ears","Give ear protection. MRI is very loud","🎧 Give them headphones (it's loud!)"],["still","Hold still for about 20 minutes","🗿 Hold still for a long time"]],
+ "Ultrasound":[["gel","Warm the gel","🧴 Warm up the gel"],["explain","Explain: sound waves, no radiation, it doesn't hurt","🔊 Tell them it uses sound and doesn't hurt"],["still","Lie on your back and breathe normally","🛏️ Lie down and relax"]]}[mod];}
+function rxSteps(o){const lim=LIMB.includes(o.rx.truth.k),xr=IMG[o.item][0]==="X-ray";const s=[["id",K()?"Wristband":"Check ID"],["safe","Safety"]];if(lim||(!K()&&xr))s.push(["pos",K()?"Which side?":"Position"]);s.push(["snap",K()?"Snap!":"Take image"],["read",K()?"Find it":"Read"]);if(!K())s.push(["rep","Report"]);return s;}
+function rxStart(p,o){if(!o.rx){const t=imgTruth(p,o.item);o.rx={pid:p.id,truth:t,meta:`${p.name} · ${p.mrn} · ${o.item}`,step:0,ids:{},safe:{},side:null,views:[],pos:false,taken:false,marks:[],miss:0,found:false,ok:null,b:100,c:100,inv:false,z:1,finding:"",imp:"",done:false};}if(o.st==="Ordered")o.st="In progress";ST.rx={pid:p.id,oid:o.id};}
+function vRadiology(){if(ST.rxsub==="mys")return rxTabs()+vMystery();const cur0=ST.rx&&pt(ST.rx.pid),o=cur0&&cur0.orders.find(x=>x.id==ST.rx.oid);if(o&&o.rx)return rxTabs()+vExam(cur0,o);
+ const L=imgOrders().sort((a,b)=>(a.o.st==="Resulted")-(b.o.st==="Resulted")||a.p.esi-b.p.esi);
+ if(K())return rxTabs()+`<div class="wlcards">${L.filter(x=>x.o.st!=="Resulted").map(({p,o})=>`<div class="wlcard"><span class="e" aria-hidden="true">${IMG[o.item][3]}</span><b>${esc(p.name)}</b><span>needs a picture of their <b>${IMG[o.item][4]}</b></span><span class="muted">${esc(p.reason)}</span><button class="btn" data-a="rxgo" data-p="${p.id}" data-o="${o.id}">🩻 Take the picture</button></div>`).join("")||`<div class="wlcard"><b>No pictures needed right now!</b><span>Try the Mystery X-rays game.</span></div>`}</div>`;
+ const rooms=["X-ray room 1","X-ray room 2","CT scanner","MRI magnet","Ultrasound room"];
+ return rxTabs()+`<div class="kpis">${rooms.map(r=>{const busy=L.find(x=>x.o.st==="In progress"&&IMG[x.o.item][1]===r);return `<div class="kpi ${busy?"y":""}"><b style="font-size:1rem">${r}</b><span>${busy?"In use · "+esc(busy.p.name):"Open"}</span></div>`}).join("")}</div>
+ <div class="panel"><div class="ph"><h2>Imaging worklist</h2><span class="muted">Order new pictures in Orders → Imaging. STAT means do it first.</span></div><div class="tw"><table><thead><tr><th>Priority</th><th>Patient</th><th>Exam</th><th>Room</th><th>Ordered</th><th class="n">Waiting</th><th>Status</th><th></th></tr></thead><tbody>${L.map(({p,o})=>`<tr><td>${p.esi<=2?`<span class="pill s-tri">STAT</span>`:"Routine"}</td><td><b>${esc(p.name)}</b><br><span class="muted">${p.mrn} · ${esc(p.bed||"Waiting room")}</span></td><td>${esc(o.item)}</td><td>${IMG[o.item][1]}</td><td>${tOf(o.t)}</td><td class="n">${o.st==="Resulted"?"—":mins(o.t)+" min"}</td><td><span class="pill ${o.st==="Resulted"?"s-dis":o.st==="In progress"?"s-tri":""}">${o.st}</span></td><td><button class="btn sm ${o.st==="Resulted"?"sec":""}" data-a="rxgo" data-p="${p.id}" data-o="${o.id}">${o.st==="Resulted"?"View images":o.rx?"Continue":"Start exam"}</button></td></tr>`).join("")||`<tr><td colspan="8" class="muted">No imaging orders. Add one in Orders.</td></tr>`}</tbody></table></div></div>`;}
+function rxTabs(){return `<div class="panel"><div class="sub" role="tablist"><button role="tab" data-a="rxsub" data-s="wl" aria-selected="${ST.rxsub!=="mys"}">${K()?"🩻 Patients":"Worklist"}</button><button role="tab" data-a="rxsub" data-s="mys" aria-selected="${ST.rxsub==="mys"}">🔎 Mystery X-rays</button></div></div>`;}
+function vExam(p,o){const r=o.rx,steps=rxSteps(o);r.step=Math.min(r.step,steps.length-1);const cs=steps[r.step][0],mod=IMG[o.item][0],t=r.truth,lim=LIMB.includes(t.k);
+ const bar=`<div class="rxsteps">${steps.map(([k,l],i)=>`<span class="${i===r.step?"on":i<r.step?"ok":""}">${i<r.step?"✓ ":""}${l}</span>`).join("")}</div>`;
+ const nav=(ok,label)=>`<div class="row"><button class="btn" data-a="rxnext" ${ok?"":"disabled"}>${label||"Next ➜"}</button><button class="btn sec" data-a="rxback">${r.step?"‹ Back":"‹ Worklist"}</button></div>`;
+ let body="";
+ if(cs==="id")body=K()?`<p class="hh"><b>Scan the wristband to make sure it's the right patient.</b></p><div class="band" style="cursor:pointer" data-a="rxid" data-k="both">${qrSVG("LHH|PT|"+p.mrn,64)}<div class="bt"><b>${esc(p.name)}</b><br>Born ${esc(p.dob)}</div></div>${r.ids.both?`<div class="rxfb ok">✅ Beep! It's ${esc(p.name)}. Right patient!</div>`:`<p class="muted">Tap the wristband.</p>`}${nav(r.ids.both)}`
+  :`<p>Order: <b>${esc(o.item)}</b> for <b>${esc(p.name)}</b> (DOB ${esc(p.dob)}). Check two identifiers on the wristband before every exam.</p><div class="band">${qrSVG("LHH|PT|"+p.mrn,64)}<div class="bt"><b>${esc(p.name)}</b><br>MRN ${p.mrn} · DOB ${esc(p.dob)}</div></div><div class="rxcheck"><label><input type="checkbox" data-a="rxid" data-k="name" ${r.ids.name?"checked":""}> Name on wristband matches the order</label><label><input type="checkbox" data-a="rxid" data-k="dob" ${r.ids.dob?"checked":""}> Date of birth matches the order</label></div>${nav(r.ids.name&&r.ids.dob)}`;
+ if(cs==="safe"){const L=safetyFor(mod);const all=L.every(([k])=>r.safe[k]);body=`<p class="hh"><b>${K()?"Keep everyone safe!":mod+" safety checklist"}</b></p>${p.allergies.length&&mod==="CT"&&!K()?`<div class="alert"><b>Allergy on file: ${esc(p.allergies.join(", "))}</b>None of these is a contrast dye allergy, but always ask.</div>`:""}<div class="rxcheck">${L.map(([k,l,kl])=>`<label><input type="checkbox" data-a="rxsafe" data-k="${k}" ${r.safe[k]?"checked":""}> ${K()?kl:l}</label>`).join("")}</div>${mod==="X-ray"?`<p class="muted">${K()?"X-rays are a tiny bit of radiation, so we only take the pictures we need.":"Use the lowest dose that gives a clear picture, and only take the views that are needed."}</p>`:""}${mod==="MRI"?`<p class="muted">MRI uses a giant magnet, not X-rays. Metal can be pulled into the magnet, so screening matters.</p>`:""}${nav(all)}`;}
+ if(cs==="pos"){const sideQ=lim?`<p class="hh"><b>${K()?`Which ${IMG[o.item][4]} is hurt?`:"Side marker: which side is being imaged?"}</b></p><div class="bigch">${["Left","Right"].map(sd=>`<button data-a="rxside" data-v="${sd}" class="${r.side?(sd===t.side?"ok":sd===r.side?"no":""):""}" ${r.side?"disabled":""}><span class="e">${sd==="Left"?"⬅️":"➡️"}</span>${sd} ${IMG[o.item][4]}</button>`).join("")}</div>${r.side?`<div class="rxfb ${r.side===t.side?"ok":"no"}">${r.side===t.side?"✅ Right side!":"❌ Check the order again. It's the "+t.side.toLowerCase()+" side."} ${K()?"Hospitals always double-check left and right.":"Wrong-side imaging is a real mistake hospitals work hard to prevent. The L or R marker goes on every image."}</div>`:""}`:"";
+  const vq=!K()&&mod==="X-ray"?`<p class="hh" style="margin-top:12px"><b>Which views will you take?</b></p><div class="rxcheck">${["Front view (AP or PA)","Side view (lateral)","Angled view (oblique)"].map((v,i)=>`<label><input type="checkbox" data-a="rxview" data-k="${i}" ${r.views.includes(i)?"checked":""}> ${v}</label>`).join("")}</div>${r.views.includes(0)&&r.views.includes(1)?`<div class="rxfb ok">✅ Good. Take at least two views at right angles: a break that hides on one view shows on the other.${r.views.includes(2)?" An angled view helps for hands and ankles.":""}</div>`:`<p class="muted">Tip: one view is never enough for a bone.</p>`}`:"";
+  const ok=(!lim||r.side===t.side)&&(K()||mod!=="X-ray"||(r.views.includes(0)&&r.views.includes(1)));body=sideQ+vq+(lim&&r.side&&r.side!==t.side?`<div class="row"><button class="btn sec" data-a="rxsidere">Try again</button></div>`:"")+nav(ok);}
+ if(cs==="snap"){body=r.count?`<div class="count" aria-live="assertive">${r.count}</div>`:r.taken?`${xView(r,{},{flash:r.flash})}<div class="rxfb ok">📸 ${K()?"Great picture! Nobody moved.":"Image acquired. Check it is clear and the whole area is in the picture."}</div>${nav(true)}`
+  :`<p class="hh"><b>${K()?"Tell them: hold still like a statue!":mod==="X-ray"?"Patient positioned. Step behind the shield.":"Patient on the table. Start the scan."}</b></p><div class="row"><button class="btn" data-a="rxsnap">${mod==="X-ray"?"📸 Take the X-ray":"▶ Start the scan"}</button></div>${nav(false)}`;}
+ if(cs==="read"){const hasHit=!!xsvg(t.k,t.f,t.side).hit;
+  body=`<div class="rxgrid"><div style="display:grid;gap:8px">${xTools(r)}${xView(r,{marks:r.marks,hint:r.miss>=3&&!r.found},r)}</div><div style="display:grid;gap:10px">
+  <p class="hh"><b>${K()?(hasHit?"Find what's wrong! Tap on it.":"Look closely. Is anything wrong?"):"Read the image. Tap any abnormal finding to mark it."}</b></p>
+  ${r.found?`<div class="rxfb ok">✅ ${K()?"You found it! "+KFIND[t.f]+".":"Marked: "+FIND[t.f]+"."}</div>`:r.marks.length?`<div class="rxfb no">🤔 ${r.miss>=3?"Look where the blue circle is.":"Hmm, nothing there. Keep looking!"}</div>`:""}
+  ${!hasHit?`<div class="bigch"><button data-a="rxnormal" data-v="ok" class="${r.ok===true?"ok":""}"><span class="e">👍</span>${K()?"It looks OK!":"No acute findings"}</button><button data-a="rxnormal" data-v="bad" class="${r.ok===false?"no":""}"><span class="e">⚠️</span>${K()?"Something's wrong":"Something is abnormal"}</button></div>${r.ok===false?`<div class="rxfb no">Look again. This picture is normal. ${K()?"Nothing is broken!":"Bones, lungs and soft tissues look normal."}</div>`:r.ok?`<div class="rxfb ok">✅ ${K()?"Right! Nothing is broken.":"Correct. Normal study."}</div>`:""}`:""}
+  ${K()&&(r.found||r.ok)?`<button class="btn" data-a="rxfinish">📤 Send the pictures to the doctor</button>`:""}${!K()?nav(r.found||r.ok===true||r.marks.length>0,"Write report ➜"):`<button class="btn sec" data-a="rxback">‹ Back</button>`}</div></div>`;}
+ if(cs==="rep"){const opts=Object.entries(FIND);body=`<div class="rxgrid"><div>${xView(r,{marks:r.marks},r)}</div><div style="display:grid;gap:10px"><label class="f">Main finding<select id="rx-f"><option value="">Choose…</option>${opts.map(([k,v])=>`<option value="${k}" ${r.finding===k?"selected":""}>${v}</option>`).join("")}</select></label><label class="f">Impression<textarea id="rx-imp" rows="4" placeholder="e.g. Displaced fracture of the left radius.">${esc(r.imp)}</textarea></label>
+  ${r.done?`<div class="rxfb ${r.finding===t.f?"ok":"no"}">${r.finding===t.f?"✅ Your read matches the radiologist!":"❌ The radiologist's read: <b>"+FIND[t.f]+"</b>."}</div><div class="row"><button class="btn" data-a="open" data-p="${p.id}">Open chart</button><button class="btn sec" data-a="rxback">‹ Worklist</button></div>`:`<div class="row"><button class="btn" data-a="rxsign">✍ Sign report</button><button class="btn sec" data-a="rxback">‹ Back</button></div>`}</div></div>`;}
+ return `<div class="panel"><div class="ph"><h2>${IMG[o.item][3]} ${esc(o.item)} · ${esc(p.name)}</h2><span class="muted">${IMG[o.item][1]}${!K()?" · "+mod:""}</span></div><div class="pb">${bar}${body}</div></div>`;}
+/* Mystery X-rays */
+const MYS=[["chest","coin","Right","Leo, 4, swallowed something shiny and his mom is worried.","Something swallowed: a coin",["Something swallowed: a coin","A broken rib","Pneumonia","Normal chest"],"Metal blocks X-rays, so coins show up bright white. A doctor can take it out with a tiny camera tube."],
+ ["arm","fracture","Left","Mia fell off the monkey bars and her arm hurts a lot.","A broken arm bone",["A broken arm bone","A sprain","No broken bones","Something swallowed"],"See the dark crack across the bone, and how the two pieces don't line up? That's a fracture. A cast holds it still while it heals."],
+ ["hand","normal","Right","Sam jammed his finger playing basketball.","No broken bones",["No broken bones","A broken finger","A broken wrist","Something swallowed"],"All the bones have smooth edges and no cracks. A jammed finger can still hurt, so ice and rest help."],
+ ["hand","fracture","Right","Max punched a wall when he was angry.","A broken bone below the pinky",["A broken bone below the pinky","A broken thumb","No broken bones","A sprained wrist"],"This is called a boxer's fracture. Talking about big feelings is a better plan than punching!"],
+ ["chest","pneu","Right","Ava has had a fever and a bad cough for 5 days.","Pneumonia (a lung infection)",["Pneumonia (a lung infection)","Asthma","Normal chest","Something swallowed"],"Lungs are full of air, so they look dark. The white fluffy patch is fluid from an infection. Antibiotics help."],
+ ["ankle","swelling","Right","Zoe rolled her ankle at soccer.","A sprain: swelling, no broken bone",["A sprain: swelling, no broken bone","A broken ankle","Normal ankle","A broken leg"],"The bones are fine, but the grey puffy area on the outside is swelling. Rest, ice, a wrap and raising the foot help."],
+ ["leg","fracture","Right","Ben crashed his bike and can't stand on his leg.","A broken shin bone",["A broken shin bone","A sprained knee","No broken bones","A broken ankle"],"The big shin bone (tibia) has a crack and the pieces have shifted. He may need a cast or surgery."],
+ ["chest","hyper","Right","Jordan is wheezing and finding it hard to breathe out.","Puffed-up lungs from asthma",["Puffed-up lungs from asthma","Pneumonia","Something swallowed","A broken rib"],"In asthma, air gets trapped, so the lungs look extra big and dark and the diaphragm sits low and flat."],
+ ["chest","normal","Right","Ruby needs a check before her surgery.","A normal chest X-ray",["A normal chest X-ray","Pneumonia","Asthma","Something swallowed"],"Dark lungs, a normal-sized heart, smooth ribs. Everything looks healthy!"]];
+function vMystery(){const m=ST.mys||(ST.mys={i:0,ans:null,score:0,seen:0,b:100,c:100,inv:false,z:1});const c=MYS[m.i%MYS.length],o={truth:{k:c[0],f:c[1],side:c[2]},meta:"Case "+(m.i%MYS.length+1)+" · Mystery X-ray",alt:"Mystery X-ray"};
+ const opts=m.order||(m.order=c[5].slice().sort(()=>Math.random()-.5));
+ return `<div class="rxgrid"><div style="display:grid;gap:8px">${xTools(m)}${xView(o,{},m)}</div><div class="panel"><div class="ph"><h3>🔎 Case ${m.i%MYS.length+1} of ${MYS.length}</h3><span class="muted">⭐ ${m.score}/${m.seen}</span></div><div class="pb"><p><b>${esc(c[3])}</b></p><p>What does the X-ray show?</p><div class="opts" style="display:grid;gap:8px">${opts.map(x=>`<button class="btn ${m.ans?(x===c[4]?"":"sec"):"sec"}" data-a="mysans" data-v="${esc(x)}" ${m.ans?"disabled":""} style="justify-content:flex-start;text-align:left;${m.ans&&x===c[4]?"background:#2E7D32;border-color:#2E7D32;color:#fff":m.ans===x?"background:#FDECEA;color:#8E1B1B":""}">${esc(x)}</button>`).join("")}</div>${m.ans?`<div class="rxfb ${m.ans===c[4]?"ok":"no"}"><b>${m.ans===c[4]?"✅ You got it!":"❌ It's: "+esc(c[4])}</b><br>${esc(c[6])}</div><button class="btn" data-a="mysnext">Next case ➜</button>`:`<p class="muted">Tip: try Zoom and ${K()?"Flip colors":"Invert"}.</p>`}</div></div></div>`;}
 /* ---------- Shell ---------- */
 function plist(){const q=ST.q.toLowerCase();const L=ST.pts.filter(p=>p.state!=="discharged"&&(!q||p.name.toLowerCase().includes(q)||p.mrn.toLowerCase().includes(q))).sort((a,b)=>(a.bed||"zz").localeCompare(b.bed||"zz"));
  $("plist").innerHTML=L.map(p=>`<button class="pt" data-a="open" data-p="${p.id}" aria-current="${p.id===ST.sel}"><b>${esc(p.name)}</b><span class="pill ${p.state==="waiting"?"s-tri":p.state==="discharging"?"s-dis":"s-occ"}">${p.bed||"Waiting"}</span><small>${p.mrn} · ${esc(p.reason)}</small></button>`).join("")||`<p class="pb muted">No patients match.</p>`;}
@@ -792,7 +920,7 @@ function render(){if(K()&&KIDHIDE.includes(ST.act))ST.act="board";
  const tp=TIPS[ST.act],h=ST.hosp;
  $("wsbrand").innerHTML=h?`<span class="lg" style="background:${h.color};color:${["#FFD21F","#E0B800","#5AAEFF"].includes(h.color)?"#0A2A6B":"#fff"}" aria-hidden="true">${h.logo}</span>${esc(h.name)}`:`<span class="lg">+</span>The Hero Shift Workstation`;
  $("wtabs").innerHTML=!K()&&ST.open.length?ST.open.map(id=>{const q=pt(id);return q?`<span class="wtab" aria-current="${id===ST.sel&&["chart","orders","mar"].includes(ST.act)}"><button data-a="open" data-p="${id}">${esc(q.name)} · ${esc(q.bed||"Waiting")}</button><button class="x" data-a="closetab" data-p="${id}" aria-label="Close ${esc(q.name)}">✕</button></span>`:""}).join(""):"";
- let main={census:vCensus,inbox:vInbox,shift:vShift,board:vBoard,chart:vChart,orders:vOrders,mar:vMar,surgery:vSurgery,schedule:vSchedule,mobile:vMobile,docs:vDocs,hospital:vHospital,join:vJoin}[ST.act]();
+ let main={census:vCensus,inbox:vInbox,shift:vShift,board:vBoard,chart:vChart,orders:vOrders,mar:vMar,surgery:vSurgery,schedule:vSchedule,mobile:vMobile,docs:vDocs,radiology:vRadiology,hospital:vHospital,join:vJoin}[ST.act]();
  if(!K()&&["chart","orders","mar"].includes(ST.act)&&cur())main=`<div class="sbwrap">${story(cur())}<div>${main}</div></div>`;
  if(window.THSFamily&&ST._st!==ST.act+K()){ST._st=ST.act+K();try{window.THSFamily.status({detail:"Workstation · "+(K()?KIDACTS[ST.act]:(ACTS.find(x=>x[0]===ST.act)||[0,ST.act])[1])+(h?" at "+h.name:"")})}catch(e){}}
  $("view").innerHTML=(K()&&tp?`<div class="tip"><span class="ti" aria-hidden="true">${tp[0]}</span><div><b>${tp[1]}</b>${tp[2]}</div><button class="readme" data-a="readtip">🔊 Read to me</button></div>`:"")+(ST.act==="board"&&h?welcomeHTML(h):"")+main;document.querySelector(".main").classList.toggle("wide",ST.act==="hospital"||ST.act==="join");acctBtn();plist();}
@@ -807,6 +935,27 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b
  if(a==="act"){ST.act=b.dataset.k;ST.msg="";}
  else if(a==="open"){ST.sel=b.dataset.p;if(!ST.open.includes(ST.sel)){ST.open.push(ST.sel);if(ST.open.length>6)ST.open.shift();}bpaOpen(pt(ST.sel));if(ST.act==="census"||ST.act==="inbox"||ST.act==="shift")ST.act="chart";closeModal();if(ST.act==="board"||ST.act==="schedule"||ST.act==="surgery"||ST.act==="mobile")ST.act="chart";ST.scan={band:null,med:null};}
  else if(a==="close"){closeModal();return;}
+ else if(a==="rxsub"){ST.rxsub=b.dataset.s;if(b.dataset.s==="wl")ST.rx=null;}
+ else if(a==="rxgo"){const q=pt(b.dataset.p),o=q&&q.orders.find(x=>x.id==b.dataset.o);if(o){if(o.st==="Resulted"&&o.rx){o.rx.step=rxSteps(o).length-1;}rxStart(q,o);ST.sel=q.id;}}
+ else if(a&&a.startsWith("rx")||a==="xmark"||a==="xz"||a==="xinv"||a==="xreset"){const q=ST.rx&&pt(ST.rx.pid),o=q&&q.orders.find(x=>x.id==ST.rx.oid),r=o&&o.rx;const st=ST.rxsub==="mys"?ST.mys:r;
+  if(a==="xz"&&st)st.z=st.z===2?1:2;else if(a==="xinv"&&st)st.inv=!st.inv;else if(a==="xreset"&&st){st.b=100;st.c=100;st.inv=false;st.z=1;}
+  else if(a==="xmark"){if(ST.rxsub==="mys"||!r||rxSteps(o)[r.step][0]!=="read")return;const svg=b,pnt=svg.createSVGPoint();pnt.x=e.clientX;pnt.y=e.clientY;const v=pnt.matrixTransform(svg.getScreenCTM().inverse());const h=xsvg(r.truth.k,r.truth.f,r.truth.side).hit;const ok=!!h&&Math.hypot(v.x-h.x,v.y-h.y)<=h.r;r.marks.push({x:Math.round(v.x),y:Math.round(v.y),ok});if(ok)r.found=true;else r.miss++;}
+  else if(!r)return;
+  else if(a==="rxback"){if(r.step===0||r.done){ST.rx=null;}else r.step--;}
+  else if(a==="rxnext"){r.step++;}
+  else if(a==="rxid"){r.ids[b.dataset.k]=b.type==="checkbox"?b.checked:true;}
+  else if(a==="rxsafe"){r.safe[b.dataset.k]=b.checked;}
+  else if(a==="rxside"){r.side=b.dataset.v;}
+  else if(a==="rxsidere"){r.side=null;}
+  else if(a==="rxview"){const i=+b.dataset.k;r.views=b.checked?[...new Set([...r.views,i])]:r.views.filter(x=>x!==i);}
+  else if(a==="rxsnap"){r.count=3;const tick=()=>{r.count--;if(r.count<=0){r.count=0;r.taken=true;r.flash=true;setTimeout(()=>{r.flash=false;},600);}if(ST.act==="radiology")render();if(r.count>0)setTimeout(tick,650);};setTimeout(tick,650);}
+  else if(a==="rxnormal"){r.ok=b.dataset.v==="ok";}
+  else if(a==="rxfinish"||a==="rxsign"){if(a==="rxsign"){r.finding=$("rx-f").value;r.imp=$("rx-imp").value.trim();if(!r.finding){toast("Choose the main finding first.");return;}}
+   r.done=true;if(o.st!=="Resulted"){o.st="Resulted";addResult(q,o);q.results[q.results.length-1].by=ST.role;q.notes.push({t:new Date().toISOString(),by:ST.role,text:`${o.item} done.${r.imp?" Read: "+r.imp:""}`});}
+   mission("xray");if(a==="rxfinish"){toast("🎉 Pictures sent to the doctor!");ST.rx=null;}else toast(r.finding===r.truth.f?"✅ Report signed. Great read!":"Report signed. Compare with the radiologist's read.");}
+ }
+ else if(a==="mysans"){ST.mys.ans=b.dataset.v;ST.mys.seen++;if(b.dataset.v===MYS[ST.mys.i%MYS.length][4]){ST.mys.score++;if(ST.mys.score===5)toast("🏅 X-ray detective!");}}
+ else if(a==="mysnext"){ST.mys.i++;ST.mys.ans=null;ST.mys.order=null;}
  else if(a==="doc"){ST.doc=b.dataset.k;}
  else if(a==="printdoc"){const q=cur(),d=DOCS.find(x=>x[0]===ST.doc);if(q){q.notes.push({t:new Date().toISOString(),by:ST.role,text:"Printed: "+d[2]});if(ST.doc==="dc")mission("print");}window.print();toast("📄 "+d[2]+" sent to the printer.");return;}
  else if(a==="dcprint"){ST.act="docs";ST.doc="dc";ST.sel=b.dataset.p;closeModal();}
@@ -870,13 +1019,14 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b
  else if(a==="msave"){const q=pt(ST.mobPt),t=$("mnote").value.trim();if(!t)return;q.notes.push({t:new Date().toISOString(),by:ST.role+" (mobile)",text:t});toast("Saved to chart.");}
  render();});
 document.addEventListener("change",e=>{const t=e.target;
+ if(t.id==="rx-f"){const q=ST.rx&&pt(ST.rx.pid),o=q&&q.orders.find(x=>x.id==ST.rx.oid);if(o&&o.rx){o.rx.finding=t.value;if(!o.rx.imp||Object.values(FIND).some(v=>o.rx.imp.startsWith(v))){o.rx.imp=t.value?FIND[t.value]+(LIMB.includes(o.rx.truth.k)?", "+o.rx.truth.side.toLowerCase()+" "+o.item.replace("X-ray ",""):"")+".":"";}render();}return;}
  if(t.id==="docpt"){ST.sel=t.value;render();return;}
  if(t.dataset&&t.dataset.df){const q=cur();if(q){docF(q)[t.dataset.df]=t.value;render();}return;}
  if(t.id==="role"){ST.role=t.value;ST.act=ROLEHOME[t.value];render();}
  if(t.dataset.ins){const[k,f]=t.dataset.ins.split("|");const cs=ST.cases.find(x=>x.id===ST.selCase);cs.inst[+k][f]=t.value;if(cs.inst.every(i=>i.pre!==""&&i.post!==""&&+i.pre===+i.post))mission("count");const nx=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.ins:null;render();if(nx){const el=document.querySelector(`[data-ins="${nx}"]`);if(el)el.focus();}}
  if(t.id==="photoin"&&t.files[0]){const r=new FileReader();r.onload=()=>{pt(ST.mobPt).photos.push(r.result);render();toast("Image added to chart for this session.");};r.readAsDataURL(t.files[0]);}
  if(t.id==="bandtxt"){const raw=t.value.trim(),code=(raw.split("|")[2]||raw).toLowerCase(),q=ST.pts.find(x=>x.mrn.toLowerCase()===code);if(q){ST.scan.band=q.id;render();}else toast("No patient with that QR code.");}});
-document.addEventListener("input",e=>{if(e.target.id==="q"){ST.q=e.target.value;plist();}if(e.target.id==="note")ST.draft=e.target.value;});
+document.addEventListener("input",e=>{if(e.target.id==="rx-imp"||e.target.id==="rx-f"){const q=ST.rx&&pt(ST.rx.pid),o=q&&q.orders.find(x=>x.id==ST.rx.oid);if(o&&o.rx){if(e.target.id==="rx-imp")o.rx.imp=e.target.value;else o.rx.finding=e.target.value;}}if(e.target.dataset&&e.target.dataset.xr){const q=ST.rx&&pt(ST.rx.pid),o=q&&q.orders.find(x=>x.id==ST.rx.oid),st=ST.rxsub==="mys"?ST.mys:o&&o.rx;if(st){st[e.target.dataset.xr]=+e.target.value;const sv=document.querySelector(".xview svg");if(sv)sv.style.filter=`brightness(${st.b}%) contrast(${st.c}%) ${st.inv?"invert(1)":""}`;}return;}if(e.target.id==="q"){ST.q=e.target.value;plist();}if(e.target.id==="note")ST.draft=e.target.value;});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
 setInterval(()=>{$("clk").textContent=new Date().toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});},1000);
 $("clk").textContent=new Date().toLocaleString("en-US",{weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
@@ -942,7 +1092,7 @@ const ROLES=[
  ["volunteer","🤝","Volunteer","Helps out everywhere."],
  ["patient","🤒","Patient","Gets well soon!"],
  ["visitor","🎈","Visitor","Comes to cheer patients up."]];
-const ROLEWS={owner:["Administrator","board"],admin:["Administrator","schedule"],chief:["Doctor","chart"],doctor:["Doctor","chart"],surgeon:["Surgeon","surgery"],nurse:["Nurse","board"],paramedic:["Nurse","board"],pharmacist:["Nurse","mar"],lab:["Nurse","orders"],xray:["Nurse","orders"],reception:["Administrator","schedule"],volunteer:["Nurse","board"],patient:["Nurse","mobile"],visitor:["Nurse","mobile"]};
+const ROLEWS={owner:["Administrator","board"],admin:["Administrator","schedule"],chief:["Doctor","chart"],doctor:["Doctor","chart"],surgeon:["Surgeon","surgery"],nurse:["Nurse","board"],paramedic:["Nurse","board"],pharmacist:["Nurse","mar"],lab:["Nurse","orders"],xray:["Radiographer","radiology"],reception:["Administrator","schedule"],volunteer:["Nurse","board"],patient:["Nurse","mobile"],visitor:["Nurse","mobile"]};
 const WARDS=[["er","🚨","Emergency"],["peds","🧸","Kids' ward"],["or","😷","Surgery"],["icu","❤️","Intensive care"],["mat","👶","Maternity"],["pharm","💊","Pharmacy"],["rad","🩻","X-ray"],["lab","🧪","Lab"],["heli","🚁","Helipad"],["amb","🚑","Ambulance bay"],["dent","🦷","Dental"],["pet","🐾","Therapy dogs"]];
 const LOGOS=["🏥","❤️","⭐","🌟","🦸","🩺","🚑","🌈","🐻","🦁","🐳","🌻"];
 const HCOL=[["#1F5FAD","Hero blue"],["#0A2A6B","Night blue"],["#5AAEFF","Sky blue"],["#FFD21F","Sunshine"],["#E0B800","Gold"],["#C62828","Hero red"],["#2E7D5B","Hospital green"],["#7E57C2","Purple"],["#EF6C00","Orange"],["#00897B","Teal"],["#C2185B","Berry"]];
