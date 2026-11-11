@@ -284,6 +284,8 @@ input:focus,select:focus{border-color:var(--hl)}
 .prod ul{margin:0;padding-left:18px;font-size:.9rem;display:grid;gap:2px;color:var(--ice)}
 .pill{display:inline-block;background:var(--sun);color:var(--night);font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 10px;border-radius:999px;width:fit-content}
 .options{display:grid;gap:12px}
+.prod .lvx{font-weight:700;color:var(--ink)}#shop-levels{margin:10px 0}
+.refill{background:var(--well);border:2px solid var(--line);border-radius:16px;padding:12px 14px;margin:10px 0}.refill ul{margin:6px 0;padding-left:20px}.linkbtn{font:inherit;font-weight:700;color:inherit;background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
 .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .plan{font:inherit;text-align:left;color:var(--ink);background:var(--well);border:3px solid var(--line);border-radius:16px;padding:12px 14px;cursor:pointer;display:grid;gap:2px}
 .plan[aria-pressed="true"]{border-color:var(--hl);background:var(--sun);color:var(--night)}
@@ -582,13 +584,14 @@ const v=document.getElementById("hvid"),c=document.getElementById("hvc");documen
 <section id="shop" class="stack">
   <span class="eyebrow">Step 2 · Gear up</span>
   <h2 style="display:flex;align-items:center;gap:14px;flex-wrap:wrap"><img src="brand/logos/lhh-hero-box-icon.svg" alt="Hero Box" style="width:64px;height:64px;flex:none"><span>Get the <em>real kit</em> delivered</span></h2>
-  <p class="muted">Order a The Hero Shift kit, shop the marketplace for gear at every level, or build your kit from things already at home. Families buy once and add a monthly Shift Box with a new action, new missions and new gear. Schools, camps and training programs buy by the season or the year.</p>
+  <p class="muted">Order a The Hero Shift kit, shop the marketplace for gear at every level, or build your kit from things already at home. Families pick a box size and a level: every level up has better gear and more of it. Add a monthly refill that ships only the things that run out, like bandages and gloves. Gear that lasts, like a stethoscope, you get again from the marketplace. Schools, camps and training programs buy by the season or the year.</p>
   <div class="shop">
     <div class="modes"><button class="mode" data-mode="order" aria-pressed="true">🛒 Order a kit</button><button class="mode" data-mode="market" aria-pressed="false">🏪 Marketplace</button><button class="mode" data-mode="home" aria-pressed="false">🏠 Use what's at home</button></div>
     <div class="tabs" role="tablist" id="shop-tabs">
       <button class="tab" role="tab" id="tab-home" aria-selected="true" data-tab="home">For home</button>
       <button class="tab" role="tab" id="tab-org" aria-selected="false" data-tab="org">Schools, camps &amp; training</button>
     </div>
+    <div id="shop-levels"></div>
     <div id="shop-products" class="products"></div>
     <div id="shop-options" class="options"></div>
     <div id="shop-summary" class="summary"></div>
@@ -911,7 +914,26 @@ const $=id=>document.getElementById(id);
 const money=n=>"$"+Math.round(n).toLocaleString("en-US");
 const money2=n=>"$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
 const FEE=0.03, CHURN=0.10;
-const REFILL={kids:"New action of the month, new mission cards, one new outfit piece, a real badge patch, fresh wristbands and stickers."};
+const REFILL={kids:"Refills only ship the stuff that runs out. Gear that lasts stays in your box."};
+const SZN={solo:1,squad4:4,squad8:8},SZI={solo:0,squad4:1,squad8:2};
+const pl=(n,one,many)=>n===1?one:many;
+const sh=(n,a,b,c)=>n===1?a:n===4?b:c;
+const BLV=[
+ {k:1,gear:"Play Gear",mk:"play",age:"5–11",lad:0,price:[49,129,229],ref:[15,29,45],
+  keep:n=>[pl(n,"1 hero outfit (pick any job)",`${n} hero outfits (mix any jobs)`),pl(n,"Toy stethoscope and ID badge",`${n} toy stethoscopes and ID badges`),sh(n,"Teddy patient","Biscuit the Bear plush patient","2 plush patients"),sh(n,"Mission card decks for all 9 jobs","9 mission card decks","2 sets of mission decks"),...(n>1?["Squad scoreboard poster"]:[]),...(n===8?["Party host guide"]:[]),"App unlock code"],
+  use:n=>[`${10*n} hero wristbands`,`${10*n} bandage stickers`,pl(n,"1 brave sticker sheet",`${n} brave sticker sheets`),`Patient chart pad (${25*n} pages)`]},
+ {k:2,gear:"Hero Gear",mk:"hero",age:"12–15",lad:2,price:[79,199,349],ref:[19,39,59],
+  keep:n=>[pl(n,"Junior lab coat or kids' scrubs",`${n} junior lab coats or kids' scrubs`),pl(n,"Kids' working stethoscope",`${n} kids' working stethoscopes`),sh(n,"Light-up otoscope","2 light-up otoscopes","4 light-up otoscopes"),sh(n,"Teddy patient","Biscuit the Bear plush patient","2 plush patients"),"Anatomy flash cards",sh(n,"Mission card decks","9 mission card decks","2 sets of mission decks"),"App unlock code"],
+  use:n=>[`${10*n} real bandages`,`${10*n} pairs of kid-size gloves`,`${5*n} gauze pads`,`${10*n} hero wristbands`,`Patient chart pad (${25*n} pages)`]},
+ {k:3,gear:"Pro Gear",mk:"pro",age:"16–18",lad:4,price:[129,329,579],ref:[24,49,79],
+  keep:n=>[pl(n,"Scrubs set",`${n} scrubs sets`),pl(n,"Basic real stethoscope",`${n} basic real stethoscopes`),pl(n,"Pen light",`${n} pen lights`),sh(n,"Stocked first aid kit","Stocked first aid bag","2 stocked first aid bags"),sh(n,"Personal CPR practice kit","CPR practice kit (shared)","2 CPR practice kits"),"Anatomy and physiology study cards","App unlock code"],
+  use:n=>[`${20*n} nitrile gloves`,`${10*n} bandages`,`${10*n} gauze pads`,pl(n,"1 roll of medical tape",`${n} rolls of medical tape`),`${20*n} alcohol prep pads`,`${2*n} CPR face shields`]},
+ {k:4,gear:"Clinical Training",mk:"clin",age:"18+",lad:5,price:[199,499,899],ref:[29,59,99],
+  keep:n=>[pl(n,"Embroidered scrubs set",`${n} embroidered scrubs sets`),pl(n,"Manual BP cuff and stethoscope set",`${n} BP cuff and stethoscope sets`),pl(n,"Pen light and trauma shears",`${n} pen lights and trauma shears`),sh(n,"Personal CPR practice kit","Adult CPR training manikin","Adult CPR manikin and AED trainer"),sh(n,"Simulation scenario pack","Simulation scenario pack","2 simulation scenario packs"),"App unlock code"],
+  use:n=>[`${50*n} nitrile gloves`,`${20*n} gauze pads`,`${2*n} rolls of medical tape`,`${30*n} alcohol prep pads`,`${4*n} CPR barrier shields`,`${10*n} face masks`,`Vitals log pad (${25*n} pages)`]}
+];
+const lvNow=()=>BLV[(shop.lvl||1)-1];
+function homeList(){const L=lvNow();return HOME.map(p=>{const n=SZN[p.id],i=SZI[p.id],m=L.ref[i];return {...p,price:L.price[i],sub:{m,y:m*10},lvl:L.k,items:L.keep(n),use:L.use(n)};});}
 const HOME=[
  {id:"solo",name:"Solo Hero Box",tag:"1 player",price:49,sub:{m:24,y:240},
   items:["1 hero outfit (pick any job)","Toy stethoscope and ID badge","10 hero wristbands","Teddy patient chart pad","Mission card decks for all 9 jobs","Brave sticker sheet","App unlock code"]},
@@ -930,13 +952,13 @@ const ORG=[
   fee:{name:"Program license",price:2500,per:"per site, per year"},
   items:["Hero Volunteer, Trainee and Real World tiers","Career ladder modules for every role","Links to CPR, EMT and CNA programs","Simulation-lab scenario cards","Completion certificates"]}
 ];
-let shop={mk:{lvl:"all",cat:"all",job:"all",list:[],sent:false},mode:"order",hjob:"nurse",htier:0,tab:"home",home:"squad4",org:"camp",plan:"m",qty:1,people:{camp:40,train:30},placed:false};
+let shop={mk:{lvl:"all",cat:"all",job:"all",list:[],sent:false},mode:"order",lvl:1,hjob:"nurse",htier:0,tab:"home",home:"squad4",org:"camp",plan:"m",qty:1,people:{camp:40,train:30},placed:false};
 
 function card(p,sel){
   const unit=p.unit?`<small> ${p.unit}</small>`:`<small> one time</small>`;
   return `<button class="prod" data-prod="${p.id}" aria-pressed="${sel}"><div class="ptop"><b>${p.name}</b>${p.popular?`<span class="pill">Most popular</span>`:`<span class="pill" style="background:var(--sky)">${p.tag}</span>`}</div>
   <div class="price">${money(p.price)}${unit}</div>${p.fee?`<small class="muted">+ ${p.fee.name} ${money(p.fee.price)} ${p.fee.per}</small>`:""}
-  <ul>${p.items.map(i=>`<li>${i}</li>`).join("")}</ul></button>`;
+  ${p.lvl?`<small class="muted"><span class="lvx">Level ${p.lvl}</span> · gear that lasts</small>`:""}<ul>${p.items.map(i=>`<li>${i}</li>`).join("")}</ul>${p.use?`<small class="muted"><span class="lvx">Plus starter supplies:</span> ${p.use.join(", ")}</small>`:""}</button>`;
 }
 let gateOK=false;
 function gate(cb){if(gateOK){cb();return;}const a=6+Math.floor(Math.random()*4),b=12+Math.floor(Math.random()*8);const g=document.createElement("div");g.className="gate";g.setAttribute("role","dialog");g.setAttribute("aria-modal","true");
@@ -1007,20 +1029,24 @@ function marketHTML(){
 function renderHome(){$("shop-home").innerHTML=homeHTML(shop.hjob,shop.htier);}
 function renderShop(){
   document.querySelectorAll(".mode").forEach(m=>m.setAttribute("aria-pressed",m.dataset.mode===shop.mode));
-  $("ladder").innerHTML=ladderHTML(shop.mode==="market"?({all:-1,play:0,hero:2,pro:4,clin:5})[shop.mk.lvl]:shop.mode==="home"?[1,3,4][shop.htier]:({solo:0,squad4:0,squad8:0,camp:1,school:2,train:5})[shop[shop.tab]]);
-  const hm=shop.mode==="home",mm=shop.mode==="market";["shop-tabs","shop-products","shop-options","shop-summary"].forEach(id=>$(id).hidden=hm||mm);$("shop-home").hidden=!hm;$("shop-market").hidden=!mm;if(hm){renderHome();return;}if(mm){$("shop-market").innerHTML=marketHTML();return;}
+  $("ladder").innerHTML=ladderHTML(shop.mode==="market"?({all:-1,play:0,hero:2,pro:4,clin:5})[shop.mk.lvl]:shop.mode==="home"?[1,3,4][shop.htier]:(shop.tab==="home"?lvNow().lad:({camp:1,school:2,train:5})[shop[shop.tab]]));
+  const hm=shop.mode==="home",mm=shop.mode==="market";["shop-tabs","shop-products","shop-options","shop-summary","shop-levels"].forEach(id=>$(id).hidden=hm||mm);$("shop-home").hidden=!hm;$("shop-market").hidden=!mm;if(hm){renderHome();return;}if(mm){$("shop-market").innerHTML=marketHTML();return;}
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.tab===shop.tab));
-  const list=shop.tab==="home"?HOME:ORG, selId=shop[shop.tab], p=list.find(x=>x.id===selId);
+  const list=shop.tab==="home"?homeList():ORG, selId=shop[shop.tab], p=list.find(x=>x.id===selId);
   $("shop-products").innerHTML=list.map(x=>card(x,x.id===selId)).join("");
+  $("shop-levels").hidden=shop.tab!=="home";$("shop-levels").innerHTML=shop.tab==="home"?`<h3>1. Pick your level</h3><p class="muted">Every level up has better gear and more of it. Then pick your box size.</p><div class="plans">${BLV.map(L=>`<button class="plan" data-blv="${L.k}" aria-pressed="${shop.lvl===L.k}"><b>Level ${L.k} · ${L.gear}</b><small>Ages ${L.age} · from ${money(L.price[0])}</small></button>`).join("")}</div><h3 style="margin-top:14px">2. Pick your box size</h3>`:"";
   let opt="", lines=[], today=0, rec=null;
   if(shop.tab==="home"){
-    opt=`<h3>Add the monthly Shift Box?</h3><p class="muted">${REFILL.kids}</p><div class="plans">
+    const n=SZN[p.id];
+    opt=`<h3>Add the monthly refill?</h3><p class="muted">${REFILL.kids}</p>
+      <div class="refill"><b>Each month your ${p.name} (Level ${p.lvl}) gets:</b><ul>${p.use.map(i=>`<li>${i}</li>`).join("")}</ul>
+      <p class="muted">Gear that doesn't run out, like the ${p.lvl===1?"toy stethoscope":p.lvl===2?"kids' stethoscope":"stethoscope"}, isn't in refills. Lost or broke it? <button class="linkbtn" id="shop-mkt">Get it again in the Marketplace →</button></p></div><div class="plans">
       <button class="plan" data-plan="m" aria-pressed="${shop.plan==="m"}"><b>Monthly · ${money(p.sub.m)}/mo</b><small>Cancel any time</small></button>
       <button class="plan" data-plan="y" aria-pressed="${shop.plan==="y"}"><b>Yearly · ${money(p.sub.y)}/yr</b><small>2 months free</small></button>
-      <button class="plan" data-plan="n" aria-pressed="${shop.plan==="n"}"><b>Just the box</b><small>No refills</small></button></div>
+      <button class="plan" data-plan="n" aria-pressed="${shop.plan==="n"}"><b>Just the box</b><small>No refills · buy gear in the Marketplace</small></button></div>
       <label class="qty">Boxes <input id="shop-qty" type="number" min="1" max="20" value="${shop.qty}"></label>`;
-    today=p.price*shop.qty; lines.push([`${p.name} × ${shop.qty}`,money(today)]);
-    if(shop.plan!=="n"){const s=shop.plan==="m"?p.sub.m:p.sub.y; rec=[`Shift Box ${shop.plan==="m"?"monthly":"yearly"} × ${shop.qty}`,`${money(s*shop.qty)}/${shop.plan==="m"?"mo":"yr"}`, "First refill ships next month."];}
+    today=p.price*shop.qty; lines.push([`${p.name}, Level ${p.lvl} × ${shop.qty}`,money(today)]);
+    if(shop.plan!=="n"){const s=shop.plan==="m"?p.sub.m:p.sub.y; rec=[`Refill ${shop.plan==="m"?"monthly":"yearly"} × ${shop.qty}`,`${money(s*shop.qty)}/${shop.plan==="m"?"mo":"yr"}`, "First refill ships next month. Refills only bring the things that run out."];}
   } else {
     const n=p.flat?1:Math.max(p.min,shop.people[p.id]||p.def);
     opt=p.flat?`<p class="muted">One flat yearly price per school site, up to 60 students. Renews each school year.</p>`
@@ -1048,6 +1074,8 @@ document.addEventListener("click",e=>{
   else if(b.dataset.tab){shop.tab=b.dataset.tab;shop.placed=false;}
   else if(b.dataset.prod){shop[shop.tab]=b.dataset.prod;shop.placed=false;}
   else if(b.dataset.plan){shop.plan=b.dataset.plan;shop.placed=false;}
+  else if(b.dataset.blv){shop.lvl=+b.dataset.blv;shop.placed=false;}
+  else if(b.id==="shop-mkt"){gate(()=>{shop.mode="market";shop.mk.lvl=lvNow().mk;shop.mk.cat="all";renderShop();$("shop").scrollIntoView({behavior:"smooth"});});return;}
   else if(b.id==="shop-place"){gate(()=>{shop.placed=true;renderShop();const r=$("shop-place").getBoundingClientRect();if(typeof boom==="function")boom(r.left+r.width/2,r.top,60);});return;}
   renderShop();
 });
