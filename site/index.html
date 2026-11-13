@@ -565,11 +565,11 @@ td.hi{color:var(--hl);font-weight:800}
   <span class="vt">🎬 Watch and learn</span>
   <div class="vtabs" role="group" aria-label="Pick a video"><button type="button" data-vid="play" aria-pressed="true">▶ How to play</button><button type="button" data-vid="site" aria-pressed="false">🧭 Using the website</button><button type="button" data-vid="both" aria-pressed="false">🎮 Real life + Roblox</button></div>
   <video id="hvid" controls playsinline preload="metadata" poster="videos/how-to-play.jpg" src="videos/how-to-play.mp4" aria-describedby="hvc"></video>
-  <p class="vc" id="hvc">About 2½ minutes · Build your squad, suit up, play a shift and heal your patient.</p>
+  <p class="vc" id="hvc">About 1½ minutes · Build your squad, suit up, play a shift and heal your patient.</p>
  </aside>
 </header>
 <script>
-(()=>{const V={play:["videos/how-to-play.mp4","videos/how-to-play.jpg","About 2½ minutes · Build your squad, suit up, play a shift and heal your patient."],both:["videos/how-to-play-real-life-and-roblox.mp4","videos/how-to-play-real-life-and-roblox.jpg","About 2 minutes · Play in real life with the app, then online in Maple Hospital on Roblox."],site:["videos/how-to-use-the-website.mp4","videos/how-to-use-the-website.jpg","About 3 minutes · A tour of the game, Hero groups, Teen Heroes HQ, the Workstation, Events, Camp HQ and Community."]};
+(()=>{const V={play:["videos/how-to-play.mp4","videos/how-to-play.jpg","About 1½ minutes · Build your squad, suit up, play a shift and heal your patient."],both:["videos/how-to-play-real-life-and-roblox.mp4","videos/how-to-play-real-life-and-roblox.jpg","About 1 minute · Play in real life with the app, then online in Maple Hospital on Roblox."],site:["videos/how-to-use-the-website.mp4","videos/how-to-use-the-website.jpg","About 2 minutes · A tour of the game, the Workstation, Hero groups, Teen Heroes HQ, the Parent Portal, the Hero Box, Events, Camp HQ and Community."]};
 const v=document.getElementById("hvid"),c=document.getElementById("hvc");document.querySelectorAll("[data-vid]").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.vid;if(v.getAttribute("src")===V[k][0])return;document.querySelectorAll("[data-vid]").forEach(x=>x.setAttribute("aria-pressed",x===b));v.pause();v.setAttribute("poster",V[k][1]);v.setAttribute("src",V[k][0]);c.textContent=V[k][2];v.load();}));})();
 </script>
 <section id="play" class="stack">
