@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join a squad · The Hero Shift</title>
+<meta name="description" content="The Hero Shift: the in-real-life hospital role-play game.">
+<link rel="icon" type="image/png" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon-180.png">
+<meta property="og:image" content="brand/discord-banner-960x540.png">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+#lhbar{position:sticky;top:0;z-index:80;background:#0A2A6B;border-bottom:3px solid #FFD21F;font-family:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif;color:#fff}
+#lhbar *{box-sizing:border-box}
+#lhbar .pn a .i img{width:30px;height:30px;display:block}
+#lhbar .home img{width:38px;height:38px;flex:none}
+
+#lhbar .in{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:6px 14px;min-height:56px}
+#lhbar .home{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;margin-right:auto;border-radius:10px;padding:2px 6px 2px 0}
+#lhbar .home svg{width:38px;height:38px;flex:none}
+#lhbar .home b{font-weight:800;font-size:1.25rem;line-height:1;color:#FFD21F;white-space:nowrap}
+#lhbar .home small{display:block;font:700 .58rem "Atkinson Hyperlegible",system-ui;letter-spacing:.3em;color:#fff;margin-top:2px}
+#lhbar .grp{position:relative}
+#lhbar .gb{display:flex;align-items:center;gap:6px;background:none;border:2px solid transparent;color:#fff;font:700 1rem "Baloo 2",system-ui;padding:6px 12px;border-radius:999px;cursor:pointer;white-space:nowrap}
+#lhbar .gb:hover{background:#1756C2}
+#lhbar .gb[aria-expanded="true"],#lhbar .grp.cur>.gb{border-color:#FFD21F}
+#lhbar .gb[aria-expanded="true"]{background:#FFD21F;color:#0A2A6B}
+#lhbar .gb .car{font-size:.7em;opacity:.8}
+#lhbar .pn{position:absolute;right:0;top:calc(100% + 8px);background:#fff;color:#0A2A6B;border:3px solid #FFD21F;border-radius:18px;padding:8px;min-width:280px;box-shadow:0 18px 40px rgba(0,0,0,.35);display:grid;gap:2px}
+#lhbar .pn[hidden]{display:none}
+#lhbar .pn a{display:grid;grid-template-columns:34px 1fr;gap:0 10px;align-items:center;text-decoration:none;color:#0A2A6B;padding:8px 10px;border-radius:12px}
+#lhbar .pn a:hover,#lhbar .pn a:focus-visible{background:#E6F0FA;outline:none}
+#lhbar .pn a[aria-current="page"]{background:#FFF7D1}
+#lhbar .pn a .i{grid-row:span 2;font-size:1.5rem;text-align:center}
+#lhbar .pn a b{font:700 1rem "Baloo 2",system-ui;line-height:1.1}
+#lhbar .pn a span{font:400 .82rem "Atkinson Hyperlegible",system-ui;color:#3D5A80}
+#lhbar .lock{color:#CFE2FF;text-decoration:none;font-size:1.05rem;padding:6px 8px;border-radius:999px}
+#lhbar .lock:hover{background:#1756C2;color:#fff}
+#lhbar .menu{display:none}
+#lhbar a:focus-visible,#lhbar button:focus-visible{outline:3px solid #FFD21F;outline-offset:2px}
+@media (max-width:760px){
+ #lhbar .grp{display:none}
+ #lhbar .menu{display:flex}
+ #lhbar.open .grp{display:block;position:static;width:100%}
+ #lhbar.open .in{flex-wrap:wrap}
+ #lhbar.open .grp>.gb{display:none}
+ #lhbar .home{order:0}#lhbar .lock{order:1}#lhbar .menu{order:2}#lhbar .grp{order:3}
+ #lhbar.open .pn{position:static;display:grid!important;box-shadow:none;margin:4px 0;min-width:0}
+ #lhbar.open .pn::before{content:attr(data-t);font:800 .8rem "Baloo 2",system-ui;letter-spacing:.08em;text-transform:uppercase;color:#1F5FAD;padding:2px 10px}
+ #lhbar .home b{font-size:1.1rem}
+}
+</style>
+<header id="lhbar" aria-label="The Hero Shift menu"><div class="in">
+ <a class="home" href="index.html" aria-label="The Hero Shift home"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+ <path d="M30 40 C12 56 10 84 20 104 C28 94 36 90 46 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M90 40 C108 56 110 84 100 104 C92 94 84 90 74 90 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M60 10 L96 22 V54 C96 80 80 98 60 108 C40 98 24 80 24 54 V22 Z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="6" stroke-linejoin="round"/>
+ <path d="M60 18 L88 27.5 V54 C88 75 76 89 60 98" fill="none" stroke="#FFF3B0" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+ <path d="M51 34 H69 V49 H84 V67 H69 V82 H51 V67 H36 V49 H51 Z" fill="#1F5FAD" stroke="#0A2A6B" stroke-width="4.5" stroke-linejoin="round"/>
+ <path d="M55 38 H65" stroke="#5AAEFF" stroke-width="3" stroke-linecap="round"/>
+ <path d="M101 6 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" fill="#FFD21F" stroke="#0A2A6B" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>
+<span><b>The Hero Shift</b><small>HOSPITAL GAME</small></span></a>
+ <div class="grp" data-g="play"><button class="gb" aria-expanded="false" aria-controls="lhp-play">🎮 Play <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-play" data-t="Play" hidden>
+   <a href="index.html#play" data-p="index"><span class="i"><img src="brand/logos/lhh-play-icon.svg" alt=""></span><b>Play the game</b><span>Run a hospital shift with friends</span></a>
+   <a href="index.html#videos" data-p="videos"><span class="i"><img src="brand/logos/lhh-videos-icon.svg" alt=""></span><b>How-to videos</b><span>Learn to play in 2 minutes</span></a>
+   <a href="games.html" data-p="games"><span class="i"><img src="brand/logos/lhh-puzzle-icon.svg" alt=""></span><b>Puzzle Lab</b><span>Hospital problem-solving games for every age</span></a>
+   <a href="biscuit.html" data-p="biscuit"><span class="i"><img src="brand/logos/lhh-biscuit-icon.svg" alt=""></span><b>Talk to Biscuit</b><span>Biscuit the Bear tells you how he feels</span></a>
+   <a href="heroes.html" data-p="heroes"><span class="i"><img src="brand/logos/lhh-heroes-icon.svg" alt=""></span><b>Hero groups</b><span>Find your group, ages 5 to 18</span></a>
+   <a href="teen.html" data-p="teen"><span class="i"><img src="brand/logos/lhh-teen-icon.svg" alt=""></span><b>Teen Heroes HQ</b><span>Real hospital shifts for ages 12 to 18</span></a>
+   <a href="workstation.html" data-p="workstation"><span class="i"><img src="brand/logos/lhh-hospital-workspace-icon.svg" alt=""></span><b>Hospital Workstation</b><span>Beds, charts, medicine and surgery</span></a>
+   <a href="workstation.html#hospital" data-p="hospital"><span class="i"><img src="brand/logos/lhh-hospital-icon.svg" alt=""></span><b>My Hospital &amp; keys</b><span>Build a hospital, invite your team</span></a>
+  </div></div>
+ <div class="grp" data-g="grown"><button class="gb" aria-expanded="false" aria-controls="lhp-grown">🏫 Families &amp; schools <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-grown" data-t="Families &amp; schools" hidden>
+   <a href="parent.html" data-p="parent"><span class="i"><img src="brand/logos/lhh-parent-icon.svg" alt=""></span><b>Parent Portal</b><span>Play rules, and control play from your phone</span></a>
+   <a href="events.html" data-p="events"><span class="i"><img src="brand/logos/lhh-events-icon.svg" alt=""></span><b>Events &amp; tickets</b><span>Camps, test days and hospital adventures</span></a>
+   <a href="index.html#shop" data-p="shop"><span class="i"><img src="brand/logos/lhh-hero-box-icon.svg" alt=""></span><b>Get the Hero Box</b><span>Real kits, or use what's at home</span></a>
+   <a href="camp.html" data-p="camp"><span class="i"><img src="brand/logos/lhh-camps-icon.svg" alt=""></span><b>Camp HQ</b><span>For camps, schools and teachers</span></a>
+   <a href="pitch.html" data-p="pitch"><span class="i"><img src="brand/logos/lhh-about-icon.svg" alt=""></span><b>About The Hero Shift</b><span>Ages, jobs, levels and safety rules</span></a>
+  </div></div>
+ <div class="grp" data-g="comm"><button class="gb" aria-expanded="false" aria-controls="lhp-comm">💬 Community <span class="car" aria-hidden="true">▾</span></button>
+  <div class="pn" id="lhp-comm" data-t="Community" hidden>
+   <a href="community.html" data-p="community"><span class="i"><img src="brand/logos/lhh-discord-icon.svg" alt=""></span><b>Discord</b><span>Chat with heroes 13 and up</span></a>
+   <a href="roblox.html" data-p="roblox"><span class="i"><img src="brand/logos/lhh-roblox-servers-icon.svg" alt=""></span><b>Roblox servers</b><span>Play together on Maple Hospital</span></a>
+  </div></div>
+ <a class="lock" href="admin.html" title="Admin sign-in" aria-label="Admin sign-in">🔒</a>
+ <button class="gb menu" aria-expanded="false" aria-controls="lhbar">☰ Menu</button>
+</div></header>
+<script>
+(()=>{const SUB={workstation:["hospital-workspace","HOSPITAL WORKSPACE"],events:["events","EVENTS"],camp:["camps","CAMPS"],community:["discord","DISCORD"],roblox:["roblox-servers","ROBLOX SERVERS"]};
+const pg=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";const s=SUB[pg];const h=document.querySelector("#lhbar .home");if(!s||!h)return;
+const sv=h.querySelector("svg");if(sv){const i=document.createElement("img");i.src="brand/logos/lhh-"+s[0]+"-icon.svg";i.alt="";sv.replaceWith(i);}const sm=h.querySelector("small");if(sm)sm.textContent=s[1];})();
+
+(()=>{const bar=document.getElementById("lhbar");if(!bar)return;const page=(location.pathname.split("/").pop()||"index").replace(/\.html$/,"")||"index";
+bar.querySelectorAll(".pn a").forEach(a=>{if(a.dataset.p===page){a.setAttribute("aria-current","page");a.closest(".grp").classList.add("cur");}});
+const closeAll=ex=>bar.querySelectorAll(".grp").forEach(g=>{if(g===ex)return;g.querySelector(".gb").setAttribute("aria-expanded","false");g.querySelector(".pn").hidden=true;});
+bar.querySelectorAll(".grp>.gb").forEach(b=>b.addEventListener("click",e=>{e.stopPropagation();const g=b.parentElement,p=g.querySelector(".pn"),open=p.hidden;closeAll(g);p.hidden=!open;b.setAttribute("aria-expanded",open);if(open)p.querySelector("a").focus({preventScroll:true});}));
+const m=bar.querySelector(".menu");m.addEventListener("click",e=>{e.stopPropagation();const o=!bar.classList.contains("open");bar.classList.toggle("open",o);m.setAttribute("aria-expanded",o);m.textContent=o?"✕ Close":"☰ Menu";});
+bar.querySelectorAll(".pn a").forEach(a=>a.addEventListener("click",()=>{closeAll();bar.classList.remove("open");m.setAttribute("aria-expanded","false");m.textContent="☰ Menu";}));
+document.addEventListener("click",e=>{if(!bar.contains(e.target))closeAll();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){const o=bar.querySelector('.gb[aria-expanded="true"]');closeAll();if(o)o.focus();}});})();
+</script>
+<style>nav.toplinks,div.top>nav[aria-label="Pages"],header.top>a[href$=".html"]{display:none!important}.bgtoggle{top:auto!important;bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one partnership brief column; a code checker as the live moment; blue stage with yellow highlights, white mode for partners. */
+:root{color-scheme:dark;--bg:#0A2A6B;--panel:#11449F;--well:#061637;--line:#2F72DD;--ink:#FFFFFF;--muted:#BCD6FF;--sun:#FFD21F;--gold:#FFB400;--sky:#5AAEFF;--hl:#FFD21F;--btn:#FFD21F;--btn-ink:#0A2A6B;--btn2:#1756C2;--btn2-ink:#FFFFFF;
+ --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;--body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,Consolas,Menlo,monospace;--r:20px}
+:root[data-bg="white"]{color-scheme:light;--bg:#F2F4F7;--panel:#FFFFFF;--well:#EEF3F9;--line:#C8D2DE;--ink:#1B2A3A;--muted:#5A6B7E;--sky:#1F5FAD;--hl:#1F5FAD;--btn:#1F5FAD;--btn-ink:#fff;--btn2:#E6F0FA;--btn2-ink:#1F5FAD;--body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;--display:var(--body);--r:6px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+:root:not([data-bg="white"]) body{background:radial-gradient(circle at 15% 0%,#164FB8 0,transparent 45%),var(--bg);background-color:var(--bg)}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;text-wrap:balance}
+h1{font-size:clamp(2.1rem,6vw,3.6rem);color:var(--hl)}
+h2{font-size:clamp(1.5rem,3.6vw,2.1rem)}h2 em{font-style:normal;color:var(--hl)}
+h3{font-size:1.15rem}
+p{margin:0;max-width:68ch}
+a{color:var(--hl)}
+.wrap{max-width:1060px;margin:0 auto;padding-inline:16px;padding-block:20px 72px;display:grid;gap:52px}
+.top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.top nav{display:flex;flex-wrap:wrap;gap:6px}
+.top nav a{color:var(--ink);text-decoration:none;font-weight:700;font-size:.88rem;border:2px solid var(--line);border-radius:999px;padding:5px 12px}
+.bgt{display:flex;gap:2px;background:var(--well);border:2px solid var(--sun);border-radius:999px;padding:3px}
+.bgt button{border:0;background:none;color:var(--ink);font-weight:800;font-size:.82rem;padding:4px 12px;border-radius:999px;cursor:pointer}
+.bgt button[aria-pressed="true"]{background:var(--sun);color:#0A2A6B}
+.eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--hl)}
+.stack{display:grid;gap:16px}
+.muted{color:var(--muted)}
+.hero{display:grid;gap:18px;padding:clamp(22px,5vw,44px);border-radius:28px;background:linear-gradient(135deg,#1A63DB,#0F3FA0 60%,#0A2A6B);border:3px solid var(--sun);box-shadow:0 10px 0 #061637}
+:root[data-bg="white"] .hero{background:#17324F;border:0;border-radius:6px;box-shadow:none;color:#fff}
+:root[data-bg="white"] .hero h1{color:#FFD21F}
+:root[data-bg="white"] .hero .muted{color:#C9D6E6}
+.x{font-family:var(--display);font-weight:800;color:#fff}
+.note{display:inline-block;background:var(--sun);color:#0A2A6B;font-weight:700;border-radius:12px;padding:8px 14px;max-width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.stat{background:var(--panel);border:2px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:4px}
+.stat b{font-family:var(--display);font-size:2rem;line-height:1;color:var(--hl);font-variant-numeric:tabular-nums}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:var(--r);padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+:root[data-bg="white"] .card,:root[data-bg="white"] .stat{border-width:1px}
+.card .ic{font-size:1.8rem;width:50px;height:50px;border-radius:50%;background:var(--sun);display:grid;place-items:center}
+:root[data-bg="white"] .card .ic{border-radius:6px;background:#E6F0FA}
+.card b{font-family:var(--display);font-size:1.15rem}
+.checker{background:var(--panel);border:4px solid var(--sun);border-radius:26px;padding:clamp(16px,3vw,26px);display:grid;gap:14px}
+:root[data-bg="white"] .checker{border:1px solid var(--line);border-top:5px solid #1F5FAD;border-radius:6px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+input,select,textarea{background:var(--well);border:2px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+:root[data-bg="white"] input,:root[data-bg="white"] select,:root[data-bg="white"] textarea{background:#fff;border-width:1px;border-radius:4px}
+#code{font-family:var(--mono);font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase;width:min(320px,100%)}
+.btn{border:0;background:var(--btn);color:var(--btn-ink);border-radius:999px;padding:10px 18px;font-weight:800;cursor:pointer;font-family:var(--display);font-size:1rem}
+.btn.s{background:var(--btn2);color:var(--btn2-ink)}
+:root[data-bg="white"] .btn{border-radius:4px;font-weight:600}
+:root[data-bg="white"] .btn.s{border:1px solid #1F5FAD}
+.btn:focus-visible,input:focus-visible,select:focus-visible,.bgt button:focus-visible,textarea:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.result{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:var(--well);border-radius:18px;padding:14px}
+@media (max-width:560px){.result{grid-template-columns:1fr}}
+.qr{background:#fff;border-radius:12px;padding:8px;display:inline-grid}
+.ok{color:var(--hl);font-family:var(--display);font-weight:800;font-size:1.3rem}
+.bad{color:var(--sun);font-weight:700}
+.unl{display:flex;flex-wrap:wrap;gap:6px}
+.unl span{border-radius:999px;padding:3px 12px;font-weight:700;font-size:.85rem;background:var(--sun);color:#0A2A6B}
+.unl span.off{background:transparent;border:2px dashed var(--line);color:var(--muted)}
+.tw{overflow-x:auto;border:2px solid var(--line);border-radius:var(--r);background:var(--panel)}
+:root[data-bg="white"] .tw{border-width:1px}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:.93rem}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);background:var(--sun);color:#0A2A6B;font-weight:700}
+:root[data-bg="white"] th{background:#E9EEF4;color:#1B2A3A;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:0}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;list-style:none;padding:0;margin:0;counter-reset:f}
+.flow li{background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:14px;display:grid;gap:4px;counter-increment:f}
+.flow li::before{content:counter(f);width:32px;height:32px;border-radius:50%;background:var(--sun);color:#0A2A6B;display:grid;place-items:center;font-family:var(--display);font-weight:800}
+.check{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.check li{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:10px 14px}
+.check li::before{content:"✓";flex:none;width:24px;height:24px;border-radius:6px;background:var(--sun);color:#0A2A6B;display:grid;place-items:center;font-weight:800}
+pre{margin:0;background:#061637;color:#E4F0FA;border-radius:16px;padding:16px;overflow-x:auto;font-family:var(--mono);font-size:.82rem;line-height:1.5;border:2px solid var(--line)}
+:root[data-bg="white"] pre{background:#0F2236;border-radius:6px}
+textarea{width:100%;min-height:220px;resize:vertical}
+.sources{font-size:.85rem;display:grid;gap:4px;padding-left:18px;margin:0;color:var(--muted)}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(6,22,55,.7);display:grid;place-items:center;padding:16px}
+.modal>div{background:var(--panel);border:3px solid var(--sun);border-radius:20px;padding:20px;width:min(440px,100%);display:grid;gap:12px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:60;background:var(--sun);color:#0A2A6B;font-weight:800;padding:10px 18px;border-radius:999px;max-width:calc(100% - 32px)}
+
+.code6{font-family:var(--display);font-size:2.2rem;letter-spacing:.3em;text-transform:uppercase;text-align:center;width:min(340px,100%)}
+.heroes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.pick{background:var(--panel);border:3px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:4px;justify-items:center;cursor:pointer;font-family:var(--display);font-weight:800;font-size:1.15rem}
+.pick span{font-size:2rem}.pick small{font-family:var(--body);font-weight:400;color:var(--muted);font-size:.9rem}
+.pick:hover,.pick:focus-visible{border-color:var(--sun)}
+.mine{background:var(--panel);border:4px solid var(--line);border-radius:24px;padding:18px;display:grid;gap:12px}
+.mine.turn{border-color:var(--sky);box-shadow:0 0 0 5px rgba(90,174,255,.35)}
+.yt{justify-self:start;background:var(--sun);color:#0A2A6B;font-weight:800;border-radius:999px;padding:3px 12px}
+.st{display:flex;gap:12px;align-items:center;text-align:left;width:100%;background:var(--well);border:3px solid var(--line);border-radius:16px;padding:14px;font-weight:700;font-size:1.05rem;cursor:pointer}
+.st .bx{width:30px;height:30px;border-radius:8px;border:3px solid var(--sky);display:grid;place-items:center;flex:none;font-weight:800}
+.st[aria-pressed="true"]{border-color:var(--sun)}.st[aria-pressed="true"] .bx{background:var(--sun);border-color:var(--sun);color:#0A2A6B}
+.talk{background:var(--well);border:3px dashed var(--sky);border-radius:18px;padding:14px;display:grid;gap:8px}
+.wait{text-align:center;padding:30px 10px;display:grid;gap:10px;justify-items:center}
+.big{font-size:3rem}
+.vtog{display:flex;gap:8px;align-items:center;font-weight:700}.vtog input{width:22px;height:22px;accent-color:#FFD21F}
+</style>
+
+<div class="wrap">
+<header class="hero">
+ <span class="eyebrow">Squad play · Friends' devices</span>
+ <h1>Join your squad</h1>
+ <p style="font-size:1.15rem">Your host opens a room on the game screen and gets a 6-letter code. Type it here, pick your hero, and your card shows up on this device. Talk out loud with your squad and tap your steps.</p>
+</header>
+<main id="app" class="stack" aria-live="polite"></main>
+<section class="stack">
+ <span class="eyebrow">Hero Code</span>
+ <ul class="check">
+  <li><span>Use your hero nickname. Never your real full name, school or address.</span></li>
+  <li><span>Only join codes from your own host, in the same room or on a call your family already uses.</span></li>
+  <li><span>Rooms have no chat and save nothing. When the host closes the room, it's gone.</span></li>
+ </ul>
+</section>
+</div>
+<script src="js/rooms.js"></script>
+<script>
+(()=>{const app=document.getElementById("app");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const id=Math.random().toString(36).slice(2,10);
+let R=null,code="",st=null,me=null,voice=true,lastSpoken="",timer=null;
+const say=t=>{if(!voice)return;try{const u=new SpeechSynthesisUtterance(t);u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}};
+if(!window.THSRooms||!THSRooms.on()){app.innerHTML=`<div class="checker wait"><span class="big">🔒</span><h2>Coming soon</h2><p class="muted">Playing from friends' devices needs a grown-up to switch it on first. Until then, play together on one screen: the game has Team Play with a voice host and taking turns.</p><a class="btn" href="index.html#play">Play on one screen →</a></div>`;return;}
+function home(msg){clearTimeout(timer);me=null;st=null;app.innerHTML=`<div class="checker"><h2>Type your <em>room code</em></h2>
+ <div class="row"><input id="jc" class="code6" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Room code" value="${esc(code)}"><button class="btn" id="jgo">Join</button></div>
+ ${msg?`<p class="bad">${esc(msg)}</p>`:`<p class="muted">Ask your host for the code. It's on their game screen.</p>`}</div>`;
+ const i=document.getElementById("jc");i.focus();i.oninput=()=>{i.value=THSRooms.clean(i.value)};i.onkeydown=e=>{if(e.key==="Enter")join()};document.getElementById("jgo").onclick=join;}
+function join(){code=THSRooms.clean(document.getElementById("jc").value);if(!THSRooms.valid(code))return home("Codes are 6 letters and numbers. Check it with your host.");
+ app.innerHTML=`<div class="checker wait"><span class="big">📡</span><p>Looking for room <b>${esc(code)}</b>…</p></div>`;
+ R=THSRooms.connect(code,onMsg,s=>{if(s==="open"){R.send({t:"hello",id});clearTimeout(timer);timer=setTimeout(()=>{if(!st){leave(true);home("No game found with that code. Check the code, and that your host opened the room.")}},5000);}else if(s!=="open"&&R){R=null;if(st)home("The room closed.");else home("Couldn't connect. Check the internet and try again.");}});}
+function leave(quiet){if(R){if(!quiet)R.send({t:"bye",id});const r=R;R=null;setTimeout(()=>r.close(),100)}}
+function onMsg(m){if(m.t==="closed"){leave(true);return home("Your host closed the room. Great shift!");}
+ if(m.t!=="state")return;clearTimeout(timer);st=m;if(me!==null&&me>=st.players.length)me=null;draw();}
+function draw(){if(!st)return;
+ if(me===null){app.innerHTML=`<div class="checker"><h2>Which hero <em>are you?</em></h2><div class="heroes">${st.players.map((p,i)=>`<button class="pick" data-me="${i}"><span>${p.ic}</span>${esc(p.name)}<small>${esc(p.job)}</small></button>`).join("")}</div><button class="btn s" id="lv">Leave</button></div>`;return;}
+ const p=st.players[me],top=`<div class="row" style="justify-content:space-between"><span class="row"><span style="font-size:2rem">${p.ic}</span><b style="font-family:var(--display);font-size:1.4rem">${esc(p.name)} · ${esc(p.job)}</b></span><span class="row"><label class="vtog"><input type="checkbox" id="vc"${voice?" checked":""}> 🔊 Voice</label><button class="btn s" id="sw">Switch hero</button><button class="btn s" id="lv">Leave</button></span></div>`;
+ if(st.screen!=="shift"){const w={squad:["🧑‍🤝‍🧑","Your host is building the squad and picking today's patient."],dress:["🥼","Suit up! Put on your hero outfit in real life while your host gets everyone ready."],end:["🎉",`Shift complete! ${st.patient} is feeling much better. Look at the host screen for your stars and the Hero Chest.`]}[st.screen]||["⏳","Waiting for your host…"];
+  app.innerHTML=top+`<div class="checker wait"><span class="big">${w[0]}</span><p>${esc(w[1])}</p></div>`;speak(st.screen+"|"+me,st.screen==="dress"?`${p.name}, suit up as the ${p.job.toLowerCase()}!`:"");return;}
+ const c=st.cards[me],mine=st.turn===me,all=c.done.length===c.steps.length;
+ app.innerHTML=top+`<p class="muted"><b>${esc(st.beatName)}</b> · ${esc(st.scen)} · Patient: <b>${esc(st.patient)}</b></p>
+ ${st.turn>=0?`<p class="note">${mine&&!all?"⭐ It's your turn!":"⭐ "+esc(st.players[st.turn].name)+"'s turn"}</p>`:""}
+ ${st.talk?`<div class="talk"><b>🗣️ ${esc(st.talk[0])}</b><p>${esc(st.talk[1])}</p>${st.talkDone?`<span class="ok">★ Team Talk done!</span>`:`<button class="btn" id="tk">We said it!</button>`}</div>`:""}
+ <div class="mine${mine&&!all?" turn":""}">${mine&&!all?`<span class="yt">⭐ Your turn</span>`:""}<p style="font-size:1.2rem"><b>${esc(c.text)}</b></p><p class="muted">💡 Fun fact: ${esc(c.fact)}</p>
+ ${c.steps.map((s,k)=>`<button class="st" data-s="${k}" aria-pressed="${c.done.includes(k)}"><span class="bx">${c.done.includes(k)?"✓":""}</span>${esc(s)}</button>`).join("")}
+ ${all?`<span class="ok">★ Mission done!</span>`:mine?`<button class="btn s" id="ps">Pass to the next hero →</button>`:""}</div>`;
+ speak(st.beat+"|"+st.turn+"|"+me,mine&&!all?`${p.name}, it's your turn. ${c.text}`:"");}
+function speak(k,t){if(k!==lastSpoken){lastSpoken=k;if(t)say(t);}}
+app.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.me!==undefined){me=+b.dataset.me;lastSpoken="";draw();}
+ else if(b.id==="lv"){leave();home("");}
+ else if(b.id==="sw"){me=null;draw();}
+ else if(b.dataset.s!==undefined&&R){const k=+b.dataset.s,on=b.getAttribute("aria-pressed")!=="true";R.send({t:"step",p:me,s:k,on});}
+ else if(b.id==="tk"&&R)R.send({t:"talk"});
+ else if(b.id==="ps"&&R)R.send({t:"pass"});});
+app.addEventListener("change",e=>{if(e.target.id==="vc"){voice=e.target.checked;if(!voice)try{speechSynthesis.cancel()}catch(x){}}});
+addEventListener("pagehide",()=>leave());
+const q=new URLSearchParams(location.search).get("code");if(q)code=THSRooms.clean(q);home("");})();
+(()=>{const r=document.documentElement;let v="blue";try{v=localStorage.getItem("lhh-bg")||"blue"}catch(e){}r.setAttribute("data-bg",v);})();
+</script>
+</body>
+</html>

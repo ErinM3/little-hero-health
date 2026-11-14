@@ -525,6 +525,15 @@ td.hi{color:var(--hl);font-weight:800}
 .bone.crack::after{content:"";position:absolute;left:46%;top:30%;width:3px;height:40%;background:#FFD21F;transform:rotate(25deg);border-radius:2px}
 .bubble{font-size:4rem;background:none;border:0;cursor:pointer;justify-self:center;transition:transform 2.5s ease}
 .bubble.big{transform:scale(1.8)}
+.teamplay{display:grid;gap:8px;background:var(--surface);border:3px solid var(--sky,#5AAEFF);border-radius:20px;padding:12px 16px}
+.teamplay b{font-family:var(--display);font-size:1.2rem}
+.teamplay label{display:flex;gap:10px;align-items:center;font-weight:700;cursor:pointer}
+.teamplay input{width:22px;height:22px;accent-color:#FFD21F;flex:none}
+.turnbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:#0A2A6B;color:#fff;border:3px solid #FFD21F;border-radius:20px;padding:10px 16px}
+.turnbar b{font-family:var(--display);font-size:1.3rem;color:#FFD21F}
+.card.myturn{border-color:#5AAEFF;box-shadow:0 0 0 4px rgba(90,174,255,.35)}
+.card .yt{justify-self:start;background:#FFD21F;color:#0A2A6B;font-weight:800;border-radius:999px;padding:2px 10px;font-size:.85rem}
+.chal.talk{border-color:#5AAEFF}
 .weekly{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:var(--surface);border:3px dashed var(--sun);border-radius:20px;padding:12px 16px}
 .weekly b{font-family:var(--display);font-size:1.2rem;color:var(--hl)}
 .hcode{display:inline-flex;gap:8px;align-items:center;background:#fff;color:#0A2A6B;border-radius:10px;padding:4px 8px 4px 4px;font-family:ui-monospace,Menlo,monospace;font-weight:700;font-size:.85rem;margin:4px 0}
@@ -839,6 +848,23 @@ const loadB=()=>{try{return JSON.parse(localStorage.getItem("lhh-badges")||"[]")
 const saveB=b=>{try{localStorage.setItem("lhh-badges",JSON.stringify(b))}catch(e){}};
 const plain=t=>t.replaceAll("{p}",S.patient||"the patient").replaceAll("{c}",S.scen!==null?SCEN[S.scen].c:"an ouchie");
 function say(t){try{const u=new SpeechSynthesisUtterance(t);u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+/* ---------- Team Play: voice host, taking turns, Team Talk ---------- */
+const TP=(()=>{let t={};try{t=JSON.parse(localStorage.getItem("ths-team")||"{}")}catch(e){}if(t.voice===undefined)t.voice=true;if(t.turns===undefined)t.turns=true;return t})();
+const saveTP=()=>{try{localStorage.setItem("ths-team",JSON.stringify(TP))}catch(e){}};
+const multi=()=>S.players.length>1;
+const turnsOn=()=>TP.turns&&multi();
+const host=t=>{if(TP.voice)say(t)};
+const jn=p=>JOBS[p.job].name.toLowerCase();
+const pDone=p=>(p.done[S.beat]||[]).length===JOBS[p.job].m[S.beat].steps.length;
+const mText=p=>{const m=JOBS[p.job].m[S.beat];return plain(TIERS[p.tier].mode==="kid"?m.kid:m.pro)};
+function talkLine(b){const P=S.players,n=P.length;if(n<2)return null;const A=P[b%n],B=P[(b+1)%n],pt=S.patient||"the patient";
+ return [["Team Talk: Hero huddle",`Stand in a circle. Each hero says out loud: "I'm (your name), the (your job) today!" ${A.name} goes first.`],
+  ["Team Talk: Ask and answer",`${A.name} the ${jn(A)} asks ${B.name} the ${jn(B)}: "What did you find out about ${pt}?" ${B.name} answers out loud, then asks the next hero.`],
+  ["Team Talk: Call for help",`${A.name} calls out: "I need a hand over here!" ${B.name} answers: "On my way!" Then everyone says one thing they will do to help ${pt}.`],
+  ["Team Talk: Hand-off",`Go around the circle. Each hero tells the next one one thing they did for ${pt} today. ${A.name} starts.`]][b];}
+const turnLine=i=>{const p=S.players[i];return `${p.name}, it's your turn. ${mText(p)}`};
+function nextTurn(){const n=S.players.length;for(let k=1;k<=n;k++){const i=((S.turn||0)+k)%n;if(!pDone(S.players[i])){S.turn=i;return true}}return false;}
+function beatVoice(){S.turn=0;const t=talkLine(S.beat);host(BEATS[S.beat]+". "+(t?t[1]+" Then, ":"")+(turnsOn()?turnLine(0):S.players.map(p=>p.name+": "+mText(p)).join(" ")));}
 const missionsDone=()=>S.players.reduce((n,p)=>n+Object.entries(p.done).filter(([b,d])=>d.length===JOBS[p.job].m[b].steps.length).length,0)+Object.keys(S.bonus||{}).length;
 const missionsMax=()=>S.players.length*4+Object.keys(CHAL).length;
 let S={screen:"squad",players:[{name:"Ava",job:"nurse",tier:0,worn:[],stars:0,done:{}},{name:"Leo",job:"doctor",tier:1,worn:[],stars:0,done:{}}],patient:"Biscuit the Bear",scen:null,di:0,beat:0,msg:""};
@@ -854,8 +880,9 @@ function squad(){
   const jobOpts=k=>Object.entries(JOBS).map(([id,j])=>`<option value="${id}"${id===k?" selected":""}>${j.ic} ${j.name}</option>`).join("");
   const tierOpts=t=>TIERS.map((x,i)=>`<option value="${i}"${i===t?" selected":""}>${x.age} · ${x.name}</option>`).join("");
   const mt=minTier(),at=Math.min(S.atab??mt,mt);
-  return `<div class="howto"><div><b>1 · Squad</b>Add up to 8 friends with names and ages.</div><div><b>2 · Suit up</b>Dress your hero, on screen and in real life.</div><div><b>3 · Play</b>Act out each mission together, then tap the steps.</div><div><b>4 · Heal</b>Make the patient feel better and earn badges.</div></div>
+  return `<div class="howto"><div><b>1 · Squad</b>Add up to 8 friends with names and ages.</div><div><b>2 · Suit up</b>Dress your hero, on screen and in real life.</div><div><b>3 · Play</b>Take turns, talk it out together, then tap the steps.</div><div><b>4 · Heal</b>Make the patient feel better and earn badges.</div></div>
   ${weeklyOK()?`<div class="weekly"><div><b>🎁 Weekly Surprise is ready!</b><br><span class="muted">A free sticker and +20 XP for every hero in your squad. It waits for you all week.</span></div><button class="btn sun" id="weekly">Open it</button></div>`:""}
+  <div class="teamplay"><b>🤝 Team Play</b><label><input type="checkbox" id="tp-voice"${TP.voice?" checked":""}> 🔊 Voice host: the game reads each turn out loud</label><label><input type="checkbox" id="tp-turns"${TP.turns?" checked":""}> 🎯 Take turns: the game calls each hero by name</label><small class="muted">Play together in the same room, on one screen. Talk it out, act it out, then tap the steps. No accounts, nothing leaves this device.</small></div>
   <div class="stack"><h3>1. Build your squad</h3>
   <div class="players">${S.players.map((p,i)=>`<div class="player">
     <label>Hero name ${lvChip(p)}<input id="pn${i}" data-i="${i}" class="pname" value="${esc(p.name)}" maxlength="16"></label>
@@ -897,7 +924,8 @@ function card(p,i){
   if(S.beat===3&&p.tier>=1) extra+=`<p class="real">Career path: ${esc(j.path)}</p>`;
   if(S.beat===3&&p.tier>=1) extra+=`<p class="fact">Questions about this career? Ask a school nurse, counselor or HOSA advisor.</p>`;
   if(S.beat===3&&p.tier>=2) extra+=`<p class="real"><b>Your real-world step:</b> ${esc(j.r[0])}</p>`;
-  return `<div class="card${complete?" done":""}"><div class="card-h"><span class="ic">${j.ic}</span><div><b>${esc(p.name)} · ${j.name}</b><br><span class="tag">${t.age} · ${t.name}</span> ${lvChip(p)}</div></div>
+  const mine=S.screen==="shift"&&turnsOn()&&i===S.turn&&!complete;
+  return `<div class="card${complete?" done":""}${mine?" myturn":""}">${mine?`<span class="yt">⭐ Your turn</span>`:""}<div class="card-h"><span class="ic">${j.ic}</span><div><b>${esc(p.name)} · ${j.name}</b><br><span class="tag">${t.age} · ${t.name}</span> ${lvChip(p)}</div></div>
   <p><b>${fill(t.mode==="kid"?m.kid:m.pro)}</b></p>${p.tier===0?`<button class="say" data-say="${i}">🔊 Read it to me</button>`:""}${extra}
   <div class="steps">${m.steps.map((s,k)=>`<button class="step${d.includes(k)?" ok":""}" data-p="${i}" data-s="${k}" aria-pressed="${d.includes(k)}"><span class="bx">${d.includes(k)?"✓":""}</span>${fill(s)}</button>`).join("")}</div>
   ${complete?`<span class="stars" aria-label="Star earned">★ Mission done</span>`:""}</div>`;
@@ -908,6 +936,8 @@ function shift(){
   ${ptBanner()}<div class="beats">${BEATS.map((b,i)=>`<div class="beat ${i===S.beat?"now":i<S.beat?"past":""}">${b}</div>`).join("")}</div>
   ${(()=>{const pct=missionsDone()/missionsMax(),fi=Math.min(5,Math.floor(pct*5.99));return `<div class="mood"><span class="mface" aria-hidden="true">${FACES[fi]}</span><div><b>${esc(S.patient)} is feeling ${["poorly","a bit sore","okay","better","great","AMAZING"][fi]}</b><span class="mtrack" style="display:block;margin-top:6px"><span class="mfill" style="width:${Math.round(pct*100)}%"></span></span></div><b class="stars">${missionsDone()}★</b></div>`})()}
   ${CHAL[S.beat]?`<div class="chal"><div><b>${CHAL[S.beat].name}</b><p>${fill(CHAL[S.beat].text)}</p></div>${(S.bonus||{})[S.beat]?`<span class="stars">★ Team bonus!</span>`:`<span class="t" id="chal-t">${CHAL[S.beat].secs}</span><button class="btn sun" id="chal">Start the timer</button>`}</div>`:""}
+  ${(()=>{const t=talkLine(S.beat);return t?`<div class="chal talk"><div><b>🗣️ ${t[0]}</b><p>${esc(t[1])}</p></div>${(S.talk||{})[S.beat]?`<span class="stars">★ Team Talk done!</span>`:`<button class="btn sun" id="talk">We said it!</button>`}</div>`:""})()}
+  ${turnsOn()&&!allDone?`<div class="turnbar"><span>⭐ <b>${esc(S.players[S.turn||0].name)}'s turn</b> · ${JOBS[S.players[S.turn||0].job].name}</span><span class="row"><button class="btn ghost" id="hear">🔊 Say it again</button><button class="btn sun" id="pass">Pass to the next hero →</button></span></div>`:""}
   <div class="score">${S.players.map(p=>`<span>${JOBS[p.job].ic} ${esc(p.name)} <b>${Object.entries(p.done).filter(([b,d])=>d.length===JOBS[p.job].m[b].steps.length).length}★</b></span>`).join("")}</div>
   <div class="cards">${S.players.map(card).join("")}</div>
   <div class="row"><button class="btn sun" id="beat">${S.beat<3?"Next part of the day →":"Finish the shift →"}</button>${allDone?"":`<span class="muted">Tap each step when your squad has done it in real life.</span>`}</div>`;
@@ -932,7 +962,7 @@ const BADGES=[["first","🎉","First Shift","Finish your first shift"],
  ...Object.keys(JOBS).map(k=>["job-"+k,JOBS[k].ic,JOBS[k].name+" Badge","Finish a shift as a "+JOBS[k].name.toLowerCase()]),
  ["alljobs","🏥","Every Job","Play all 9 jobs"],["teddy","🧸","Teddy Healer","Finish a Little Heroes shift"],
  ["hands","🧼","Clean Hands","Finish the hand-washing race"],["freeze","🧊","Freeze Pro","Finish the surgery freeze"],
- ["fullheal","🤩","Full Heal","Make a patient feel AMAZING"],["squad","🤝","Squad Goals","Play with 4 or more heroes"],
+ ["fullheal","🤩","Full Heal","Make a patient feel AMAZING"],["squad","🤝","Squad Goals","Play with 4 or more heroes"],["talk","🗣️","Team Talker","Finish a Team Talk with your squad"],
  ["explorer","🗺️","Action Explorer","Play 5 different actions"],["mini","🎮","Bonus Star","Finish a bonus game"],["super","🦸","Super Hero","Reach level 5"]];
 const STICKERS=["🩹 Brave Bandage","⭐ Gold Star","🚑 Speedy Ambulance","🧸 Teddy Hug","💊 Pill Wizard","🩺 Heart Listener","🧼 Super Suds","🦴 Bone Boss","😷 Mask Master","🏥 Hospital Hero","🫀 Big Heart","🌈 Feel-Better Rainbow"];
 let HEROES={};try{HEROES=JSON.parse(localStorage.getItem("lhh-heroes")||"{}")}catch(e){}
@@ -982,6 +1012,8 @@ g.addEventListener("input",e=>{const t=e.target;
   if(t.classList.contains("pname"))S.players[+t.dataset.i].name=t.value;
   if(t.id==="patient")S.patient=t.value;});
 g.addEventListener("change",e=>{const t=e.target;
+  if(t.id==="tp-voice"){TP.voice=t.checked;saveTP();if(!TP.voice)try{speechSynthesis.cancel()}catch(x){}else say("Voice host is on!");}
+  if(t.id==="tp-turns"){TP.turns=t.checked;saveTP();}
   if(t.classList.contains("pjob")){S.players[+t.dataset.i].job=t.value;}
   if(t.classList.contains("ptier")){S.players[+t.dataset.i].tier=+t.value;if(S.scen!==null&&SCEN[S.scen].min>minTier())S.scen=null;render();}});
 g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
@@ -989,7 +1021,7 @@ g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   else if(b.dataset.rm){S.players.splice(+b.dataset.rm,1);render();}
   else if(b.dataset.atab){S.atab=+b.dataset.atab;render();}
   else if(b.dataset.sc){S.scen=+b.dataset.sc;render();}
-  else if(b.id==="go"){S.players.forEach(p=>{p.worn=[];p.pool=null;p.done={}});S.bonus={};S.newB=[];S.chest=false;S.players.forEach(p=>{p.xpGain=0;p.newBadges=[];p.mini=false});if(S.timer){clearInterval(S.timer);S.timer=null;}S.di=0;S.msg="";S.screen="dress";render();}
+  else if(b.id==="go"){S.players.forEach(p=>{p.worn=[];p.pool=null;p.done={}});S.bonus={};S.newB=[];S.chest=false;S.players.forEach(p=>{p.xpGain=0;p.newBadges=[];p.mini=false});if(S.timer){clearInterval(S.timer);S.timer=null;}S.di=0;S.msg="";S.talk={};S.turn=0;S.screen="dress";render();{const p=S.players[0];host(`${p.name}, suit up as the ${jn(p)}!`)}}
   else if(b.dataset.it){const p=S.players[S.di],j=JOBS[p.job],k=b.dataset.it;
     if(j.outfit.includes(k)){if(!p.worn.includes(k))p.worn.push(k);S.msg="";render();if(p.worn.length===j.outfit.length)boom(innerWidth/2,innerHeight/2,70);}
     else{const owner=Object.values(JOBS).find(x=>x.outfit.includes(k));S.msg=DECOYS[k]?"Silly! That's not for the hospital. Try again.":`That belongs to the ${owner.name.toLowerCase()}. Try again!`;render();
@@ -1001,9 +1033,13 @@ g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   else if(b.id==="weekly"){S.players.forEach(p=>{const h=hero(p),st=STICKERS[Math.floor(Math.random()*STICKERS.length)];if(!h.stickers.includes(st))h.stickers.push(st);giveXP(p,20,"weekly surprise",true);});saveH();try{localStorage.setItem("lhh-weekly",String(WEEK()))}catch(e){}render();boom(innerWidth/2,innerHeight/3,80);toast("🎁 Every hero got a sticker and +20 XP!");showLevelUps();}
   else if(b.id==="chest"){openChest();}
   else if(b.dataset.book!==undefined){badgeBook(+b.dataset.book);}
-  else if(b.id==="next"){S.msg="";if(S.di<S.players.length-1){S.di++;}else{S.beat=0;S.screen="shift";banner("🚨 The hospital is open!","Shift starts now");}render();}
-  else if(b.dataset.s!==undefined){const p=S.players[+b.dataset.p],d=p.done[S.beat]||(p.done[S.beat]=[]),k=+b.dataset.s,ix=d.indexOf(k);ix>-1?d.splice(ix,1):d.push(k);render();if(ix<0&&d.length===JOBS[p.job].m[S.beat].steps.length){const r=b.getBoundingClientRect();boom(r.left+r.width/2,r.top,40);giveXP(p,25,"mission done");showLevelUps();}}
-  else if(b.id==="beat"){if(S.beat<3){S.beat++;render();banner(BEATS[S.beat],SCEN[S.scen].name);}else{const all=loadB();S.newB=S.players.map(BADGE).filter(x=>!all.includes(x));saveB([...all,...S.newB]);endAwards();S.screen="end";render();setTimeout(()=>{boom(innerWidth*.25,innerHeight*.4,80);boom(innerWidth*.75,innerHeight*.4,80)},350);}g.parentElement.scrollIntoView({behavior:"smooth",block:"start"});}
+  else if(b.id==="next"){S.msg="";if(S.di<S.players.length-1){S.di++;const p=S.players[S.di];host(`${p.name}, suit up as the ${jn(p)}!`);}else{S.beat=0;S.screen="shift";banner("🚨 The hospital is open!","Shift starts now");beatVoice();}render();}
+  else if(b.id==="talk"){S.talk=S.talk||{};S.talk[S.beat]=true;S.players.forEach(p=>{giveXP(p,10,"team talk",true);giveBadge(p,"talk",true)});render();boom(innerWidth/2,innerHeight/2,60);toast("🗣️ Team Talk done! +10 XP for every hero");host("Great teamwork!");showLevelUps();}
+  else if(b.id==="pass"){if(!nextTurn())S.turn=((S.turn||0)+1)%S.players.length;render();host(turnLine(S.turn));}
+  else if(b.id==="hear"){host(turnLine(S.turn||0));if(!TP.voice)say(turnLine(S.turn||0));}
+  else if(b.dataset.s!==undefined){const p=S.players[+b.dataset.p],d=p.done[S.beat]||(p.done[S.beat]=[]),k=+b.dataset.s,ix=d.indexOf(k);ix>-1?d.splice(ix,1):d.push(k);render();if(ix<0&&d.length===JOBS[p.job].m[S.beat].steps.length){const r=b.getBoundingClientRect();boom(r.left+r.width/2,r.top,40);giveXP(p,25,"mission done");showLevelUps();
+    const pi=+b.dataset.p;if(turnsOn()&&pi===(S.turn||0)){if(nextTurn()){render();host(`Great job ${p.name}! `+turnLine(S.turn));}else host(`Great job, team! Everyone is done. Tap next part of the day.`);}else if(S.players.every(pDone))host(`Great job, team! Tap next part of the day.`);else host(`Great job ${p.name}!`);}}
+  else if(b.id==="beat"){if(S.beat<3){S.beat++;S.turn=0;render();banner(BEATS[S.beat],SCEN[S.scen].name);beatVoice();}else{const all=loadB();S.newB=S.players.map(BADGE).filter(x=>!all.includes(x));saveB([...all,...S.newB]);endAwards();S.screen="end";render();host(`Shift complete! ${S.patient||"Your patient"} is feeling much better. Great job, heroes!`);setTimeout(()=>{boom(innerWidth*.25,innerHeight*.4,80);boom(innerWidth*.75,innerHeight*.4,80)},350);}g.parentElement.scrollIntoView({behavior:"smooth",block:"start"});}
   else if(b.id==="again"){S.scen=null;S.screen="squad";render();}
   else if(b.id==="swap"){const jobs=S.players.map(p=>p.job);jobs.push(jobs.shift());S.players.forEach((p,i)=>p.job=jobs[i]);S.scen=null;S.screen="squad";render();}
 });
