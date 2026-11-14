@@ -1,0 +1,25 @@
+THE HERO SHIFT ROOMS: play from friends' devices with a code
+=============================================================
+For a grown-up (Antony). Nothing here is switched on until you do steps 1-3.
+
+What it does
+- On the game, the host taps "Open a room" and gets a 6-letter code.
+- Friends go to theheroshift.com/join.html on their own phone or tablet, type the code,
+  tap which hero they are, and see their own card. Taps sync to the host screen.
+- Everyone still talks out loud in the same room (or on a call the family already uses).
+  There is no chat, no voice sent over the internet, no accounts, no photos.
+
+What it sends and keeps
+- Sends: hero names (use nicknames), jobs, the mission text and which steps are ticked.
+- Keeps: nothing. The service only passes messages between devices in one room.
+  When everyone leaves, the room is gone. Only theheroshift.com pages can connect.
+- Max 9 devices per room. Codes are random (about 850 million combinations) and the
+  host screen shows how many devices joined, with a Close room button.
+
+Turn it on (about 10 minutes, free Cloudflare plan is fine)
+1. In a terminal:   cd rooms   then   npx wrangler login   then   npx wrangler deploy
+   It prints an address like https://ths-rooms.YOUR-ACCOUNT.workers.dev
+2. In site/js/rooms.js set:   const ROOMS_URL="wss://ths-rooms.YOUR-ACCOUNT.workers.dev";
+3. Commit to main. The website updates on its own.
+
+Turn it off again: set ROOMS_URL back to "" (and optionally  npx wrangler delete).
