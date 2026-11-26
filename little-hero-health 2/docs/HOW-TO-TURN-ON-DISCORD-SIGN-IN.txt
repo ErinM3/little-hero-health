@@ -1,0 +1,39 @@
+The Hero Shift Events · turn on "Sign in with Discord" (about 15 minutes, a grown-up does this)
+==============================================================================================
+Why it says "Discord sign-in isn't set up yet": the events worker in Cloudflare
+doesn't have its Discord settings yet. Nothing is broken on the website. Staff keys
+still work while you do this.
+
+Your events worker:  https://lively-bread-7c0blhh-events.hbrandall11.workers.dev
+
+STEP 1 · Discord Developer Portal (discord.com/developers/applications)
+  Open The Hero Shift Bot app (or New Application if there is no bot yet).
+  a. General Information → copy the Application ID.
+  b. OAuth2 → Client Secret → Reset Secret → copy it. Keep it private.
+  c. OAuth2 → Redirects → Add Redirect → paste exactly:
+       https://lively-bread-7c0blhh-events.hbrandall11.workers.dev/auth/discord/callback
+     → Save Changes.
+  d. Bot → Reset Token → copy it. Keep it private.
+  e. The bot must be in The Hero Shift Discord server (it reads people's roles).
+
+STEP 2 · Cloudflare (dash.cloudflare.com → Workers & Pages → the events worker)
+  a. Edit code → delete everything → paste ALL of lhh-events-worker.js (this folder) → Deploy.
+     (This version says "The Hero Shift" and sends people back to the site with a
+      friendly message if Discord isn't switched on.)
+  b. Settings → Variables and Secrets → add or fix:
+       SITE_URL               Text    https://theheroshift.com      ← important: NOT the old netlify address
+       DISCORD_CLIENT_ID      Text    (Application ID from 1a)
+       DISCORD_GUILD_ID       Text    1560483599063711837            (The Hero Shift server ID)
+       DISCORD_CLIENT_SECRET  Secret  (from 1b)
+       DISCORD_TOKEN          Secret  (from 1d)
+     → Deploy.
+
+STEP 3 · Discord server roles
+  Staff need one of these roles: Hero Shift Official, LHH Official, Moderator, Admin,
+  Owner or Hero Team. The server owner always works.
+
+STEP 4 · Test
+  theheroshift.com/events.html → Staff sign in → Sign in with Discord → Authorize.
+  You should land back on the staff dashboard with "Welcome, <your name>!".
+
+Never put the client secret, bot token or staff keys in GitHub, Discord, Notion or a chat.

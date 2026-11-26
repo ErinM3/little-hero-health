@@ -1,4 +1,4 @@
-// Little Hero Health · Events and tickets (Cloudflare Worker)
+// The Hero Shift · Events and tickets (Cloudflare Worker)
 // Luma-style events: staff add events, families get tickets with QR codes,
 // Square checkout for paid tickets, and staff check-in.
 //
@@ -8,7 +8,7 @@
 //   Secrets:               SESSION_SECRET, STAFF_KEYS, DISCORD_CLIENT_SECRET, DISCORD_TOKEN,
 //                          SQUARE_ACCESS_TOKEN, SQUARE_WEBHOOK_KEY (optional)
 const DISCORD = "https://discord.com/api/v10";
-const STAFF_ROLE = /lhh official|moderator|admin|owner|hero team/i;
+const STAFF_ROLE = /hero shift official|lhh official|moderator|admin|owner|hero team/i;
 const HOLD_MINUTES = 30;
 const SQUARE_VERSION = "2025-01-23";
 
@@ -51,7 +51,7 @@ async function unsign(env, tok) {
   try { const o = JSON.parse(fromB64u(p)); return o.exp && o.exp > Date.now() ? o : null; } catch { return null; }
 }
 async function staff(req, env) { const t = (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, ""); const s = await unsign(env, t); return s && s.k === "staff" ? s : null; }
-async function needStaff(req, env) { const s = await staff(req, env); if (!s) fail(401, "Please sign in as Little Hero staff."); return s; }
+async function needStaff(req, env) { const s = await staff(req, env); if (!s) fail(401, "Please sign in as The Hero Shift staff."); return s; }
 const kv = env => { if (!env.LHH) fail(500, "The LHH storage (KV binding) is not set up in Cloudflare yet."); return env.LHH; };
 const getJ = async (env, k) => { const v = await kv(env).get(k); return v ? JSON.parse(v) : null; };
 const putJ = (env, k, v) => kv(env).put(k, JSON.stringify(v));
@@ -89,7 +89,7 @@ function validEvent(b, old) {
   e.start = s.toISOString(); e.end = (isNaN(en) || en < s ? new Date(s.getTime() + 2 * 3600000) : en).toISOString();
   e.tz = clean(b.tz, 60) || "America/Chicago";
   e.online = !!b.online; e.place = clean(b.place, 200); e.city = clean(b.city, 80); e.hideAddress = b.hideAddress !== false;
-  e.about = cleanText(b.about, 3000); e.ages = clean(b.ages, 40); e.host = clean(b.host, 60) || "Little Hero Health";
+  e.about = cleanText(b.about, 3000); e.ages = clean(b.ages, 40); e.host = clean(b.host, 60) || "The Hero Shift";
   e.emoji = EMOJI.includes(b.emoji) ? b.emoji : "🏥"; e.color = PALETTE.includes(b.color) ? b.color : "#1F5FAD";
   e.capacity = Math.max(0, Math.min(5000, parseInt(b.capacity) || 0));
   e.price = Math.max(0, Math.min(100000, Math.round(Number(b.price) || 0)));
@@ -123,7 +123,7 @@ async function refreshPaid(env, t) {
 async function route(req, env, url) {
   const p = url.pathname.replace(/\/+$/, "") || "/", m = req.method;
   let r;
-  if (p === "/") return new Response("Little Hero Health events are running. 🎟️", { headers: { "content-type": "text/plain; charset=utf-8" } });
+  if (p === "/") return new Response("The Hero Shift events are running. 🎟️", { headers: { "content-type": "text/plain; charset=utf-8" } });
 
   // --- staff sign-in: key ---
   if (p === "/api/login" && m === "POST") {
@@ -135,7 +135,11 @@ async function route(req, env, url) {
   }
   // --- staff sign-in: Discord ---
   if (p === "/auth/discord" && m === "GET") {
-    if (!env.DISCORD_CLIENT_ID) fail(503, "Discord sign-in isn't set up yet.");
+    if (!env.DISCORD_CLIENT_ID || !env.DISCORD_CLIENT_SECRET || !env.DISCORD_TOKEN || !env.DISCORD_GUILD_ID) {
+      const msg = "Discord sign-in isn't switched on yet. Use your staff key for now.";
+      if (site(env)) return Response.redirect(site(env) + "/events.html#/staff?error=" + encodeURIComponent(msg), 302);
+      fail(503, msg);
+    }
     const state = await sign(env, { k: "state", exp: Date.now() + 600000 });
     const q = new URLSearchParams({ client_id: env.DISCORD_CLIENT_ID, redirect_uri: url.origin + "/auth/discord/callback", response_type: "code", scope: "identify guilds.members.read", state });
     return Response.redirect("https://discord.com/oauth2/authorize?" + q, 302);
@@ -148,14 +152,14 @@ async function route(req, env, url) {
     const tr = await fetch(DISCORD + "/oauth2/token", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ client_id: env.DISCORD_CLIENT_ID, client_secret: env.DISCORD_CLIENT_SECRET || "", grant_type: "authorization_code", code: codeParam, redirect_uri: url.origin + "/auth/discord/callback" }) });
     const tok = await tr.json().catch(() => ({})); if (!tok.access_token) return back("Discord sign-in didn't work. Please try again.");
     const mr = await fetch(`${DISCORD}/users/@me/guilds/${env.DISCORD_GUILD_ID}/member`, { headers: { Authorization: "Bearer " + tok.access_token } });
-    if (!mr.ok) return back("You need to be in the Little Hero Discord server to sign in.");
+    if (!mr.ok) return back("You need to be in The Hero Shift Discord server to sign in.");
     const mem = await mr.json();
     const bot = { headers: { Authorization: "Bot " + env.DISCORD_TOKEN } };
     const [roles, guild] = await Promise.all([fetch(`${DISCORD}/guilds/${env.DISCORD_GUILD_ID}/roles`, bot).then(r => r.ok ? r.json() : []), fetch(`${DISCORD}/guilds/${env.DISCORD_GUILD_ID}`, bot).then(r => r.ok ? r.json() : {})]);
     const names = roles.filter(r => (mem.roles || []).includes(r.id)).map(r => r.name);
     const isOwner = guild.owner_id && mem.user && guild.owner_id === mem.user.id;
     const ok = isOwner || names.some(n => STAFF_ROLE.test(n));
-    if (!ok) return back("Only LHH Official, Moderators, Admins and the Owner can add events.");
+    if (!ok) return back("Only Hero Shift Official, Moderators, Admins and the Owner can add events.");
     const name = mem.nick || (mem.user && (mem.user.global_name || mem.user.username)) || "Staff";
     return back(null, await sign(env, { k: "staff", name, via: "discord", role: isOwner ? "Owner" : (names.find(n => STAFF_ROLE.test(n)) || "Staff"), exp: Date.now() + 12 * 3600000 }));
   }
@@ -214,7 +218,7 @@ async function route(req, env, url) {
         quick_pay: { name: `${qty} × ${e.title} ticket${qty > 1 ? "s" : ""}`.slice(0, 255), price_money: { amount: e.price * qty, currency: "USD" }, location_id: env.SQUARE_LOCATION_ID },
         checkout_options: { redirect_url: ret, ask_for_shipping_address: false },
         pre_populated_data: { buyer_email: email },
-        payment_note: `Little Hero ticket ${t.id}`,
+        payment_note: `The Hero Shift ticket ${t.id}`,
       });
       t.orderId = link.payment_link.order_id; t.linkId = link.payment_link.id;
       await putJ(env, "order:" + t.orderId, t.id);
