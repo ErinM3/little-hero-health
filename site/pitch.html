@@ -1283,7 +1283,7 @@ const lib=document.getElementById("actlib");if(lib&&typeof SCEN!=="undefined")li
 </script>
 <script>
 function qrSVG(text,px){if(typeof qrcode==="undefined")return `<span class="qrph" style="display:inline-grid;place-items:center;width:${px}px;height:${px}px;border:1px dashed #8FA3B8;font-size:10px;color:#5A6B7E;background:#fff">QR</span>`;const q=qrcode(0,"M");q.addData(String(text));q.make();const n=q.getModuleCount(),m=2,s=n+m*2;let r="";for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(q.isDark(y,x))r+=`M${x+m} ${y+m}h1v1h-1z`;return `<svg viewBox="0 0 ${s} ${s}" width="${px}" height="${px}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect width="${s}" height="${s}" fill="#fff"/><path d="${r}" fill="#000"/></svg>`;}
-(()=>{const g=document.getElementById("gqr");if(g)g.innerHTML=qrSVG("LHH|GAME|The Hero Shift",34)+"<span>LHH-IRL</span>";})();
+(()=>{const g=document.getElementById("gqr");if(g)g.innerHTML=qrSVG(location.href.split("#")[0].split("?")[0],34)+"<span>LHH-IRL</span>";})();
 </script>
 </body>
 </html>
